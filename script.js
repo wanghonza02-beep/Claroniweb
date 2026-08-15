@@ -312,7 +312,32 @@
     if (rafId === null) { lastFrame = 0; rafId = requestAnimationFrame(tick); }
   }
 
-  video.addEventListener('loadedmetadata', function () { video.pause(); measure(); onScroll(); });
+  /* iOS will not buffer a video that is never played. A scroll-scrubbed video
+     is never played by definition, so on iPad the element stays blank and
+     readyState never reaches the point where seeking does anything — while
+     autoplaying videos elsewhere on the site work fine. Priming it with a
+     muted play and an immediate pause forces the decode. It is muted and
+     playsinline, so nothing is audible and no motion is visible. */
+  function prime() {
+    var started = video.play();
+    if (started && started.then) started.then(function () { video.pause(); }).catch(function () {});
+    else video.pause();
+  }
+
+  video.addEventListener('loadedmetadata', function () {
+    prime();
+    measure();
+    onScroll();
+  });
+
+  // Safari can refuse the first attempt before any interaction; retry once the
+  // user touches the page, which is a gesture iOS always accepts.
+  ['touchstart', 'pointerdown'].forEach(function (evt) {
+    window.addEventListener(evt, function once() {
+      window.removeEventListener(evt, once);
+      if (video.readyState < 2) prime();
+    }, { passive: true });
+  });
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
   measure();

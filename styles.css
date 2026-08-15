@@ -1146,7 +1146,11 @@ section[id] { scroll-margin-top: 96px; }
 @media (max-width: 900px) {
   .plans { grid-template-columns: 1fr; }
   .pricing__panel { max-width: 520px; padding: var(--s-6); }
-  .marquee__set { gap: var(--s-12); padding-right: var(--s-12); }
+  /* Spacing deliberately NOT reduced here. Narrowing the gaps shrank one set
+     to 655px against an 805px viewport, so the same four logos sat on screen
+     twice at once and the strip read as spinning. Keeping the desktop spacing
+     makes a set wider than the tablet viewport and gives every breakpoint the
+     same travel per cycle, so the speed is identical everywhere. */
 
   /* Desktop stretches the video over the full height of main. On a narrow,
      very tall page that means object-fit: cover crops a thin vertical strip and
