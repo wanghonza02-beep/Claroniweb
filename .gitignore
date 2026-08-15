@@ -1,0 +1,16 @@
+# Source videos kept locally for re-encoding — the site serves the compressed
+# versions (hero-light.mp4, hero-dark.mp4, loginvideo.mp4). Committing these
+# would add ~29 MB the site never loads.
+videos/*.source.mp4
+
+# Unused capture that predates the renamed assets
+videos/hf_*.mp4
+
+# Local preview config: points at a dev server on port 8123 that only exists
+# on this machine.
+.claude/
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store

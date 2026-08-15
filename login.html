@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<!-- Always dark, and stated in the markup rather than applied by script, so the
+     page is dark even before JS runs or with JS disabled. data-theme-locked
+     tells script.js to keep writing the user's preference to localStorage
+     without letting the toggle repaint this page. -->
+<html lang="en" class="dark" data-theme-locked="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in — Claroni</title>
+<meta name="description" content="Sign in to Claroni.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="assets/claroni-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<!-- No theme-restoring script here on purpose: this page is dark unconditionally,
+     so there is nothing to read back and nothing to flash. -->
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-cs="Přejít na obsah">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="shell nav">
+    <a class="nav__brand" href="index.html" aria-label="Claroni">
+      <img class="nav__mark nav__mark--light" src="assets/claroni-mark.png" alt="" width="224" height="244">
+      <img class="nav__mark nav__mark--dark" src="assets/claroni-mark-white.png" alt="" width="224" height="244">
+      <span class="nav__wordmark">Claroni</span>
+    </a>
+
+    <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" class="lang__btn is-active" data-lang="en" aria-pressed="true">EN</button>
+        <span class="lang__sep" aria-hidden="true">/</span>
+        <button type="button" class="lang__btn" data-lang="cs" aria-pressed="false">CS</button>
+      </div>
+
+      <div class="theme">
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </span>
+        <button type="button" class="switch" role="switch" aria-checked="false"
+                aria-label="Toggle dark mode" data-cs-label="Přepnout tmavý režim">
+          <span class="switch__knob" aria-hidden="true"></span>
+        </button>
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </span>
+      </div>
+
+      <!-- Hidden rather than removed. They keep occupying their exact width, so
+           the language and theme controls land on the same pixel as they do on
+           the landing page. visibility:hidden also drops them from the tab
+           order, and data-cs keeps the reserved width correct in Czech too. -->
+      <a class="btn btn--ghost nav__login nav__reserved" href="login.html"
+         data-cs="Přihlásit" aria-hidden="true" tabindex="-1">Log in</a>
+      <a class="btn btn--primary nav__reserved" href="pricing.html"
+         data-cs="Začít" aria-hidden="true" tabindex="-1">Get started</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="login">
+  <div class="login__inner">
+
+    <!-- ------------------------- left: the form ------------------------- -->
+    <section class="login__panel">
+      <div class="login__col">
+        <a class="back-btn" href="index.html" aria-label="Back to home" data-cs-label="Zpět na úvod">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        </a>
+
+        <h1 class="login__title" data-cs="Vítej">Welcome</h1>
+        <p class="login__sub" data-cs="Přihlas se a uvidíš, na čem jsi.">Sign in to see where you stand.</p>
+
+        <!-- TODO: wire up authentication. Inert for now — nothing is submitted
+             anywhere and no credentials leave the page. -->
+        <form class="login__form">
+          <div class="field">
+            <label class="field__label" for="email" data-cs="E-mailová adresa">Email address</label>
+            <input class="field__input" id="email" name="email" type="email"
+                   autocomplete="email" placeholder="you@example.com" required>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="password" data-cs="Heslo">Password</label>
+            <input class="field__input" id="password" name="password" type="password"
+                   autocomplete="current-password" placeholder="••••••••" required>
+          </div>
+
+          <div class="login__row">
+            <label class="check">
+              <input class="check__input" type="checkbox" name="remember">
+              <span class="check__box" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+              </span>
+              <span class="check__label" data-cs="Zůstat přihlášen">Keep me signed in</span>
+            </label>
+            <!-- TODO: wire up password reset -->
+            <a class="login__link" href="#" data-cs="Zapomenuté heslo">Reset password</a>
+          </div>
+
+          <button class="btn btn--primary login__submit" type="submit" data-cs="Přihlásit se">Sign In</button>
+        </form>
+
+        <div class="login__divider">
+          <span data-cs="Nebo pokračuj přes">Or continue with</span>
+        </div>
+
+        <!-- TODO: wire up Google OAuth -->
+        <button class="btn btn--secondary login__oauth" type="button">
+          <span class="login__oauth-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 12h-8"/></svg>
+          </span>
+          <span data-cs="Pokračovat přes Google">Continue with Google</span>
+        </button>
+
+        <p class="login__foot">
+          <span data-cs="Jsi tu poprvé?">New to our platform?</span>
+          <!-- TODO: wire up sign-up route -->
+          <a class="login__link" href="#" data-cs="Vytvořit účet">Create Account</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ------------------------ right: the video ------------------------ -->
+    <aside class="login__media" aria-hidden="true">
+      <video class="login__video" src="videos/loginvideo.mp4"
+             autoplay loop muted playsinline preload="auto" disablepictureinpicture></video>
+    </aside>
+
+  </div>
+</main>
+
+<!-- ============================== FOOTER ================================ -->
+<!-- Site-wide footer. Every page carries this same block, verbatim — if it
+     changes here it must change on every other page too. -->
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__grid">
+
+      <!-- Stay connected -->
+      <div class="footer__col footer__col--newsletter">
+        <span class="footer__blob" aria-hidden="true"></span>
+        <h2 class="footer__title" data-cs="Zůstaň v obraze">Stay Connected</h2>
+        <p class="footer__lede" data-cs="Přihlas se k newsletteru pro novinky a exkluzivní nabídky.">
+          Join our newsletter for the latest updates and exclusive offers.
+        </p>
+        <!-- TODO: wire up newsletter signup -->
+        <form class="subscribe" novalidate>
+          <label class="sr-only" for="subscribe-email" data-cs="E-mailová adresa">Email address</label>
+          <input class="subscribe__input" id="subscribe-email" name="email" type="email"
+                 placeholder="Enter your email" data-cs-placeholder="Zadej svůj e-mail" required>
+          <button class="subscribe__btn" type="submit" aria-label="Subscribe" data-cs-label="Přihlásit k odběru">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Quick links -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Rychlé odkazy">Quick Links</h3>
+        <!-- TODO: wire up remaining destinations. Home is live on every page. -->
+        <nav class="footer__nav">
+          <a href="index.html" data-cs="Domů">Home</a>
+          <a href="#" data-cs="O nás">About Us</a>
+          <a href="#" data-cs="Služby">Services</a>
+          <a href="#" data-cs="Produkty">Products</a>
+          <a href="#" data-cs="Kontakt">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Kontakt">Contact Us</h3>
+        <address class="footer__address">
+          <p data-cs="Šanghaj, Čína">Shanghai, China</p>
+          <p><a href="tel:+8600011199980">+86 00011199980</a></p>
+          <p><a href="mailto:claroni@help.center.cn">claroni@help.center.cn</a></p>
+        </address>
+      </div>
+
+      <!-- Social -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Sleduj nás">Follow Us</h3>
+        <ul class="social">
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-fb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span class="sr-only">Facebook</span>
+            </a>
+            <span class="tooltip" id="tt-fb" role="tooltip" data-cs="Sleduj nás na Facebooku">Follow us on Facebook</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-x">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              <span class="sr-only">X</span>
+            </a>
+            <span class="tooltip" id="tt-x" role="tooltip" data-cs="Sleduj nás na X">Follow us on X</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-ig">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/></svg>
+              <span class="sr-only">Instagram</span>
+            </a>
+            <span class="tooltip" id="tt-ig" role="tooltip" data-cs="Sleduj nás na Instagramu">Follow us on Instagram</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-li">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <span class="sr-only">LinkedIn</span>
+            </a>
+            <span class="tooltip" id="tt-li" role="tooltip" data-cs="Spoj se s námi na LinkedInu">Connect with us on LinkedIn</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copy" data-cs="© 2026 Claroni. Všechna práva vyhrazena.">&copy; 2026 Claroni. All rights reserved.</p>
+      <!-- TODO: wire up legal pages -->
+      <nav class="footer__legal">
+        <a href="#" data-cs="Zásady ochrany osobních údajů">Privacy Policy</a>
+        <a href="#" data-cs="Podmínky služby">Terms of Service</a>
+        <a href="#" data-cs="Nastavení cookies">Cookie Settings</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

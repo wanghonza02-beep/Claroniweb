@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing — Claroni</title>
+<meta name="description" content="Two plans. Start free, upgrade when every card matters.">
+<link rel="icon" type="image/png" href="assets/claroni-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* Applied before first paint so the theme never flashes. Shared with index.html. */
+  try {
+    if (localStorage.getItem('claroni-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) { /* private mode */ }
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-cs="Přejít na obsah">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="shell nav">
+    <a class="nav__brand" href="index.html" aria-label="Claroni">
+      <img class="nav__mark nav__mark--light" src="assets/claroni-mark.png" alt="" width="224" height="244">
+      <img class="nav__mark nav__mark--dark" src="assets/claroni-mark-white.png" alt="" width="224" height="244">
+      <span class="nav__wordmark">Claroni</span>
+    </a>
+
+    <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" class="lang__btn is-active" data-lang="en" aria-pressed="true">EN</button>
+        <span class="lang__sep" aria-hidden="true">/</span>
+        <button type="button" class="lang__btn" data-lang="cs" aria-pressed="false">CS</button>
+      </div>
+
+      <div class="theme">
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </span>
+        <button type="button" class="switch" role="switch" aria-checked="false"
+                aria-label="Toggle dark mode" data-cs-label="Přepnout tmavý režim">
+          <span class="switch__knob" aria-hidden="true"></span>
+        </button>
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </span>
+      </div>
+
+      <a class="btn btn--ghost nav__login" href="login.html" data-cs="Přihlásit">Log in</a>
+
+      <!-- Hidden, not removed: it keeps occupying its exact width so every
+           other nav item lands on the same pixel as on the landing page. -->
+      <a class="btn btn--primary nav__reserved" href="pricing.html"
+         data-cs="Začít" aria-hidden="true" tabindex="-1">Get started</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="pricing">
+
+  <!-- Autoplaying background loop. Decorative, so hidden from assistive tech.
+       src is set by script.js from the active theme. No scroll-driven playback
+       on this page — it simply loops. -->
+  <div class="pricing-bg" aria-hidden="true">
+    <video data-video-light="videos/hero-light.mp4" data-video-dark="videos/hero-dark.mp4"
+           autoplay loop muted playsinline preload="auto" disablepictureinpicture></video>
+  </div>
+
+  <div class="shell">
+    <!-- Panel backs the heading and the cards together, so both stay readable
+         with the video running at full strength behind them. -->
+    <div class="pricing__panel">
+      <div class="pricing__head">
+        <a class="back-btn" href="index.html" aria-label="Back to home" data-cs-label="Zpět na úvod">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        </a>
+        <h1 class="pricing__title reveal" data-cs="Pojďme na to.">Let&rsquo;s start.</h1>
+      </div>
+
+      <div class="plans">
+
+      <!-- ---------------------------- Starter ---------------------------- -->
+      <section class="plan reveal">
+        <h2 class="plan__name">
+          <span class="plan__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg>
+          </span>
+          <span>Starter</span>
+        </h2>
+        <p class="plan__lede" data-cs="Jedna karta, sledovaná automaticky, zdarma napořád.">One card, tracked automatically, free forever.</p>
+
+        <p class="plan__price"><span class="plan__figure" data-cs="Zdarma">Free</span></p>
+        <p class="plan__note" data-cs="Neukládáme údaje o kartě. Žádné skryté poplatky.">No card details stored. No hidden fees, ever.</p>
+
+        <ul class="plan__features">
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Propojené karty">Cards connected</span><span class="plan__value">1</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Poznatky">Insights</span><span class="plan__value" data-cs="Týdně">Weekly</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Historie">History</span><span class="plan__value" data-cs="3 měsíce">3 months</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Kategorie">Categories</span><span class="plan__value" data-cs="Automatické">Automatic</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label">Export</span><span class="plan__value">CSV</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Podpora">Support</span><span class="plan__value" data-cs="E-mail">Email</span></li>
+        </ul>
+
+        <!-- TODO: wire up signup flow -->
+        <a class="btn btn--secondary plan__cta" href="#" data-cs="Začít">Get started</a>
+      </section>
+
+      <!-- -------------------------- Claroni Plus ------------------------- -->
+      <section class="plan plan--featured reveal">
+        <h2 class="plan__name">
+          <span class="plan__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m12 12 8-4.5"/><path d="M12 12v9"/><path d="m12 12-8-4.5"/></svg>
+          </span>
+          <span>Claroni Plus</span>
+        </h2>
+        <p class="plan__lede" data-cs="Všechny tvoje karty, čtené každý den.">Every card you own, read every day.</p>
+
+        <p class="plan__price">
+          <span class="plan__figure">$9.99</span>
+          <span class="plan__period" data-cs="/ měsíc">/ month</span>
+        </p>
+        <p class="plan__note" data-cs="Jedna cena. Zrušíš dvěma klepnutími, bez otázek.">One flat price. Cancel in two taps, no questions.</p>
+
+        <ul class="plan__features">
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Propojené karty">Cards connected</span><span class="plan__value" data-cs="Neomezeně">Unlimited</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Poznatky">Insights</span><span class="plan__value" data-cs="Denně">Daily</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Historie">History</span><span class="plan__value" data-cs="Neomezeně">Unlimited</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Kategorie">Categories</span><span class="plan__value" data-cs="Automatické + vlastní">Automatic + custom</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label">Export</span><span class="plan__value">CSV, PDF</span></li>
+          <li><span class="plan__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span class="plan__label" data-cs="Podpora">Support</span><span class="plan__value" data-cs="Tentýž den">Same day</span></li>
+        </ul>
+
+        <!-- TODO: wire up trial signup flow -->
+        <a class="btn plan__cta" href="#" data-cs="30 dní zdarma">Start 30 days free</a>
+      </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ------------------------- logo marquee -------------------------- -->
+  <!-- PLACEHOLDER LOGOS. These four companies are not customers, partners, or
+       part of Claroni's stack (the site is plain HTML/CSS/JS). Deliberately
+       shipped without a "Trusted by" heading, because that would be a claim
+       none of these logos support. Swap in real logos, or add the heading,
+       once there is an actual relationship to point at. -->
+  <section class="marquee-section" aria-label="Technology logos">
+    <div class="marquee">
+      <div class="marquee__track">
+        <ul class="marquee__set">
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h3l2 5 2-8 2 6 2-3h3"/><path d="M2 18c5 3 23 3 28 0"/><path d="m27 16 3 2-2 3"/></svg></span><span class="marquee__name">aws</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11c1.5-3.5 3.7-5.2 6.7-5.2 4.5 0 5 3.9 8.3 4.8 2.2.6 4-.2 5-2.1"/><path d="M8 18c1.5-3.5 3.7-5.2 6.7-5.2 4.5 0 5 3.9 8.3 4.8 2.2.6 4-.2 5-2.1"/></svg></span><span class="marquee__name">tailwindcss</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v6H6z"/><path d="M6 9h12l-6 6z"/><path d="M6 15h6v6z"/></svg></span><span class="marquee__name">Motion</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 16.5v-9l7 9"/><path d="M15.5 7.5v5"/></svg></span><span class="marquee__name">NEXT.js</span></li>
+        </ul>
+        <ul class="marquee__set" aria-hidden="true">
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h3l2 5 2-8 2 6 2-3h3"/><path d="M2 18c5 3 23 3 28 0"/><path d="m27 16 3 2-2 3"/></svg></span><span class="marquee__name">aws</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11c1.5-3.5 3.7-5.2 6.7-5.2 4.5 0 5 3.9 8.3 4.8 2.2.6 4-.2 5-2.1"/><path d="M8 18c1.5-3.5 3.7-5.2 6.7-5.2 4.5 0 5 3.9 8.3 4.8 2.2.6 4-.2 5-2.1"/></svg></span><span class="marquee__name">tailwindcss</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v6H6z"/><path d="M6 9h12l-6 6z"/><path d="M6 15h6v6z"/></svg></span><span class="marquee__name">Motion</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 16.5v-9l7 9"/><path d="M15.5 7.5v5"/></svg></span><span class="marquee__name">NEXT.js</span></li>
+        </ul>
+        <ul class="marquee__set" aria-hidden="true">
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h3l2 5 2-8 2 6 2-3h3"/><path d="M2 18c5 3 23 3 28 0"/><path d="m27 16 3 2-2 3"/></svg></span><span class="marquee__name">aws</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11c1.5-3.5 3.7-5.2 6.7-5.2 4.5 0 5 3.9 8.3 4.8 2.2.6 4-.2 5-2.1"/><path d="M8 18c1.5-3.5 3.7-5.2 6.7-5.2 4.5 0 5 3.9 8.3 4.8 2.2.6 4-.2 5-2.1"/></svg></span><span class="marquee__name">tailwindcss</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v6H6z"/><path d="M6 9h12l-6 6z"/><path d="M6 15h6v6z"/></svg></span><span class="marquee__name">Motion</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 16.5v-9l7 9"/><path d="M15.5 7.5v5"/></svg></span><span class="marquee__name">NEXT.js</span></li>
+        </ul>
+        <ul class="marquee__set" aria-hidden="true">
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h3l2 5 2-8 2 6 2-3h3"/><path d="M2 18c5 3 23 3 28 0"/><path d="m27 16 3 2-2 3"/></svg></span><span class="marquee__name">aws</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11c1.5-3.5 3.7-5.2 6.7-5.2 4.5 0 5 3.9 8.3 4.8 2.2.6 4-.2 5-2.1"/><path d="M8 18c1.5-3.5 3.7-5.2 6.7-5.2 4.5 0 5 3.9 8.3 4.8 2.2.6 4-.2 5-2.1"/></svg></span><span class="marquee__name">tailwindcss</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v6H6z"/><path d="M6 9h12l-6 6z"/><path d="M6 15h6v6z"/></svg></span><span class="marquee__name">Motion</span></li>
+          <li class="marquee__item"><span class="marquee__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 16.5v-9l7 9"/><path d="M15.5 7.5v5"/></svg></span><span class="marquee__name">NEXT.js</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================== FOOTER ================================ -->
+<!-- Site-wide footer. Every page carries this same block, verbatim — if it
+     changes here it must change on every other page too. -->
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__grid">
+
+      <!-- Stay connected -->
+      <div class="footer__col footer__col--newsletter">
+        <span class="footer__blob" aria-hidden="true"></span>
+        <h2 class="footer__title" data-cs="Zůstaň v obraze">Stay Connected</h2>
+        <p class="footer__lede" data-cs="Přihlas se k newsletteru pro novinky a exkluzivní nabídky.">
+          Join our newsletter for the latest updates and exclusive offers.
+        </p>
+        <!-- TODO: wire up newsletter signup -->
+        <form class="subscribe" novalidate>
+          <label class="sr-only" for="subscribe-email" data-cs="E-mailová adresa">Email address</label>
+          <input class="subscribe__input" id="subscribe-email" name="email" type="email"
+                 placeholder="Enter your email" data-cs-placeholder="Zadej svůj e-mail" required>
+          <button class="subscribe__btn" type="submit" aria-label="Subscribe" data-cs-label="Přihlásit k odběru">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Quick links -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Rychlé odkazy">Quick Links</h3>
+        <!-- TODO: wire up remaining destinations. Home is live on every page. -->
+        <nav class="footer__nav">
+          <a href="index.html" data-cs="Domů">Home</a>
+          <a href="#" data-cs="O nás">About Us</a>
+          <a href="#" data-cs="Služby">Services</a>
+          <a href="#" data-cs="Produkty">Products</a>
+          <a href="#" data-cs="Kontakt">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Kontakt">Contact Us</h3>
+        <address class="footer__address">
+          <p data-cs="Šanghaj, Čína">Shanghai, China</p>
+          <p><a href="tel:+8600011199980">+86 00011199980</a></p>
+          <p><a href="mailto:claroni@help.center.cn">claroni@help.center.cn</a></p>
+        </address>
+      </div>
+
+      <!-- Social -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Sleduj nás">Follow Us</h3>
+        <ul class="social">
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-fb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span class="sr-only">Facebook</span>
+            </a>
+            <span class="tooltip" id="tt-fb" role="tooltip" data-cs="Sleduj nás na Facebooku">Follow us on Facebook</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-x">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              <span class="sr-only">X</span>
+            </a>
+            <span class="tooltip" id="tt-x" role="tooltip" data-cs="Sleduj nás na X">Follow us on X</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-ig">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/></svg>
+              <span class="sr-only">Instagram</span>
+            </a>
+            <span class="tooltip" id="tt-ig" role="tooltip" data-cs="Sleduj nás na Instagramu">Follow us on Instagram</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-li">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <span class="sr-only">LinkedIn</span>
+            </a>
+            <span class="tooltip" id="tt-li" role="tooltip" data-cs="Spoj se s námi na LinkedInu">Connect with us on LinkedIn</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copy" data-cs="© 2026 Claroni. Všechna práva vyhrazena.">&copy; 2026 Claroni. All rights reserved.</p>
+      <!-- TODO: wire up legal pages -->
+      <nav class="footer__legal">
+        <a href="#" data-cs="Zásady ochrany osobních údajů">Privacy Policy</a>
+        <a href="#" data-cs="Podmínky služby">Terms of Service</a>
+        <a href="#" data-cs="Nastavení cookies">Cookie Settings</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

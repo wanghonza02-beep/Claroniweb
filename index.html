@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claroni — Automated finance clarity, without the clutter.</title>
+<meta name="description" content="Claroni is an automated finance tracker for students and early-stage founders with irregular income. Connect your card once and see one clear number.">
+<link rel="icon" type="image/png" href="assets/claroni-mark.png">
+<meta property="og:title" content="Claroni">
+<meta property="og:description" content="Automated finance clarity, without the clutter.">
+<meta property="og:image" content="assets/claroni-lockup.png">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* Applied before first paint so a returning dark-mode visitor never sees a
+     flash of cream. script.js syncs the switch's aria-checked afterwards. */
+  try {
+    if (localStorage.getItem('claroni-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) { /* private mode */ }
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-cs="Přejít na obsah">Skip to content</a>
+
+<!-- ============================= 1. NAVIGATION ============================= -->
+<header class="site-header" id="siteHeader">
+  <div class="shell nav">
+    <a class="nav__brand" href="index.html" aria-label="Claroni">
+      <!-- Section 2 permits the mark in pure white on dark surfaces. -->
+      <img class="nav__mark nav__mark--light" src="assets/claroni-mark.png" alt="" width="224" height="244">
+      <img class="nav__mark nav__mark--dark" src="assets/claroni-mark-white.png" alt="" width="224" height="244">
+      <span class="nav__wordmark">Claroni</span>
+    </a>
+
+    <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" class="lang__btn is-active" data-lang="en" aria-pressed="true">EN</button>
+        <span class="lang__sep" aria-hidden="true">/</span>
+        <button type="button" class="lang__btn" data-lang="cs" aria-pressed="false">CS</button>
+      </div>
+      <!-- Dark-mode control. The design system puts dark mode out of scope for
+           v1 and defines no dark tokens, so this flips a `dark` class that
+           nothing is currently attached to. Ships as a working control only. -->
+      <div class="theme">
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </span>
+        <button type="button" class="switch" role="switch" aria-checked="false"
+                aria-label="Toggle dark mode" data-cs-label="Přepnout tmavý režim">
+          <span class="switch__knob" aria-hidden="true"></span>
+        </button>
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </span>
+      </div>
+
+      <a class="btn btn--ghost nav__login" href="login.html" data-cs="Přihlásit">Log in</a>
+      <a class="btn btn--primary" href="pricing.html" data-cs="Začít">Get started</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================== 2. HERO =============================== -->
+  <section class="hero">
+    <div class="hero__pin">
+      <!-- Full-bleed background video. Decorative, so hidden from assistive
+           tech; src is set by script.js from the active theme. muted +
+           playsinline are required for inline playback on iOS. -->
+      <video class="hero__video" muted playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+
+      <div class="shell hero__stage">
+      <div class="hero__card reveal">
+        <p class="eyebrow" data-cs="Pro studenty a začínající zakladatele">For students &amp; early-stage founders</p>
+        <h1 class="hero__headline" data-cs="Finanční aplikace nevznikly pro lidi, jejichž příjem je nepředvídatelný.">
+          Finance apps weren&rsquo;t built for people whose money is unpredictable.
+        </h1>
+        <p class="hero__sub" data-cs="Studenti a začínající zakladatelé žijí s nepravidelným příjmem a neustálým přepínáním kontextu. Většina finančních aplikací je pořád dělaná pro stabilní výplatu a hypotéku.">
+          Students and early founders live with irregular income and constant context-switching. Most finance apps are still designed for a stable paycheck and a mortgage.
+        </p>
+        <!-- TODO: wire up signup flow -->
+        <a class="btn btn--primary btn--lg" href="pricing.html" data-cs="Začít">Get started</a>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The differentiation argument, made visually rather than in prose.
+       Moved out of the hero so it scrolls normally once the pin releases. -->
+  <section class="section proof">
+    <div class="shell">
+      <div class="proof__grid reveal">
+
+        <figure class="panel panel--muted">
+          <figcaption class="panel__label" data-cs="Každá jiná aplikace">Every other app</figcaption>
+          <ul class="txn-list">
+            <li class="txn">
+              <span class="txn__avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3v2"/><path d="M12 3v2"/></svg>
+              </span>
+              <span class="txn__body">
+                <span class="txn__name" data-cs="Kavárna">Coffee Shop</span>
+                <span class="txn__meta" data-cs="Dnes · 8:12">Today · 8:12</span>
+              </span>
+              <span class="txn__amt txn__amt--neg">&minus;$4.75</span>
+            </li>
+            <li class="txn">
+              <span class="txn__avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v14H6.5A2.5 2.5 0 0 0 4 19.5Z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H19v4H6.5A2.5 2.5 0 0 1 4 19.5Z"/></svg>
+              </span>
+              <span class="txn__body">
+                <span class="txn__name" data-cs="Knihkupectví">Campus Bookstore</span>
+                <span class="txn__meta" data-cs="Včera · 14:03">Yesterday · 14:03</span>
+              </span>
+              <span class="txn__amt txn__amt--neg">&minus;$62.10</span>
+            </li>
+            <li class="txn">
+              <span class="txn__avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="m6 10 6-6 6 6"/></svg>
+              </span>
+              <span class="txn__body">
+                <span class="txn__name" data-cs="Platba za freelance">Freelance Deposit</span>
+                <span class="txn__meta" data-cs="Včera · 9:41">Yesterday · 9:41</span>
+              </span>
+              <span class="txn__amt txn__amt--pos">+$310.00</span>
+            </li>
+          </ul>
+          <p class="panel__foot" data-cs="Všechno. Bez vysvětlení.">Everything. Explained by nothing.</p>
+        </figure>
+
+        <figure class="panel panel--claroni">
+          <figcaption class="panel__label panel__label--brand">Claroni</figcaption>
+          <p class="stand__label" data-cs="Na čem jsi">Where you stand</p>
+          <p class="stand__figure">$243.90</p>
+          <p class="stand__status">
+            <span class="dot" aria-hidden="true"></span>
+            <span data-cs="Můžeš utrácet do pátku">Safe to spend through Friday</span>
+          </p>
+        </figure>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= 3. MISSION STATEMENT ======================== -->
+  <section class="mission">
+    <div class="shell mission__inner reveal">
+      <h2 class="mission__headline" data-cs="Jasno ve financích by nemělo stát úsilí — ani nervy.">
+        Financial clarity shouldn&rsquo;t require effort &mdash; or anxiety.
+      </h2>
+      <p class="mission__sub" data-cs="Vědět dřív, než začneš řešit.">Knowing comes before worrying.</p>
+    </div>
+  </section>
+
+  <!-- =========================== 4. HOW IT WORKS ========================== -->
+  <section class="section" id="how">
+    <div class="shell">
+      <header class="section__head reveal">
+        <h2 class="section__title" data-cs="Jedna smyčka, která běží tiše na pozadí.">One loop, running quietly in the background.</h2>
+      </header>
+
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step__num">01</span>
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
+          </span>
+          <h3 class="step__title" data-cs="Propoj">Sync</h3>
+          <p class="step__text" data-cs="Propoj kartu. Jednou.">Connect your card once.</p>
+          <div class="step__snippet">
+            <span class="snippet__row"><span data-cs="Karta propojena">Card connected</span><span class="snippet__tick" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+            </span></span>
+            <span class="snippet__meta" data-cs="Jen pro čtení">Read-only access</span>
+          </div>
+        </li>
+
+        <li class="step reveal">
+          <span class="step__num">02</span>
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2Z"/></svg>
+          </span>
+          <h3 class="step__title" data-cs="Pochop">Understand</h3>
+          <p class="step__text" data-cs="Každá transakce, jeden poznatek.">Every transaction, one insight.</p>
+          <div class="step__snippet">
+            <span class="snippet__row"><span data-cs="42 transakcí">42 transactions</span><span class="snippet__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+            </span><span data-cs="1 poznatek">1 insight</span></span>
+            <span class="snippet__meta" data-cs="Nic neoznačuješ">You tag nothing</span>
+          </div>
+        </li>
+
+        <li class="step reveal">
+          <span class="step__num">03</span>
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/><path d="m13 9 3 3-3 3"/></svg>
+          </span>
+          <h3 class="step__title" data-cs="Jednej">Act</h3>
+          <p class="step__text" data-cs="Řekneme ti, co dál.">Told what to do next.</p>
+          <div class="step__snippet">
+            <span class="snippet__row snippet__row--insight" data-cs="Zvolni tenhle týden s jídlem s sebou.">Slow down on takeout this week.</span>
+            <span class="snippet__meta" data-cs="Jedna věc. Ne seznam.">One thing. Not a list.</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ======================= 5. FEATURE SPOTLIGHT ========================= -->
+  <section class="section spotlight">
+    <div class="shell spotlight__inner">
+      <h2 class="spotlight__headline reveal" data-cs="Jeden zůstatek. Jeden poznatek. Nic dalšího, co by ti bralo pozornost.">
+        One balance. One insight. Nothing else competing for your attention.
+      </h2>
+
+      <div class="spotlight__stage reveal">
+        <div class="balance-card">
+          <div class="balance-card__top">
+            <p class="balance-card__label" data-cs="Zůstatek na účtu">Account balance</p>
+            <span class="chip chip--positive">+12%</span>
+          </div>
+          <p class="balance-card__figure">$1,842.30</p>
+        </div>
+
+        <div class="insight">
+          <p class="insight__text" data-cs="Tenhle týden utrácíš rychleji než obvykle. Zvolni s jídlem s sebou a měsíc v pohodě zvládneš.">
+            You&rsquo;re spending faster than usual this week. Slow down on takeout and you&rsquo;ll clear the month fine.
+          </p>
+          <!-- static label, deliberately not a link or button -->
+          <span class="insight__note" data-cs="Ukázat detaily">See the details</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== 6. COMPARISON ============================= -->
+  <section class="section" id="why">
+    <div class="shell">
+      <header class="section__head reveal">
+        <h2 class="section__title" data-cs="Míň dat. Víc jasno.">Less data. More clarity.</h2>
+      </header>
+
+      <dl class="compare">
+        <div class="compare__row reveal">
+          <dt class="compare__them" data-cs="Klasické bankovní aplikace — ukážou všechno, nevysvětlí nic.">Traditional banking apps &mdash; show everything, explain nothing.</dt>
+          <dd class="compare__us" data-cs="Claroni: ukáže jednu věc, na které teď záleží.">Claroni: shows one thing that matters, right now.</dd>
+        </div>
+        <div class="compare__row reveal">
+          <dt class="compare__them" data-cs="Rozpočtové aplikace (ruční zadávání) — chtějí nastavení a každodenní disciplínu.">Budgeting apps (manual entry) &mdash; require setup and daily discipline.</dt>
+          <dd class="compare__us" data-cs="Claroni: plně automatické, nulová průběžná práce.">Claroni: fully automated, zero ongoing effort.</dd>
+        </div>
+        <div class="compare__row reveal">
+          <dt class="compare__them" data-cs="Obecné fintech nástroje — dělané pro člověka se stabilním příjmem.">Generic fintech tools &mdash; built for a stable-income user.</dt>
+          <dd class="compare__us" data-cs="Claroni: dělané pro nepravidelný příjem — konkrétně pro studenty a začínající zakladatele.">Claroni: built for irregular income &mdash; students and early founders, specifically.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============================= 7. FAQ ================================= -->
+  <section class="section" id="faq">
+    <div class="shell shell--narrow">
+      <header class="section__head reveal">
+        <h2 class="section__title" data-cs="Časté otázky">Common questions</h2>
+      </header>
+
+      <div class="faq">
+        <div class="faq__item reveal">
+          <h3 class="faq__q">
+            <button type="button" class="faq__trigger" aria-expanded="false" aria-controls="faq1" id="faq1btn">
+              <span data-cs="Jak funguje propojení karty?">How does the card sync work?</span>
+              <span class="faq__mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq1" role="region" aria-labelledby="faq1btn">
+            <p data-cs="Kartu propojíš jednou přes zabezpečené bankovní připojení. Claroni čte transakce a nic víc.">You connect your card once through a secure bank connection. Claroni reads transactions and nothing else.</p>
+          </div>
+        </div>
+
+        <div class="faq__item reveal">
+          <h3 class="faq__q">
+            <button type="button" class="faq__trigger" aria-expanded="false" aria-controls="faq2" id="faq2btn">
+              <span data-cs="Jsou moje data v bezpečí?">Is my data secure?</span>
+              <span class="faq__mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq2" role="region" aria-labelledby="faq2btn">
+            <p data-cs="Přístup je jen pro čtení. Claroni vidí tvoje transakce. S penězi hnout nemůže.">Access is read-only. Claroni can see your transactions. It can&rsquo;t move your money.</p>
+          </div>
+        </div>
+
+        <div class="faq__item reveal">
+          <h3 class="faq__q">
+            <button type="button" class="faq__trigger" aria-expanded="false" aria-controls="faq3" id="faq3btn">
+              <span data-cs="Musím něco kategorizovat?">Do I have to categorize anything?</span>
+              <span class="faq__mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq3" role="region" aria-labelledby="faq3btn">
+            <p data-cs="Ne. Každá transakce se zařadí sama. Nic neoznačuješ.">No. Every transaction is sorted automatically. You never tag a thing.</p>
+          </div>
+        </div>
+
+        <div class="faq__item reveal">
+          <h3 class="faq__q">
+            <button type="button" class="faq__trigger" aria-expanded="false" aria-controls="faq4" id="faq4btn">
+              <span data-cs="Kolik Claroni stojí?">What does Claroni cost?</span>
+              <span class="faq__mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq4" role="region" aria-labelledby="faq4btn">
+            <p data-cs="Claroni Plus stojí $9.99 měsíčně. Starter zůstává zdarma, napořád.">Claroni Plus is $9.99 a month. Starter stays free, forever.</p>
+          </div>
+        </div>
+
+        <div class="faq__item reveal">
+          <h3 class="faq__q">
+            <button type="button" class="faq__trigger" aria-expanded="false" aria-controls="faq5" id="faq5btn">
+              <span data-cs="Můžu kdykoliv zrušit?">Can I cancel anytime?</span>
+              <span class="faq__mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq5" role="region" aria-labelledby="faq5btn">
+            <p data-cs="Ano. Odpoj kartu a tvoje data zmizí s ní.">Yes. Disconnect your card and your data goes with it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== 8. CLOSING CTA ============================ -->
+  <section class="closing">
+    <div class="shell closing__inner reveal">
+      <h2 class="closing__headline" data-cs="Automatické jasno ve financích, bez balastu.">Automated finance clarity, without the clutter.</h2>
+      <a class="btn btn--primary btn--lg" href="pricing.html" data-cs="Začít">Get started</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================== 9. FOOTER ============================== -->
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__grid">
+
+      <!-- Stay connected -->
+      <div class="footer__col footer__col--newsletter">
+        <span class="footer__blob" aria-hidden="true"></span>
+        <h2 class="footer__title" data-cs="Zůstaň v obraze">Stay Connected</h2>
+        <p class="footer__lede" data-cs="Přihlas se k newsletteru pro novinky a exkluzivní nabídky.">
+          Join our newsletter for the latest updates and exclusive offers.
+        </p>
+        <!-- TODO: wire up newsletter signup -->
+        <form class="subscribe" novalidate>
+          <label class="sr-only" for="subscribe-email" data-cs="E-mailová adresa">Email address</label>
+          <input class="subscribe__input" id="subscribe-email" name="email" type="email"
+                 placeholder="Enter your email" data-cs-placeholder="Zadej svůj e-mail" required>
+          <button class="subscribe__btn" type="submit" aria-label="Subscribe" data-cs-label="Přihlásit k odběru">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Quick links -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Rychlé odkazy">Quick Links</h3>
+        <!-- TODO: wire up remaining destinations. Home is live on every page. -->
+        <nav class="footer__nav">
+          <a href="index.html" data-cs="Domů">Home</a>
+          <a href="#" data-cs="O nás">About Us</a>
+          <a href="#" data-cs="Služby">Services</a>
+          <a href="#" data-cs="Produkty">Products</a>
+          <a href="#" data-cs="Kontakt">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Contact — intentionally empty, awaiting real details -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Kontakt">Contact Us</h3>
+        <address class="footer__address">
+          <p data-cs="Šanghaj, Čína">Shanghai, China</p>
+          <p><a href="tel:+8600011199980">+86 00011199980</a></p>
+          <p><a href="mailto:claroni@help.center.cn">claroni@help.center.cn</a></p>
+        </address>
+      </div>
+
+      <!-- Social -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Sleduj nás">Follow Us</h3>
+        <ul class="social">
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-fb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span class="sr-only">Facebook</span>
+            </a>
+            <span class="tooltip" id="tt-fb" role="tooltip" data-cs="Sleduj nás na Facebooku">Follow us on Facebook</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-x">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              <span class="sr-only">X</span>
+            </a>
+            <span class="tooltip" id="tt-x" role="tooltip" data-cs="Sleduj nás na X">Follow us on X</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-ig">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/></svg>
+              <span class="sr-only">Instagram</span>
+            </a>
+            <span class="tooltip" id="tt-ig" role="tooltip" data-cs="Sleduj nás na Instagramu">Follow us on Instagram</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-li">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <span class="sr-only">LinkedIn</span>
+            </a>
+            <span class="tooltip" id="tt-li" role="tooltip" data-cs="Spoj se s námi na LinkedInu">Connect with us on LinkedIn</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copy" data-cs="© 2026 Claroni. Všechna práva vyhrazena.">&copy; 2026 Claroni. All rights reserved.</p>
+      <!-- TODO: wire up legal pages -->
+      <nav class="footer__legal">
+        <a href="#" data-cs="Zásady ochrany osobních údajů">Privacy Policy</a>
+        <a href="#" data-cs="Podmínky služby">Terms of Service</a>
+        <a href="#" data-cs="Nastavení cookies">Cookie Settings</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
