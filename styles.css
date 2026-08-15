@@ -1147,6 +1147,23 @@ section[id] { scroll-margin-top: 96px; }
   .plans { grid-template-columns: 1fr; }
   .pricing__panel { max-width: 520px; padding: var(--s-6); }
   .marquee__set { gap: var(--s-12); padding-right: var(--s-12); }
+
+  /* Desktop stretches the video over the full height of main. On a narrow,
+     very tall page that means object-fit: cover crops a thin vertical strip and
+     magnifies it enormously. Pinning the band to 16:9 at the top gives the
+     source its native proportions, so there is nothing to crop or blow up. */
+  .pricing-bg {
+    inset: 0 0 auto 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+  .pricing-bg video {
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+  /* start the panel near the bottom of the 16:9 band so the video actually
+     reads as a background rather than a sliver above the card */
+  .pricing { padding-top: calc(var(--header-h) + 56.25vw - var(--s-8)); }
 }
 
 /* Once the heading is wide relative to the panel, an absolutely positioned
@@ -1299,12 +1316,45 @@ section[id] { scroll-margin-top: 96px; }
   mask-composite: intersect;
 }
 
-/* Below the two-column breakpoint the video is decoration competing with the
-   form for a small screen, so it steps aside rather than shrinking. */
+/* Below the two-column breakpoint the video moves behind the form instead of
+   disappearing. It is bounded to 16:9 at the top rather than stretched over the
+   whole screen — full-height cover on a narrow page magnifies the source badly.
+   The form then needs its own surface to stay readable over it. */
 @media (max-width: 900px) {
-  .login__inner { grid-template-columns: 1fr; }
-  .login__media { display: none; }
-  .login__panel { padding-block: var(--s-12); }
+  .login__inner { grid-template-columns: 1fr; position: relative; }
+
+  .login__media {
+    display: block;
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    z-index: 0;
+  }
+  .login__video {
+    /* replaces the desktop left-edge feather: as a background band only the
+       bottom edge needs to dissolve */
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  /* 56.25vw is the height of a 16:9 band at full width — i.e. exactly the
+     video's height. Starting the card a little above that lets it tuck under
+     the fading bottom edge instead of floating below a hard cut. */
+  .login__panel {
+    position: relative;
+    z-index: 1;
+    padding-top: calc(56.25vw - var(--s-8));
+    padding-bottom: var(--s-12);
+  }
+  .login__col {
+    background: var(--panel-scrim);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sheet);
+    padding: var(--s-6);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
 }
 
 /* ----------------------------- motion -------------------------------- */
@@ -1322,6 +1372,12 @@ section[id] { scroll-margin-top: 96px; }
 
 /* --------------------------- responsive ------------------------------ */
 @media (max-width: 900px) {
+  /* Below the desktop breakpoint the reserved nav slot is dropped from the flow
+     rather than just hidden, so the remaining items use the whole bar instead
+     of bunching against an empty gap. Desktop keeps the reservation — that is
+     what holds the zero-shift alignment between pages. */
+  .nav__reserved { display: none; }
+
   .steps { grid-template-columns: 1fr; }
   .proof__grid { grid-template-columns: 1fr; }
   /* shorter scrub on small screens — 200vh of pinned hero is a long way to
@@ -1350,6 +1406,7 @@ section[id] { scroll-margin-top: 96px; }
      overflow measurement would catch */
   .nav__brand { flex: none; }
   .nav__actions { flex: 1; min-width: 0; justify-content: space-between; gap: var(--s-2); }
+
   .theme { margin-right: 0; gap: var(--s-1); }
   .lang { margin-right: 0; }
   .lang__btn { padding-inline: var(--s-1); }
