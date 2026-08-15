@@ -1153,7 +1153,9 @@ section[id] { scroll-margin-top: 96px; }
      magnifies it enormously. Pinning the band to 16:9 at the top gives the
      source its native proportions, so there is nothing to crop or blow up. */
   .pricing-bg {
-    inset: 0 0 auto 0;
+    /* starts below the fixed header, not behind it — anchored at 0 the opaque
+       nav covered the top third of the band and the frame read as cut off */
+    inset: var(--header-h) 0 auto 0;
     height: auto;
     aspect-ratio: 16 / 9;
   }
