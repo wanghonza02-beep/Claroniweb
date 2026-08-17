@@ -139,3 +139,38 @@ export async function getSubscription() {
     .maybeSingle();
   return { data, error };
 }
+
+/**
+ * Totéž, ale dotaz proběhne jednou za načtení stránky.
+ *
+ * Na dashboardu se na plán ptají dvě věci najednou — řádek „Plan:" a profil
+ * v navigaci. Bez tohohle by to byly dva shodné dotazy jen proto, že jde
+ * o dva moduly.
+ *
+ * Nezneplatňuje se: přihlášení, odhlášení i návrat z platby stránku znovu
+ * načtou, takže není co zestárnout.
+ */
+let subscriptionOnce = null;
+
+export function getSubscriptionCached() {
+  if (!subscriptionOnce) subscriptionOnce = getSubscription();
+  return subscriptionOnce;
+}
+
+/**
+ * Platí uživatel? trialing i past_due se počítají jako „má plán“: jeden ještě
+ * nebyl účtován, druhý je v odkladu, který Stripe dává, než to vzdá.
+ */
+export function isPayingSubscription(sub) {
+  return !!sub && ['trialing', 'active', 'past_due'].indexOf(sub.status) !== -1;
+}
+
+/**
+ * Jméno k zobrazení. Google vrací celé jméno v metadatech, e-mailová
+ * registrace nic — pak zbývá e-mail.
+ */
+export function displayName(user) {
+  if (!user) return '';
+  const meta = user.user_metadata || {};
+  return meta.full_name || meta.name || user.email || '';
+}

@@ -13,7 +13,11 @@
   --surface: #FBF7EF;
   --surface-alt: #FFFFFF;
   --text-primary: #2B2117;
-  --text-secondary: #8A7A65;
+  /* Darkened from #8A7A65, which measured 3.44:1 on bg-base and failed WCAG AA
+     on every surface in this theme. This value clears 4.5:1 on all three
+     (4.62 / 5.23 / 5.59) while staying the same warm grey-brown. The dark
+     theme's #9A9A9A already passes and is left alone. */
+  --text-secondary: #746650;
   --border: #E3D8C2;
   --brand-primary: #785438;
   --brand-primary-dark: #5E4128;
@@ -370,6 +374,103 @@ section[id] { scroll-margin-top: 96px; }
   transition: transform var(--dur) var(--ease);
 }
 .switch[aria-checked="true"] .switch__knob { transform: translateX(16px); }
+
+/* ---- account menu, shown to subscribers in place of the CTA ---- */
+/* Same height as the buttons it replaces, so the row keeps its rhythm and the
+   rightmost control never shifts between a free and a paying account. */
+.nav__profile { position: relative; }
+
+.nav__profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  height: 40px;
+  padding-inline: var(--s-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  background: var(--surface-alt);
+  color: var(--text-primary);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  transition: border-color var(--dur) var(--ease);
+}
+.nav__profile-btn:hover { border-color: var(--brand-text); }
+
+/* brand-primary is one of the two tokens that stay put across themes, so the
+   avatar reads as the same object in light and dark */
+.nav__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: var(--r-pill);
+  background: var(--brand-primary);
+  color: #FFFFFF;
+}
+.nav__avatar svg { width: 15px; height: 15px; }
+
+/* An email can be any length; the nav cannot. Truncating keeps the header from
+   being rearranged by whoever happens to be signed in. */
+.nav__profile-name {
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav__caret {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--text-secondary);
+  transition: transform var(--dur) var(--ease);
+}
+.nav__profile-btn[aria-expanded="true"] .nav__caret { transform: rotate(180deg); }
+
+.nav__menu {
+  position: absolute;
+  top: calc(100% + var(--s-2));
+  right: 0;
+  min-width: 190px;
+  padding: var(--s-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* opaque: the menu can open over the background video */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-soft);
+  z-index: 1;
+}
+
+/* Who is signed in, spelled out. Carries the identity on narrow screens, where
+   the name beside the avatar is dropped for want of room. */
+.nav__menu-head {
+  padding: var(--s-2) var(--s-3);
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-small);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav__menu-item {
+  display: block;
+  width: 100%;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-ctl);
+  text-align: left;
+  font-size: var(--fs-small);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background-color var(--dur) var(--ease);
+}
+.nav__menu-item:hover { background: var(--surface-alt); }
 
 /* ------------------------------- 2. hero ----------------------------- */
 /* The hero is a tall scroll track and .hero__pin sticks to the viewport for
@@ -1093,6 +1194,16 @@ section[id] { scroll-margin-top: 96px; }
 .plan--featured .plan__cta { background: var(--on-brand-fill); color: var(--brand-primary); }
 .plan--featured .plan__cta:hover { background: #fff; }
 
+/* Shown to someone who already subscribes. It reads as a statement, not an
+   offer, so it drops the filled treatment and stops responding to hover. */
+.plan__cta.is-current {
+  background: transparent;
+  color: var(--on-brand-soft);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: default;
+}
+.plan__cta.is-current:hover { background: transparent; }
+
 /* Message under a checkout button — "checkout cancelled", or Stripe not
    answering. Two homes: the brown featured card here, and the plan row on the
    dashboard. The default is the page's own text colours; the brand card, where
@@ -1532,6 +1643,10 @@ section[id] { scroll-margin-top: 96px; }
   .nav { gap: var(--s-2); }
   .nav__actions .btn--primary { padding-inline: var(--s-3); }
   .nav__actions .btn--secondary { padding-inline: var(--s-3); }
+  /* No room for an email here. The avatar alone still says who is signed in,
+     and the menu behind it spells the name out in full. */
+  .nav__profile-name, .nav__caret { display: none; }
+  .nav__profile-btn { padding-inline: var(--s-1); }
   .lang__btn { padding-inline: 2px; }
   .theme { gap: 2px; }
 }
@@ -1548,6 +1663,12 @@ section[id] { scroll-margin-top: 96px; }
   .nav__actions { gap: var(--s-1); }
   .nav__actions .btn--primary { padding-inline: var(--s-2); }
   .nav__actions .btn--secondary { padding-inline: var(--s-2); }
+
+  /* The shell's gutter halves here, which leaves the blob's -16px hanging past
+     the viewport and gives the whole page a 4px horizontal scroll. It is a
+     blurred decorative smudge, so pulling it in costs nothing to look at.
+     Clipping the footer instead would cut off the social tooltips. */
+  .footer__blob { right: 0; }
 }
 
 /* ===================== Auth gate (protected pages) ==================== */

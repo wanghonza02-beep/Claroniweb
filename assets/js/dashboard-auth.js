@@ -1,4 +1,11 @@
-import { supabase, getCurrentUser, signOut, getSubscription } from './supabase-client.js';
+import {
+  supabase,
+  getCurrentUser,
+  signOut,
+  getSubscription,
+  getSubscriptionCached,
+  isPayingSubscription,
+} from './supabase-client.js';
 
 /*
  * Dashboard auth gate.
@@ -66,12 +73,6 @@ import { supabase, getCurrentUser, signOut, getSubscription } from './supabase-c
     freeOnly.forEach(function (el) { el.hidden = !show; });
   }
 
-  // trialing and past_due both mean "has the plan": one has not been billed
-  // yet, the other is inside the grace period Stripe allows before giving up.
-  function isPaying(sub) {
-    return !!sub && ['trialing', 'active', 'past_due'].indexOf(sub.status) !== -1;
-  }
-
   function isCzech() {
     return document.documentElement.lang === 'cs';
   }
@@ -118,12 +119,16 @@ import { supabase, getCurrentUser, signOut, getSubscription } from './supabase-c
     }
   }
 
-  async function refreshPlan() {
+  /* fresh=true skips the shared per-page cache.
+     The first read can share the one nav-profile.js already makes. The polling
+     after a payment cannot: the cache hands back the very answer we are waiting
+     to see change, so it would spin five times and still report Free. */
+  async function refreshPlan(fresh) {
     try {
-      const { data } = await getSubscription();
+      const { data } = fresh ? await getSubscription() : await getSubscriptionCached();
       const t = describe(data);
       setPlan(t.en, t.cs);
-      showUpgrade(!isPaying(data));
+      showUpgrade(!isPayingSubscription(data));
       return data;
     } catch (e) {
       // Failing to read the plan is not proof the visitor is on Free. Leaving
@@ -149,7 +154,7 @@ import { supabase, getCurrentUser, signOut, getSubscription } from './supabase-c
     (async function () {
       for (let i = 0; i < 5; i++) {
         await new Promise(r => setTimeout(r, 1500));
-        const sub = await refreshPlan();
+        const sub = await refreshPlan(true);
         if (sub && sub.status) break;
       }
     })();

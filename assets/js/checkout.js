@@ -1,4 +1,9 @@
-import { getCurrentUser, createCheckoutSession } from './supabase-client.js';
+import {
+  getCurrentUser,
+  createCheckoutSession,
+  getSubscriptionCached,
+  isPayingSubscription,
+} from './supabase-client.js';
 
 /*
  * Stripe Checkout for every [data-checkout] control on the page.
@@ -15,7 +20,7 @@ import { getCurrentUser, createCheckoutSession } from './supabase-client.js';
  * the login page and comes back to finish, rather than stranding the visitor on
  * the dashboard wondering what happened to their purchase.
  */
-(function () {
+(async function () {
   'use strict';
 
   const ctas = document.querySelectorAll('[data-checkout]');
@@ -108,6 +113,38 @@ import { getCurrentUser, createCheckoutSession } from './supabase-client.js';
       inFlight = false;
       setBusy(cta, false);
     }
+  }
+
+  // ---- already subscribed? ------------------------------------------------
+  /* Stripe will happily open a second checkout for a plan the visitor already
+     pays for, and then bill them for both. So a subscriber is never handed a
+     working buy button: the CTA becomes a statement of what they have.
+
+     Only the pricing page reaches this — the dashboard's Subscribe button is
+     already hidden for subscribers. A failed lookup falls through to normal
+     behaviour rather than locking anyone out of paying. */
+  function markCurrent(cta) {
+    const en = 'Your current plan';
+    const cs = 'Tvůj současný plán';
+    cta.setAttribute('data-en', en);
+    cta.setAttribute('data-cs', cs);
+    cta.textContent = isCzech() ? cs : en;
+    cta.removeAttribute('href');
+    cta.setAttribute('aria-disabled', 'true');
+    cta.classList.add('is-current');
+  }
+
+  try {
+    const user = await getCurrentUser();
+    if (user) {
+      const res = await getSubscriptionCached();
+      if (isPayingSubscription(res && res.data)) {
+        ctas.forEach(markCurrent);
+        return;
+      }
+    }
+  } catch (e) {
+    console.warn('Could not read subscription:', e);
   }
 
   ctas.forEach(function (cta) {

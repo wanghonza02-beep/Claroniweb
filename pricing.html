@@ -55,8 +55,24 @@
 
       <!-- Hidden, not removed: it keeps occupying its exact width so every
            other nav item lands on the same pixel as on the landing page. -->
-      <a class="btn btn--primary nav__reserved" href="pricing.html"
+      <a class="btn btn--primary nav__reserved" href="pricing.html" data-hide-when-pro
          data-cs="Začít" aria-hidden="true" tabindex="-1">Get started</a>
+
+      <!-- Subscribers only; takes over the reserved slot above. -->
+      <div class="nav__profile" hidden>
+        <button class="nav__profile-btn" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="nav__avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
+          <span class="nav__profile-name" data-profile-name></span>
+          <svg class="nav__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav__menu" hidden>
+          <p class="nav__menu-head" data-profile-name></p>
+          <a class="nav__menu-item" href="dashboard.html" data-cs="Přehled financí">Dashboard</a>
+          <button class="nav__menu-item" type="button" data-signout data-cs="Odhlásit se">Sign Out</button>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -281,5 +297,6 @@
 <script type="module" src="assets/js/newsletter.js"></script>
 <script type="module" src="assets/js/nav-auth.js"></script>
 <script type="module" src="assets/js/checkout.js"></script>
+<script type="module" src="assets/js/nav-profile.js"></script>
 </body>
 </html>

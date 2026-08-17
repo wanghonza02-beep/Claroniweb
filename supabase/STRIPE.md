@@ -219,16 +219,63 @@ platbu na webu.
 
 ---
 
-## 9. Než to pustíš naostro
+## 9. Přechod do ostrého režimu
 
-- [ ] **Zkušební doba je vypnutá** a tlačítko tomu odpovídá — říká „Continue to
+**Zatím tudy nechoď.** Web je záměrně v testovacím režimu. Tahle sekce je pro
+den, kdy budeš chtít vybírat skutečné peníze — projdeme ji spolu.
+
+### Kde teď stojíš
+
+V testovacím režimu **nikdo nezaplatí**, ani kdyby chtěl. Stripe skutečné karty
+odmítá; projde jen `4242 4242 4242 4242` a spol. Reálný návštěvník uvidí přes
+celý checkout pruh **TEST MODE**, zadá svoji kartu a dostane chybu.
+
+Web tedy platby **předvádí, ale nevybírá**. Než to změníš, ber pricing stránku
+jako ukázku, ne jako prodejní místo.
+
+### Past, o kterou se lidi nejčastěji seknou
+
+**Test a live jsou dvě oddělené databáze.** Nesdílí produkty, ceny, zákazníky,
+odběry ani webhooky. Tvoje `price_...` z testu v ostrém režimu **neexistuje** —
+funkce s ním spadne na „No such price".
+
+Proto se nemění jeden secret, ale **tři**:
+
+| Secret | Proč se mění |
+|---|---|
+| `STRIPE_SECRET_KEY` | `sk_test_` → `sk_live_` |
+| `STRIPE_PRICE_ID` | produkt se zakládá znovu, dostane nové ID |
+| `STRIPE_WEBHOOK_SECRET` | ostrý webhook je jiný endpoint s vlastním `whsec_` |
+
+### Postup
+
+1. **Aktivovat Stripe účet.** Stripe → **Activate account**. Chce údaje
+   o podnikání, doklad totožnosti a bankovní účet. Bez schválení ostrý režim
+   vůbec nepustí. Trvá to od pár minut po několik dní, takže tímhle začni.
+2. **Přepnout na Live mode** (přepínač vpravo nahoře) a **založit produkt znovu**
+   — `Claroni Pro`, `9.99` USD, Recurring / Monthly. Zkopírovat **nové Price ID**.
+3. **Založit webhook znovu** v ostrém režimu, na stejnou adresu a se stejnými
+   čtyřmi událostmi (bod 5). Zkopírovat jeho vlastní **Signing secret**.
+4. **Přepsat všechny tři secrets** v Supabase → Edge Functions → Secrets.
+5. **Zapnout Customer portal** — Stripe → Settings → Billing → Customer portal.
+   Konfiguruje se pro každý režim zvlášť, takže zapnutí v testu tady neplatí.
+   Bez něj nemá zákazník jak zrušit odběr, přestože pricing slibuje „Cancel in
+   two taps".
+6. **Zkontrolovat `SITE_URL`**, aby mířila na finální doménu.
+7. **Ověřit skutečnou kartou.** Vlastní kartou, malou částkou, a hned si ji vrátit
+   přes Stripe → Payments → Refund. Testovací karty v ostrém režimu nefungují,
+   takže tohle je jediný způsob, jak si potvrdit, že řetěz drží.
+
+### Ještě předtím
+
+- [ ] **Terms of Service** a **Privacy Policy** — teď oba odkazy v patičce míří
+      na `#`. Stripe se na ně při aktivaci ptá a u placené služby se vyžadují.
+- [ ] **Zkušební doba** je vypnutá a tlačítko tomu odpovídá — říká „Continue to
       payment" a karta se strhne hned. Kdybys ji chtěl zapnout, přidej secret
       `STRIPE_TRIAL_DAYS` s hodnotou `30` — a **musí se s ní změnit i text
       tlačítka**, jinak bereš peníze za něco, co jsi slíbil zdarma.
-- [ ] Zapnout **Customer portal** (Stripe → Settings → Billing → Customer
-      portal), jinak nemá uživatel jak zrušit odběr — a pricing stránka tvrdí
-      „Cancel in two taps".
-- [ ] Doplnit **Terms of Service** a **Privacy Policy**; teď oba odkazy v patičce
-      míří na `#` a u placené služby se to vyžaduje.
-- [ ] Přepnout klíče na `sk_live_`, založit webhook znovu v ostrém režimu
-      (má vlastní `whsec_`) a nastavit `SITE_URL` na finální doménu.
+
+### Kdyby ses chtěl vrátit do testu
+
+Přepsat ty tři secrets zpátky na testovací hodnoty. Nic dalšího se nemění — kód
+ani jedna hodnota v repozitáři o režimu neví, pozná ho jen podle klíčů.
