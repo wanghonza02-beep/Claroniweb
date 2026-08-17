@@ -1,27 +1,49 @@
 <!DOCTYPE html>
-<!-- Always dark, and stated in the markup rather than applied by script, so the
-     page is dark even before JS runs or with JS disabled. data-theme-locked
-     tells script.js to keep writing the user's preference to localStorage
-     without letting the toggle repaint this page. -->
-<html lang="en" class="dark" data-theme-locked="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sign in — Claroni</title>
-<meta name="description" content="Sign in to Claroni.">
-<meta name="robots" content="noindex">
+<title>Dashboard — Claroni</title>
+<meta name="description" content="Claroni user dashboard and financial overview.">
 <link rel="icon" type="image/png" href="assets/claroni-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<!-- No theme-restoring script here on purpose: this page is dark unconditionally,
-     so there is nothing to read back and nothing to flash. -->
+<script>
+  // Restore saved theme before rendering to avoid light/dark flashes
+  try {
+    if (localStorage.getItem('claroni-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) {}
+
+  /* Auth gate. Set before first paint so a signed-out visitor never sees the
+     dashboard layout flash before the redirect. dashboard-auth.js clears it
+     once a session is confirmed. */
+  document.documentElement.classList.add('auth-pending');
+
+  /* Failsafe: if the auth module never loads (CDN blocked, script error) the
+     page would otherwise stay blank forever. Falling back to the login page is
+     self-healing — a genuinely signed-in visitor is bounced straight back. */
+  setTimeout(function () {
+    if (document.documentElement.classList.contains('auth-pending')) {
+      window.location.replace('login.html');
+    }
+  }, 10000);
+</script>
 </head>
 <body>
 
 <a class="skip-link" href="#main" data-cs="Přejít na obsah">Skip to content</a>
 
+<!-- Shown only while the session check is in flight; hidden the moment
+     .auth-pending is cleared. -->
+<div class="auth-check" role="status" aria-live="polite">
+  <span data-cs="Ověřuji přihlášení…">Checking your session…</span>
+</div>
+
+<!-- ============================== HEADER ================================ -->
 <header class="site-header" id="siteHeader">
   <div class="shell nav">
     <a class="nav__brand" href="index.html" aria-label="Claroni">
@@ -50,101 +72,115 @@
         </span>
       </div>
 
-      <!-- Hidden rather than removed. They keep occupying their exact width, so
-           the language and theme controls land on the same pixel as they do on
-           the landing page. visibility:hidden also drops them from the tab
-           order, and data-cs keeps the reserved width correct in Czech too. -->
-      <a class="btn btn--ghost nav__login nav__reserved" href="login.html"
-         data-cs="Přihlásit" aria-hidden="true" tabindex="-1">Log in</a>
-      <a class="btn btn--primary nav__reserved" href="pricing.html"
-         data-cs="Začít" aria-hidden="true" tabindex="-1">Get started</a>
+      <button class="btn btn--secondary btn--sm" id="dashLogoutBtn" type="button" data-cs="Odhlásit se">Sign Out</button>
     </div>
   </div>
 </header>
 
-<main id="main" class="login">
-  <div class="login__inner">
+<!-- =============================== MAIN ================================= -->
+<main id="main" class="dashboard-page">
 
-    <!-- ------------------------- left: the form ------------------------- -->
-    <section class="login__panel">
-      <div class="login__col">
-        <a class="back-btn" href="index.html" aria-label="Back to home" data-cs-label="Zpět na úvod">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-        </a>
+  <!-- Autoplaying background loop with theme swap support -->
+  <div class="pricing-bg" aria-hidden="true">
+    <video data-video-light="videos/hero-light.mp4" data-video-dark="videos/hero-dark.mp4"
+           autoplay loop muted playsinline preload="auto" disablepictureinpicture></video>
+  </div>
 
-        <h1 class="login__title" data-cs="Vítej">Welcome</h1>
-        <p class="login__sub" data-cs="Přihlas se a uvidíš, na čem jsi.">Sign in to see where you stand.</p>
+  <div class="shell">
+    <div class="dash-panel">
 
-        <div id="authAlert" class="auth-alert" style="display:none;" role="alert"></div>
+      <!-- Header: Title & Signed-in User Info -->
+      <div class="dash-head">
+        <div>
+          <h1 class="dash-title" data-cs="Přehled financí">Dashboard Overview</h1>
+          <p class="dash-user">
+            <span data-cs="Přihlášen jako:">Signed in as:</span>
+            <strong id="userEmailDisplay">uzivatel@claroni.cz</strong>
+          </p>
+        </div>
+        <a class="btn btn--ghost btn--sm" href="index.html" data-cs="Zpět na web">Back to site</a>
+      </div>
 
-        <form class="login__form">
-          <div class="field" id="emailField">
-            <label class="field__label" for="email" data-cs="E-mailová adresa">Email address</label>
-            <input class="field__input" id="email" name="email" type="email"
-                   autocomplete="email" placeholder="you@example.com" required>
+      <!-- 4 Finance Stat Cards matching Claroni's anti-clutter ethos -->
+      <div class="dash-grid">
+
+        <!-- Card 1: Safe to Spend -->
+        <div class="dash-card">
+          <div class="dash-card__head">
+            <span data-cs="Bezpečně k útratě dnes">Safe to Spend Today</span>
+            <span class="dash-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 10h20"/><circle cx="16" cy="15" r="2"/></svg>
+            </span>
           </div>
-
-          <div class="field" id="passwordField">
-            <label class="field__label" for="password" data-cs="Heslo">Password</label>
-            <input class="field__input" id="password" name="password" type="password"
-                   autocomplete="current-password" placeholder="••••••••" required>
+          <div class="dash-card__value" data-cs="$120.00">$120.00</div>
+          <div class="dash-delta dash-delta--positive">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+            <span data-cs="+$18 rezerva">+$18 safe buffer</span>
           </div>
-
-          <div class="login__row">
-            <label class="check">
-              <input class="check__input" type="checkbox" name="remember">
-              <span class="check__box" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
-              </span>
-              <span class="check__label" data-cs="Zůstat přihlášen">Keep me signed in</span>
-            </label>
-            <a class="login__link" href="#" id="resetPasswordLink" data-cs="Zapomenuté heslo">Reset password</a>
-          </div>
-
-          <button class="btn btn--primary login__submit" type="submit" data-cs="Přihlásit se">Sign In</button>
-        </form>
-
-        <div class="login__divider">
-          <span data-cs="Nebo pokračuj přes">Or continue with</span>
         </div>
 
-        <!-- TODO: wire up Google OAuth -->
-        <button class="btn btn--secondary login__oauth" type="button">
-          <!-- Official Google "G". These four brand colours are the one
-               sanctioned exception to the design system's palette — Google's
-               branding guidelines require the exact mark on a Sign in with
-               Google button, and a recoloured version can fail their review. -->
-          <span class="login__oauth-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M23.06 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h6.19a5.29 5.29 0 0 1-2.29 3.47v2.88h3.7c2.17-2 3.42-4.94 3.42-8.36z"/>
-              <path fill="#34A853" d="M12 24c3.1 0 5.7-1.03 7.6-2.79l-3.7-2.88c-1.03.69-2.35 1.1-3.9 1.1-3 0-5.54-2.02-6.45-4.74H1.72v2.98A11.99 11.99 0 0 0 12 24z"/>
-              <path fill="#FBBC05" d="M5.55 14.69A7.2 7.2 0 0 1 5.17 12c0-.93.16-1.84.38-2.69V6.33H1.72A12 12 0 0 0 .44 12c0 1.94.46 3.77 1.28 5.67l3.83-2.98z"/>
-              <path fill="#EA4335" d="M12 4.77c1.69 0 3.2.58 4.4 1.72l3.28-3.28C17.7 1.2 15.1 0 12 0 7.4 0 3.42 2.64 1.72 6.33l3.83 2.98C6.46 6.79 9 4.77 12 4.77z"/>
-            </svg>
-          </span>
-          <span data-cs="Pokračovat přes Google">Continue with Google</span>
-        </button>
+        <!-- Card 2: Monthly Spending -->
+        <div class="dash-card">
+          <div class="dash-card__head">
+            <span data-cs="Tento měsíc utraceno">Monthly Spending</span>
+            <span class="dash-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </span>
+          </div>
+          <div class="dash-card__value" data-cs="$1,420.00">$1,420.00</div>
+          <div class="dash-delta dash-delta--positive">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            <span data-cs="-8,5 % pod rozpočtem">-8.5% under budget</span>
+          </div>
+        </div>
 
-        <p class="login__foot">
-          <span data-cs="Jsi tu poprvé?">New to our platform?</span>
-          <!-- TODO: wire up sign-up route -->
-          <a class="login__link" href="#" data-cs="Vytvořit účet">Create Account</a>
-        </p>
+        <!-- Card 3: Monthly Subscriptions -->
+        <div class="dash-card">
+          <div class="dash-card__head">
+            <span data-cs="Fixní platby & předplatná">Monthly Subscriptions</span>
+            <span class="dash-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
+          </div>
+          <div class="dash-card__value" data-cs="$89.00 / měs.">$89.00 / mo</div>
+          <div class="dash-delta dash-delta--neutral">
+            <span aria-hidden="true">—</span>
+            <span data-cs="5 aktivních služeb">5 active services</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Connected Bank Cards -->
+        <div class="dash-card">
+          <div class="dash-card__head">
+            <span data-cs="Propojené bankovní karty">Connected Cards</span>
+            <span class="dash-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></svg>
+            </span>
+          </div>
+          <div class="dash-card__value" data-cs="2 karty">2 cards</div>
+          <div class="dash-delta dash-delta--positive">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+            <span data-cs="Vše synchronizováno">All synced</span>
+          </div>
+        </div>
+
       </div>
-    </section>
 
-    <!-- ------------------------ right: the video ------------------------ -->
-    <aside class="login__media" aria-hidden="true">
-      <video class="login__video" src="videos/loginvideo.mp4"
-             autoplay loop muted playsinline preload="auto" disablepictureinpicture></video>
-    </aside>
+      <!-- Under-the-cards Notice: Mobile App Prompt -->
+      <div class="dash-mobile-banner">
+        <div class="dash-banner__content">
+          <h3 class="dash-banner__title" data-cs="Pro více informací přejdi do mobilní aplikace">For more insights, open the mobile app</h3>
+          <p class="dash-banner__desc" data-cs="Kompletní přehled transakcí, automatickou synchronizaci s bankou a chytrá upozornění na zbytečné výdaje najdeš v mobilní aplikaci Claroni.">Full transaction streaming, live automated bank syncing, and smart spending alerts are available directly in the Claroni mobile app.</p>
+        </div>
+        <span class="dash-badge" data-cs="Mobilní aplikace Claroni">Claroni Mobile App</span>
+      </div>
 
+    </div>
   </div>
+
 </main>
 
 <!-- ============================== FOOTER ================================ -->
-<!-- Site-wide footer. Every page carries this same block, verbatim — if it
-     changes here it must change on every other page too. -->
 <footer class="site-footer">
   <div class="shell">
     <div class="footer__grid">
@@ -240,6 +276,6 @@
 </footer>
 
 <script src="script.js"></script>
-<script type="module" src="assets/src/login-auth.js"></script>
+<script type="module" src="assets/src/dashboard-auth.js"></script>
 </body>
 </html>

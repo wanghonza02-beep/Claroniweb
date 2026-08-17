@@ -165,13 +165,6 @@
     subscribeForm.addEventListener('submit', function (e) { e.preventDefault(); });
   }
 
-  /* ---------------- login form ----------------------------------------- */
-  /* TODO: wire up authentication. Inert until there is a backend — nothing is
-     sent anywhere, so no credentials leave the page. */
-  var loginForm = document.querySelector('.login__form');
-  if (loginForm) {
-    loginForm.addEventListener('submit', function (e) { e.preventDefault(); });
-  }
 })();
 
 

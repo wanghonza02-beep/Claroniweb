@@ -10,6 +10,11 @@ videos/hf_*.mp4
 # on this machine.
 .claude/
 
+# npm install for @supabase/supabase-js. The browser code imports Supabase
+# from the esm.sh CDN, so nothing here is used at runtime — it would just add
+# thousands of files to the repo.
+node_modules/
+
 # OS noise
 Thumbs.db
 desktop.ini

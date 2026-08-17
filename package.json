@@ -1,0 +1,24 @@
+{
+  "name": "website-claudecode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wanghonza02-beep/Claroniweb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/wanghonza02-beep/Claroniweb/issues"
+  },
+  "homepage": "https://github.com/wanghonza02-beep/Claroniweb#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.112.3"
+  }
+}

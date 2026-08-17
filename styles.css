@@ -55,6 +55,7 @@
   /* derived tints — kept as tokens so the dark theme can restate them.
      Hard-coded rgba() would otherwise survive the theme swap unchanged. */
   --positive-tint: rgba(107, 143, 113, 0.12);
+  --negative-tint: rgba(196, 105, 79, 0.12);
   --insight-tint: rgba(212, 166, 87, 0.13);
   --blob-tint: rgba(120, 84, 56, 0.10);
   --focus-ring: var(--brand-primary);
@@ -122,6 +123,7 @@
   --shadow-soft: 0 4px 24px rgba(255, 255, 255, 0.05);
 
   --positive-tint: rgba(143, 181, 150, 0.16);
+  --negative-tint: rgba(217, 138, 114, 0.16);
   --insight-tint: rgba(224, 183, 103, 0.14);
   --blob-tint: rgba(120, 84, 56, 0.22);
   --focus-ring: var(--accent);         /* brand brown is too dim on near-black */
@@ -1168,8 +1170,10 @@ section[id] { scroll-margin-top: 96px; }
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   }
   /* start the panel near the bottom of the 16:9 band so the video actually
-     reads as a background rather than a sliver above the card */
-  .pricing { padding-top: calc(var(--header-h) + 56.25vw - var(--s-8)); }
+     reads as a background rather than a sliver above the card. The dashboard
+     reuses .pricing-bg for its own background, so it needs the same offset. */
+  .pricing,
+  .dashboard-page { padding-top: calc(var(--header-h) + 56.25vw - var(--s-8)); }
 }
 
 /* Once the heading is wide relative to the panel, an absolutely positioned
@@ -1300,6 +1304,39 @@ section[id] { scroll-margin-top: 96px; }
   color: var(--text-secondary);
   text-align: center;
 }
+
+/* Auth alert messages (error, success, info).
+   Same construction as the Proactive Insight Callout: the semantic colour
+   carries the tint and the border, while the text stays text-primary. Using
+   the semantic colour for the text itself measures ~3.6:1 at this size, and
+   the hard-coded light values it replaced were unreadable in light mode. */
+.auth-alert {
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-ctl);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin-bottom: var(--s-4);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  border: 1px solid transparent;
+  animation: auth-alert-in var(--dur) var(--ease);
+}
+@keyframes auth-alert-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+.auth-alert--error   { background: var(--negative-tint); border-color: var(--negative); }
+.auth-alert--success { background: var(--positive-tint); border-color: var(--positive); }
+.auth-alert--info    { background: var(--insight-tint);  border-color: var(--insight); }
+
+.btn.is-loading {
+  opacity: 0.7;
+  cursor: wait;
+  pointer-events: none;
+}
+
 
 /* ---- right column: autoplaying loop, feathered into the page ---- */
 .login__media { position: relative; overflow: hidden; }
@@ -1458,6 +1495,203 @@ section[id] { scroll-margin-top: 96px; }
   .nav { gap: var(--s-1); }
   .nav__actions { gap: var(--s-1); }
   .nav__actions .btn--primary { padding-inline: var(--s-2); }
+}
+
+/* ===================== Auth gate (protected pages) ==================== */
+/* The page is hidden rather than removed, so layout is already settled when
+   the session resolves and there is no reflow on reveal.
+   NOTE: this is a UX gate, not a security boundary — anyone can unhide it from
+   devtools. What actually protects user data is Row Level Security on the
+   Supabase side; nothing sensitive may be rendered here without it. */
+:root.auth-pending .site-header,
+:root.auth-pending .dashboard-page,
+:root.auth-pending .site-footer { visibility: hidden; }
+
+.auth-check {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  place-items: center;
+  background: var(--bg-base);
+  color: var(--text-secondary);
+  font-size: var(--fs-small);
+}
+:root.auth-pending .auth-check { display: grid; }
+
+/* ========================== Dashboard Page ============================ */
+.dashboard-page {
+  position: relative;
+  min-height: 100vh;
+  padding-top: calc(var(--header-h) + var(--s-12));
+  padding-bottom: var(--s-16);
+}
+
+/* Same construction as .pricing__panel — a translucent blurred surface over
+   the background video. --s-10 does not exist in the spacing scale, so the
+   padding it used resolved to nothing and the panel had no inset at all. */
+.dash-panel {
+  max-width: 1080px;
+  margin-inline: auto;
+  background: var(--panel-scrim);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sheet);
+  padding: var(--s-8);
+  box-shadow: var(--shadow-soft);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  position: relative;
+  z-index: 1;
+}
+
+.dash-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  padding-bottom: var(--s-6);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--s-8);
+}
+
+.dash-title {
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s-1);
+}
+
+.dash-user {
+  font-size: var(--fs-small);
+  color: var(--text-secondary);
+}
+.dash-user strong {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s-4);
+  margin-bottom: var(--s-8);
+}
+
+.dash-card {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: var(--s-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.dash-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-text);   /* matches every other hover border */
+}
+
+.dash-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.dash-card__icon {
+  display: inline-flex;
+  color: var(--text-secondary);
+}
+.dash-card__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dash-card__value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-h1);        /* on the scale; was an off-system clamp */
+  font-weight: 500;               /* mono weights in the system are 400/500 */
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.dash-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+.dash-delta svg {
+  width: 14px;
+  height: 14px;
+}
+.dash-delta--positive { color: var(--positive); }
+.dash-delta--negative { color: var(--negative); }
+.dash-delta--neutral  { color: var(--text-secondary); }
+
+/* Banner for mobile app transition */
+.dash-mobile-banner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: var(--s-6) var(--s-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-6);
+  flex-wrap: wrap;
+}
+
+.dash-banner__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  max-width: 60ch;        /* measure-based, like every other text block */
+}
+
+.dash-banner__title {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dash-banner__desc {
+  font-size: var(--fs-small);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.dash-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-4);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--brand-text);
+  white-space: nowrap;
+}
+
+/* aligned to the project's breakpoints (900 / 640) instead of introducing
+   960 and 600, which only this page used */
+@media (max-width: 900px) {
+  .dash-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-panel { padding: var(--s-6); }
+}
+
+@media (max-width: 640px) {
+  .dash-grid { grid-template-columns: 1fr; }
+  .dash-mobile-banner { flex-direction: column; align-items: flex-start; }
 }
 
 @media (prefers-reduced-motion: reduce) {
