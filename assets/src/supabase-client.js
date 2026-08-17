@@ -92,3 +92,20 @@ export async function updatePassword(newPassword) {
 export function onAuthStateChange(callback) {
   return supabase.auth.onAuthStateChange(callback);
 }
+
+// ============================================================================
+// Newsletter
+// ============================================================================
+
+/**
+ * Zapsání e-mailu do tabulky newsletter_subscribers (sloupce: id, email,
+ * created_at). Zapisuje se anonymně, takže tabulka musí mít RLS politiku
+ * povolující INSERT roli anon — a naopak NESMÍ povolovat SELECT, jinak by si
+ * kdokoliv stáhl celý seznam odběratelů.
+ */
+export async function subscribeToNewsletter(email) {
+  const { data, error } = await supabase
+    .from('newsletter_subscribers')
+    .insert({ email });
+  return { data, error };
+}

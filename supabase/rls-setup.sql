@@ -101,6 +101,36 @@ create trigger on_auth_user_created
 
 
 -- ============================================================================
+-- 3b. NEWSLETTER — write-only from the browser
+-- ----------------------------------------------------------------------------
+-- The footer form inserts anonymously, so anon needs INSERT. It must NOT get
+-- SELECT: with the publishable key being public, a readable table means anyone
+-- can download the whole subscriber list.
+--
+-- Run the verification at the bottom of this block after applying it.
+-- ============================================================================
+
+alter table public.newsletter_subscribers enable row level security;
+
+-- one address once
+create unique index if not exists newsletter_subscribers_email_key
+  on public.newsletter_subscribers (lower(email));
+
+-- INSERT only. No select/update/delete policy exists, so those are denied.
+drop policy if exists newsletter_insert_anon on public.newsletter_subscribers;
+create policy newsletter_insert_anon
+  on public.newsletter_subscribers for insert
+  to anon, authenticated
+  with check (email is not null and email <> '');
+
+-- Confirm the shape: expect exactly one row, cmd = INSERT.
+-- Anything listing SELECT means the list is publicly readable.
+select policyname, cmd, roles
+from pg_policies
+where schemaname = 'public' and tablename = 'newsletter_subscribers';
+
+
+-- ============================================================================
 -- 4. TEMPLATE — copy this for every future table holding per-user rows
 -- ----------------------------------------------------------------------------
 -- e.g. connected cards, transactions, insights. Replace <table>.
@@ -131,8 +161,42 @@ create trigger on_auth_user_created
 
 
 -- ============================================================================
--- 5. RE-RUN THE AUDIT
+-- 5. RE-RUN THE AUDIT — AND READ THE POLICIES, NOT JUST THE FLAG
 -- ----------------------------------------------------------------------------
--- Scroll back up and run query 1 again. Anything with rls_enabled = false is
--- wide open.
+-- Query 1 only proves a lock exists. It does not prove the lock is shut:
+-- a policy of `using (true)` reports rls_enabled = true, policy_count = 1 and
+-- still serves every row to the entire internet. This is not hypothetical —
+-- public.users passed query 1 while returning a real name, email and age to an
+-- unauthenticated request.
+--
+-- Run this and read every expression. Anything that is `true`, or that does not
+-- compare against auth.uid(), is open.
 -- ============================================================================
+
+select
+  tablename,
+  policyname,
+  cmd,
+  roles,
+  qual        as using_expression,
+  with_check
+from pg_policies
+where schemaname = 'public'
+order by tablename, cmd, policyname;
+
+
+-- ============================================================================
+-- 6. FIX FOR AN OVER-PERMISSIVE TABLE
+-- ----------------------------------------------------------------------------
+-- Template. Replace <table> and <policy> with what query 5 reported.
+-- ============================================================================
+
+-- drop policy "<policy>" on public.<table>;
+--
+-- -- then add an owner-scoped one, assuming the table has a user_id column:
+-- create policy <table>_select_own on public.<table>
+--   for select using (auth.uid() = user_id);
+--
+-- -- if the table holds no per-user data and nothing should read it from the
+-- -- browser at all, add no select policy: RLS on with no policy denies all.
+

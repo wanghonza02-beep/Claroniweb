@@ -157,13 +157,8 @@
     if (savedTheme === 'dark') setTheme(true);
   }
 
-  /* ---------------- newsletter form ------------------------------------ */
-  /* TODO: wire up newsletter signup. Inert for now, matching the placeholder
-     convention used by every other CTA on the page. */
-  var subscribeForm = document.querySelector('.subscribe');
-  if (subscribeForm) {
-    subscribeForm.addEventListener('submit', function (e) { e.preventDefault(); });
-  }
+  /* The newsletter form is handled by assets/src/newsletter.js, which posts to
+     Supabase. No inert handler here — it would only fight the real one. */
 
 })();
 
