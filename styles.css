@@ -1520,12 +1520,24 @@ section[id] { scroll-margin-top: 96px; }
 :root.auth-pending .auth-check { display: grid; }
 
 /* ========================== Dashboard Page ============================ */
+/* Flex + margin-block:auto rather than align-items:center — auto margins still
+   centre when the panel fits, but let it overflow downward normally when it
+   does not, instead of clipping the top out of reach. */
 .dashboard-page {
   position: relative;
+  display: flex;
   min-height: 100vh;
-  padding-top: calc(var(--header-h) + var(--s-12));
-  padding-bottom: var(--s-16);
+  padding-top: calc(var(--header-h) + var(--s-8));
+  padding-bottom: var(--s-8);
 }
+.dashboard-page > .shell {
+  width: 100%;
+  margin-block: auto;
+}
+
+/* Background starts below the fixed header. Anchored at 0 the opaque nav
+   covered the top of the frame and it read as cut off. */
+.dashboard-page .pricing-bg { top: var(--header-h); }
 
 /* Same construction as .pricing__panel — a translucent blurred surface over
    the background video. --s-10 does not exist in the spacing scale, so the
@@ -1545,15 +1557,12 @@ section[id] { scroll-margin-top: 96px; }
 }
 
 .dash-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--s-4);
   padding-bottom: var(--s-6);
   border-bottom: 1px solid var(--border);
   margin-bottom: var(--s-8);
 }
+/* back arrow sits above the heading, same placement as the login page */
+.dash-head .back-btn { margin-bottom: var(--s-4); }
 
 .dash-title {
   font-size: var(--fs-h1);
@@ -1612,12 +1621,16 @@ section[id] { scroll-margin-top: 96px; }
   height: 20px;
 }
 
+/* All four values share one font and one size — no per-card exceptions. The
+   third card wrapped because "/ mo" duplicated what its label already said, so
+   the label carries it and the figure stays a figure. nowrap is the guard. */
 .dash-card__value {
   font-family: var(--font-mono);
   font-size: var(--fs-h1);        /* on the scale; was an off-system clamp */
   font-weight: 500;               /* mono weights in the system are 400/500 */
   color: var(--text-primary);
   line-height: 1.1;
+  white-space: nowrap;
 }
 
 .dash-delta {
