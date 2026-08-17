@@ -157,7 +157,7 @@
     if (savedTheme === 'dark') setTheme(true);
   }
 
-  /* The newsletter form is handled by assets/src/newsletter.js, which posts to
+  /* The newsletter form is handled by assets/js/newsletter.js, which posts to
      Supabase. No inert handler here — it would only fight the real one. */
 
 })();
