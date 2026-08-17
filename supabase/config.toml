@@ -1,0 +1,20 @@
+project_id = "dxqmcweieanhxnpqkdqa"
+
+# Both functions run with the gateway's JWT check OFF, for different reasons.
+# Neither is unauthenticated: each proves who is calling in its own body.
+
+[functions.create-checkout-session]
+# Called by a signed-in visitor through supabase.functions.invoke(), which sends
+# the project's publishable key (sb_publishable_...) alongside the user's token.
+# The gateway rejects that combination with "JWT is invalid" — Supabase's own
+# guidance for the 2026 key format is to turn the gateway check off and verify
+# inside the function. This one calls auth.getUser() on the bearer token and
+# refuses anyone it cannot identify, which is the check that actually matters.
+verify_jwt = false
+
+[functions.stripe-webhook]
+# Called by Stripe, which has no Supabase JWT at all. Leaving this on would
+# reject every event with a 401 and no payment would ever be recorded.
+# Authenticity comes from the stripe-signature header instead: an event whose
+# signature does not verify against STRIPE_WEBHOOK_SECRET is dropped.
+verify_jwt = false

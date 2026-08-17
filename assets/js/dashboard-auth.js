@@ -1,4 +1,4 @@
-import { supabase, getCurrentUser, signOut } from './supabase-client.js';
+import { supabase, getCurrentUser, signOut, getSubscription } from './supabase-client.js';
 
 /*
  * Dashboard auth gate.
@@ -48,6 +48,101 @@ import { supabase, getCurrentUser, signOut } from './supabase-client.js';
   if (emailDisplay) emailDisplay.textContent = user.email || 'User';
 
   reveal();
+
+  // ---- plan ---------------------------------------------------------------
+  // Read-only: the row is written by the Stripe webhook using the service role
+  // key. RLS gives the browser SELECT on its own row and nothing else, so this
+  // line reports the subscription rather than deciding it.
+  const planRow = document.getElementById('dashPlan');
+  const planName = document.getElementById('dashPlanName');
+
+  function isCzech() {
+    return document.documentElement.lang === 'cs';
+  }
+
+  function setPlan(en, cs) {
+    if (!planRow || !planName) return;
+    planName.setAttribute('data-en', en);
+    planName.setAttribute('data-cs', cs);
+    planName.textContent = isCzech() ? cs : en;
+    planRow.hidden = false;
+  }
+
+  function describe(sub) {
+    if (!sub || !sub.status) return { en: 'Free', cs: 'Zdarma' };
+
+    const until = sub.current_period_end
+      ? new Date(sub.current_period_end).toLocaleDateString(isCzech() ? 'cs-CZ' : 'en-US',
+          { day: 'numeric', month: 'short', year: 'numeric' })
+      : null;
+
+    switch (sub.status) {
+      case 'trialing':
+        return {
+          en: until ? `Pro — trial until ${until}` : 'Pro — trial',
+          cs: until ? `Pro — zkušební do ${until}` : 'Pro — zkušební',
+        };
+      case 'active':
+        if (sub.cancel_at_period_end) {
+          return {
+            en: until ? `Pro — ends ${until}` : 'Pro — ending',
+            cs: until ? `Pro — končí ${until}` : 'Pro — končí',
+          };
+        }
+        return {
+          en: until ? `Pro — renews ${until}` : 'Pro',
+          cs: until ? `Pro — obnoví se ${until}` : 'Pro',
+        };
+      case 'past_due':
+      case 'unpaid':
+        return { en: 'Pro — payment failed', cs: 'Pro — platba selhala' };
+      default:
+        // canceled, incomplete, incomplete_expired, paused
+        return { en: 'Free', cs: 'Zdarma' };
+    }
+  }
+
+  async function refreshPlan() {
+    try {
+      const { data } = await getSubscription();
+      const t = describe(data);
+      setPlan(t.en, t.cs);
+      return data;
+    } catch (e) {
+      console.warn('Could not read subscription:', e);
+      return null;
+    }
+  }
+
+  await refreshPlan();
+
+  /* Just back from Stripe.
+     success_url is reached the instant the card clears, but the webhook that
+     writes the row is a separate request and can land a second or two later.
+     Without this the page would show "Free" right after a successful payment.
+     Give up after a few tries — the row will be there on the next visit.
+
+     Deliberately not awaited: everything below this point wires up the page,
+     and making the sign-out button dead for seven seconds is a worse bug than
+     a plan label that settles late. */
+  if (new URLSearchParams(window.location.search).get('checkout') === 'success') {
+    (async function () {
+      for (let i = 0; i < 5; i++) {
+        await new Promise(r => setTimeout(r, 1500));
+        const sub = await refreshPlan();
+        if (sub && sub.status) break;
+      }
+    })();
+  }
+
+  // The plan text is written by this file, so the language switcher in
+  // script.js never saw it at load. Re-render it when the language changes.
+  new MutationObserver(function () {
+    if (!planName) return;
+    const en = planName.getAttribute('data-en');
+    const cs = planName.getAttribute('data-cs');
+    if (en && cs) planName.textContent = isCzech() ? cs : en;
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 
   // ---- sign out -----------------------------------------------------------
   const logoutBtn = document.getElementById('dashLogoutBtn');

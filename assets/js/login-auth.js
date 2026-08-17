@@ -48,6 +48,22 @@ import {
      dashboard and they would never get to set a new password. */
   let isRecovery = /type=recovery/.test(window.location.hash);
 
+  /* Where to go once signed in.
+     Defaults to the dashboard; ?next= overrides it so a visitor who started
+     buying a plan, got asked to sign in, and did so ends up back at the
+     purchase rather than staring at the dashboard.
+
+     The pattern is deliberately narrow: a bare filename plus an optional query,
+     nothing else. Anything with a scheme, a host or a slash is discarded, which
+     is what stops ?next=https://evil.example from turning the login page into
+     an open redirect that phishers can point at. */
+  const NEXT_OK = /^[a-z0-9_-]+\.html(\?[a-z0-9=&_-]*)?$/i;
+
+  function nextTarget() {
+    const raw = new URLSearchParams(window.location.search).get('next');
+    return raw && NEXT_OK.test(raw) ? raw : 'dashboard.html';
+  }
+
   function isCzech() {
     return document.documentElement.lang === 'cs';
   }
@@ -310,7 +326,7 @@ import {
         } else {
           showAlert('success', 'Sign in successful! Redirecting...', 'Přihlášení proběhlo úspěšně! Přesměrovávám...');
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = nextTarget();
           }, 800);
         }
       } else if (currentMode === 'signup') {
@@ -327,7 +343,7 @@ import {
         } else if (data && data.session) {
           showAlert('success', 'Account created successfully! Redirecting...', 'Účet byl úspěšně vytvořen! Přesměrovávám...');
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = nextTarget();
           }, 800);
         } else {
           showAlert(
@@ -377,7 +393,7 @@ import {
       hideAlert();
       setLoading(true);
       try {
-        const { error } = await signInWithGoogle();
+        const { error } = await signInWithGoogle(nextTarget());
         if (error) {
           const t = translateError(error);
           showAlert('error', t.en, t.cs);
@@ -409,7 +425,7 @@ import {
   // Suppressed during recovery, where a session exists but the visitor still
   // has to choose a new password.
   getCurrentUser().then(user => {
-    if (user && !isRecovery) window.location.replace('dashboard.html');
+    if (user && !isRecovery) window.location.replace(nextTarget());
   }).catch(() => {});
 
   // Observe language switcher changes to update dynamically inserted content

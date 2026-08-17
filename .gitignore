@@ -15,6 +15,17 @@ videos/hf_*.mp4
 # thousands of files to the repo.
 node_modules/
 
+# Supabase CLI scratch: link state and a cached access token. The token is a
+# credential — it must never end up in a public repo.
+supabase/.temp/
+supabase/.branches/
+
+# Stripe and Supabase secrets. Nothing in this repo reads a .env at runtime;
+# this line exists so a stray one can never be committed by accident.
+.env
+.env.*
+!.env.example
+
 # OS noise
 Thumbs.db
 desktop.ini

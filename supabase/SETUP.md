@@ -12,14 +12,16 @@ Kontrolní seznam k proklikání. Bez bodů 1 a 2 přihlášení přes Google sp
 https://claroniweb.vercel.app
 ```
 
-**Redirect URLs** — musí tam být všechny čtyři. Bez nich Supabase odmítne
+**Redirect URLs** — musí tam být všech šest. Bez nich Supabase odmítne
 uživatele vrátit zpět a OAuth i reset hesla skončí chybou.
 
 ```
 https://claroniweb.vercel.app/dashboard.html
 https://claroniweb.vercel.app/login.html
+https://claroniweb.vercel.app/pricing.html
 http://localhost:8123/dashboard.html
 http://localhost:8123/login.html
+http://localhost:8123/pricing.html
 ```
 
 > Pokud si lokálně pouštíš web na jiném portu než 8123, přidej i ten. Port musí
@@ -29,8 +31,9 @@ Kam se ty adresy berou v kódu:
 
 | URL | odkud |
 |---|---|
-| `.../dashboard.html` | `signInWithGoogle()` v `assets/src/supabase-client.js` |
+| `.../dashboard.html` | `signInWithGoogle()` v `assets/js/supabase-client.js` |
 | `.../login.html` | `resetPasswordForEmail()` tamtéž |
+| `.../pricing.html` | návrat k nedokončenému nákupu, `assets/js/checkout.js` |
 
 ---
 
@@ -64,9 +67,10 @@ Rozhodni, jestli chceš **Confirm email** zapnuté:
 
 ## 4. Row Level Security
 
-Spusť [`rls-setup.sql`](rls-setup.sql) v SQL Editoru.
+Spusť [`rls-setup.sql`](rls-setup.sql) v SQL Editoru. Pro platby navíc
+[`stripe-setup.sql`](stripe-setup.sql) — postup je v [`STRIPE.md`](STRIPE.md).
 
-**Proč to není volitelné:** klíč v `assets/src/supabase-client.js` je
+**Proč to není volitelné:** klíč v `assets/js/supabase-client.js` je
 *publishable* — je veřejný záměrně a do klientského kódu patří. Jediné, co dělí
 tvoje tabulky od kohokoliv na internetu, je RLS. Tabulka bez RLS je pro každého
 návštěvníka webu čitelná i zapisovatelná.

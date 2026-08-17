@@ -40,11 +40,11 @@ export async function signUpWithEmail(email, password) {
 /**
  * Přihlášení přes Google OAuth
  */
-export async function signInWithGoogle() {
+export async function signInWithGoogle(redirectPath) {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}/dashboard.html`,
+      redirectTo: `${window.location.origin}/${redirectPath || 'dashboard.html'}`,
     },
   });
   return { data, error };
@@ -107,5 +107,35 @@ export async function subscribeToNewsletter(email) {
   const { data, error } = await supabase
     .from('newsletter_subscribers')
     .insert({ email });
+  return { data, error };
+}
+
+// ============================================================================
+// Stripe
+// ============================================================================
+
+/**
+ * Vyžádá si Checkout Session od edge funkce a vrátí URL, kam se má prohlížeč
+ * přesměrovat. invoke() přiloží access token přihlášeného uživatele; bez
+ * session funkce vrátí 401, takže volat ji smí jen přihlášený.
+ */
+export async function createCheckoutSession() {
+  const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+    method: 'POST',
+  });
+  return { url: data && data.url, error: error || (data && data.error) || null };
+}
+
+/**
+ * Řádek předplatného pro přihlášeného uživatele, nebo null.
+ *
+ * Tabulka má RLS jen na SELECT vlastního řádku a zapisuje do ní pouze webhook
+ * přes service role klíč — z prohlížeče si nikdo předplatné nenastaví.
+ */
+export async function getSubscription() {
+  const { data, error } = await supabase
+    .from('subscriptions')
+    .select('status, current_period_end, cancel_at_period_end')
+    .maybeSingle();
   return { data, error };
 }
