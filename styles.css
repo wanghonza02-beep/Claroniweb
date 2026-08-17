@@ -1170,10 +1170,11 @@ section[id] { scroll-margin-top: 96px; }
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   }
   /* start the panel near the bottom of the 16:9 band so the video actually
-     reads as a background rather than a sliver above the card. The dashboard
-     reuses .pricing-bg for its own background, so it needs the same offset. */
-  .pricing,
-  .dashboard-page { padding-top: calc(var(--header-h) + 56.25vw - var(--s-8)); }
+     reads as a background rather than a sliver above the card.
+     The dashboard needs the same offset but sets it in its own block further
+     down the file — placing it here loses to .dashboard-page's base rule,
+     which has equal specificity and comes later. */
+  .pricing { padding-top: calc(var(--header-h) + 56.25vw - var(--s-8)); }
 }
 
 /* Once the heading is wide relative to the panel, an absolutely positioned
@@ -1475,6 +1476,23 @@ section[id] { scroll-margin-top: 96px; }
   .nav__wordmark { display: none; }
 }
 
+/* Footer tooltips are centred on their 40px button, so on a narrow screen the
+   first one ran ~38px past the left edge and was unreadable once shown.
+   Anchoring them to the social row instead, and letting the text wrap, keeps
+   every one of them inside the viewport. */
+@media (max-width: 640px) {
+  .social { position: relative; }
+  .social__item { position: static; }
+  .social__item .tooltip {
+    left: 0;
+    transform: translate(0, 4px);
+    white-space: normal;
+    max-width: calc(100vw - var(--s-8));
+  }
+  .social__item:hover .tooltip,
+  .social__item:focus-within .tooltip { transform: translate(0, 0); }
+}
+
 /* 320px-class devices: tighten the remaining padding rather than dropping any
    element — everything stays, just closer together. */
 @media (max-width: 400px) {
@@ -1700,6 +1718,10 @@ section[id] { scroll-margin-top: 96px; }
 @media (max-width: 900px) {
   .dash-grid { grid-template-columns: repeat(2, 1fr); }
   .dash-panel { padding: var(--s-6); }
+  /* Clear the 16:9 background band, same as the pricing page. This has to live
+     here rather than beside the pricing rule: both selectors are one class, so
+     source order decides, and the .dashboard-page base rule above would win. */
+  .dashboard-page { padding-top: calc(var(--header-h) + 56.25vw - var(--s-8)); }
 }
 
 @media (max-width: 640px) {
