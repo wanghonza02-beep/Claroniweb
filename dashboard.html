@@ -73,6 +73,12 @@
       </div>
 
       <button class="btn btn--secondary btn--sm" id="dashLogoutBtn" type="button" data-cs="Odhlásit se">Sign Out</button>
+
+      <!-- Free plans only; revealed by dashboard-auth.js once the plan is known.
+           Last in the row so it lands where the primary CTA sits on every other
+           page, which pushes Sign Out left into the slot Log in occupies there. -->
+      <a class="btn btn--primary btn--sm" href="pricing.html" data-free-only hidden
+         data-cs="Začít">Get started</a>
     </div>
   </div>
 </header>
@@ -103,6 +109,12 @@
         <p class="dash-plan" id="dashPlan" hidden>
           <span data-cs="Plán:">Plan:</span>
           <strong id="dashPlanName"></strong>
+          <!-- checkout.js picks this up by [data-checkout], same as the pricing
+               page button; the visitor here is signed in, so it goes straight
+               to Stripe rather than by way of the login page. -->
+          <button class="btn btn--primary dash-plan__cta" type="button"
+                  data-checkout data-free-only hidden
+                  data-cs="Předplatit">Subscribe</button>
         </p>
       </div>
 
@@ -177,7 +189,15 @@
           <h3 class="dash-banner__title" data-cs="Pro více informací přejdi do mobilní aplikace">For more insights, open the mobile app</h3>
           <p class="dash-banner__desc" data-cs="Kompletní přehled transakcí, automatickou synchronizaci s bankou a chytrá upozornění na zbytečné výdaje najdeš v mobilní aplikaci Claroni.">Full transaction streaming, live automated bank syncing, and smart spending alerts are available directly in the Claroni mobile app.</p>
         </div>
-        <span class="dash-badge" data-cs="Mobilní aplikace Claroni">Claroni Mobile App</span>
+        <div class="dash-banner__aside">
+          <button class="dash-badge" type="button" id="dashAppBtn"
+                  aria-describedby="dashAppNote"
+                  data-cs="Mobilní aplikace Claroni">Claroni Mobile App</button>
+          <!-- Placeholder destination: there is no app to link to yet, so the
+               button says so instead of pretending to go somewhere. -->
+          <p class="dash-banner__note" id="dashAppNote" role="status" hidden
+             data-cs="Aplikace se připravuje. Dáme ti vědět, jakmile vyjde.">Coming soon — we'll let you know the moment it lands.</p>
+        </div>
       </div>
 
     </div>
@@ -283,5 +303,6 @@
 <script src="script.js"></script>
 <script type="module" src="assets/js/newsletter.js"></script>
 <script type="module" src="assets/js/dashboard-auth.js"></script>
+<script type="module" src="assets/js/checkout.js"></script>
 </body>
 </html>

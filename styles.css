@@ -186,6 +186,13 @@ img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 
+/* The browser's own [hidden] rule is display:none at the same specificity as a
+   class, so any component that sets display: flex silently overrides it and the
+   element shows anyway. Several things here are hidden until JavaScript knows
+   whether to show them — a paying user must never see the upgrade buttons flash
+   — so this has to win outright. */
+[hidden] { display: none !important; }
+
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
@@ -1086,17 +1093,28 @@ section[id] { scroll-margin-top: 96px; }
 .plan--featured .plan__cta { background: var(--on-brand-fill); color: var(--brand-primary); }
 .plan--featured .plan__cta:hover { background: #fff; }
 
-/* Message under the paid plan's button — "checkout cancelled", or Stripe not
-   answering. It only ever appears inside the featured card, which is the brown
-   one, so it takes the on-brand pair and not the page's text colours. */
+/* Message under a checkout button — "checkout cancelled", or Stripe not
+   answering. Two homes: the brown featured card here, and the plan row on the
+   dashboard. The default is the page's own text colours; the brand card, where
+   those would vanish, overrides them below.
+
+   Errors keep text-primary rather than the negative colour: on this background
+   that red measures ~3.6:1, the same reason .auth-alert carries its meaning in
+   the tint instead of the type. Weight does the work. */
 .checkout-note {
   margin-top: var(--s-3);
   font-size: var(--fs-small);
   line-height: 1.4;
-  text-align: center;
-  color: var(--on-brand-soft);
+  color: var(--text-secondary);
 }
-.checkout-note--error { color: var(--on-brand-fill); font-weight: 500; }
+.checkout-note--error { color: var(--text-primary); font-weight: 500; }
+
+.plan--featured .checkout-note { text-align: center; color: var(--on-brand-soft); }
+.plan--featured .checkout-note--error { color: var(--on-brand-fill); }
+
+/* .dash-plan is a wrapping flex row, so the note must claim a full line of its
+   own or it would be crushed in beside the button. */
+.dash-plan .checkout-note { flex-basis: 100%; margin-top: var(--s-1); }
 
 /* --------------------------- logo marquee ---------------------------- */
 /* Full-bleed band rather than a contained card, so the strip keeps running
@@ -1471,6 +1489,9 @@ section[id] { scroll-margin-top: 96px; }
     padding-inline: var(--s-4);
     font-size: var(--fs-small);
   }
+  /* Sign Out on the dashboard. It used to be the only button in that row; now
+     a CTA sits beside it for free plans, so it has to give up width too. */
+  .nav__actions .btn--secondary { padding-inline: var(--s-4); }
   .panel { padding: var(--s-6); }
   .step, .balance-card { padding: var(--s-6); }
   .hero { --hero-scrub: 100vh; }
@@ -1510,6 +1531,7 @@ section[id] { scroll-margin-top: 96px; }
 @media (max-width: 400px) {
   .nav { gap: var(--s-2); }
   .nav__actions .btn--primary { padding-inline: var(--s-3); }
+  .nav__actions .btn--secondary { padding-inline: var(--s-3); }
   .lang__btn { padding-inline: 2px; }
   .theme { gap: 2px; }
 }
@@ -1525,6 +1547,7 @@ section[id] { scroll-margin-top: 96px; }
   .nav { gap: var(--s-1); }
   .nav__actions { gap: var(--s-1); }
   .nav__actions .btn--primary { padding-inline: var(--s-2); }
+  .nav__actions .btn--secondary { padding-inline: var(--s-2); }
 }
 
 /* ===================== Auth gate (protected pages) ==================== */
@@ -1611,12 +1634,31 @@ section[id] { scroll-margin-top: 96px; }
   font-family: var(--font-mono);
 }
 
+/* "Plan: Free  [Subscribe]" — one row, vertically centred against the small
+   text rather than sitting on the baseline. Wrapping is allowed so a long
+   renewal date on a narrow screen drops the button to its own line instead of
+   squeezing it. */
 .dash-plan {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2);
   font-size: var(--fs-small);
   color: var(--text-secondary);
-  margin-top: var(--s-1);
+  margin-top: var(--s-2);
 }
 .dash-plan strong { color: var(--text-primary); }
+
+/* The standard 48px button towers over small text. This one is scaled to sit
+   beside it; the extra left margin separates it from the "Plan: Free" pair so
+   the two do not read as one run of words. Colours come from .btn--primary,
+   which is already theme-aware: brand brown on white, white on near-black. */
+.dash-plan__cta {
+  height: 32px;
+  padding-inline: var(--s-4);
+  font-size: var(--fs-small);
+  margin-left: var(--s-2);
+}
 
 .dash-grid {
   display: grid;
@@ -1730,6 +1772,25 @@ section[id] { scroll-margin-top: 96px; }
   font-weight: 600;
   color: var(--brand-text);
   white-space: nowrap;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+/* It is a real button now, so it has to look pressable — a pill that reacts to
+   nothing reads as a label and nobody clicks it. */
+.dash-badge:hover { border-color: var(--brand-text); color: var(--brand-text-hover); }
+
+/* Badge and its note stack against the right edge of the banner, so the pill
+   keeps its place when the note appears rather than being shoved around. */
+.dash-banner__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s-2);
+}
+.dash-banner__note {
+  font-size: var(--fs-small);
+  color: var(--text-secondary);
+  text-align: right;
+  max-width: 32ch;
 }
 
 /* aligned to the project's breakpoints (900 / 640) instead of introducing
@@ -1746,6 +1807,9 @@ section[id] { scroll-margin-top: 96px; }
 @media (max-width: 640px) {
   .dash-grid { grid-template-columns: 1fr; }
   .dash-mobile-banner { flex-direction: column; align-items: flex-start; }
+  /* the banner stacks here, so the badge column follows the text's left edge */
+  .dash-banner__aside { align-items: flex-start; }
+  .dash-banner__note { text-align: left; }
 }
 
 @media (prefers-reduced-motion: reduce) {

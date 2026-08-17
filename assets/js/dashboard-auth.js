@@ -56,6 +56,22 @@ import { supabase, getCurrentUser, signOut, getSubscription } from './supabase-c
   const planRow = document.getElementById('dashPlan');
   const planName = document.getElementById('dashPlanName');
 
+  /* Upgrade prompts: the nav CTA and the Subscribe button next to the plan.
+     They start hidden in the markup and are revealed only once the plan is
+     known — a paying customer should never be shown, even for a frame, a
+     button asking them to buy what they already have. */
+  const freeOnly = document.querySelectorAll('[data-free-only]');
+
+  function showUpgrade(show) {
+    freeOnly.forEach(function (el) { el.hidden = !show; });
+  }
+
+  // trialing and past_due both mean "has the plan": one has not been billed
+  // yet, the other is inside the grace period Stripe allows before giving up.
+  function isPaying(sub) {
+    return !!sub && ['trialing', 'active', 'past_due'].indexOf(sub.status) !== -1;
+  }
+
   function isCzech() {
     return document.documentElement.lang === 'cs';
   }
@@ -107,8 +123,12 @@ import { supabase, getCurrentUser, signOut, getSubscription } from './supabase-c
       const { data } = await getSubscription();
       const t = describe(data);
       setPlan(t.en, t.cs);
+      showUpgrade(!isPaying(data));
       return data;
     } catch (e) {
+      // Failing to read the plan is not proof the visitor is on Free. Leaving
+      // the upgrade buttons hidden is the honest default: worst case someone
+      // pays a click later, rather than a paying customer being nagged.
       console.warn('Could not read subscription:', e);
       return null;
     }
@@ -143,6 +163,18 @@ import { supabase, getCurrentUser, signOut, getSubscription } from './supabase-c
     const cs = planName.getAttribute('data-cs');
     if (en && cs) planName.textContent = isCzech() ? cs : en;
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+  // ---- mobile app banner --------------------------------------------------
+  // A real button rather than a label, but there is no app to send anyone to
+  // yet, so it says that instead of linking nowhere. Swap this for the store
+  // link once the app ships.
+  const appBtn = document.getElementById('dashAppBtn');
+  const appNote = document.getElementById('dashAppNote');
+  if (appBtn && appNote) {
+    appBtn.addEventListener('click', function () {
+      appNote.hidden = false;
+    });
+  }
 
   // ---- sign out -----------------------------------------------------------
   const logoutBtn = document.getElementById('dashLogoutBtn');

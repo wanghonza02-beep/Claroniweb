@@ -1,21 +1,25 @@
 import { getCurrentUser, createCheckoutSession } from './supabase-client.js';
 
 /*
- * Pricing page: turns the paid plan's CTA into a Stripe Checkout redirect.
+ * Stripe Checkout for every [data-checkout] control on the page.
  *
- * The link keeps a real href to login.html, so with JavaScript off — or before
- * this module loads — the button still goes somewhere sensible instead of
- * doing nothing.
+ * Two of them exist: the paid plan's button on the pricing page, and the
+ * Subscribe button beside "Plan: Free" on the dashboard. They behave the same,
+ * so they share this file rather than growing a second near-copy that drifts.
  *
- * Signed out, the click is not a dead end either: it carries the intent through
- * the login page and comes back here to finish, rather than stranding the
- * visitor on the dashboard wondering what happened to their purchase.
+ * On the pricing page the control keeps a real href to login.html, so with
+ * JavaScript off — or before this module loads — it still goes somewhere
+ * sensible instead of doing nothing.
+ *
+ * Signed out, a click is not a dead end either: it carries the intent through
+ * the login page and comes back to finish, rather than stranding the visitor on
+ * the dashboard wondering what happened to their purchase.
  */
 (function () {
   'use strict';
 
-  const cta = document.querySelector('[data-checkout]');
-  if (!cta) return;
+  const ctas = document.querySelectorAll('[data-checkout]');
+  if (!ctas.length) return;
 
   const params = new URLSearchParams(window.location.search);
 
@@ -24,24 +28,36 @@ import { getCurrentUser, createCheckoutSession } from './supabase-client.js';
   }
 
   // ---- feedback -----------------------------------------------------------
-  let noticeEl = null;
+  // One note per control, parked right after it, so a page with two buttons
+  // reports against whichever one was actually pressed.
+  const notes = new WeakMap();
 
-  function notice(type, en, cs) {
-    if (!noticeEl) {
-      noticeEl = document.createElement('p');
-      noticeEl.className = 'checkout-note';
-      noticeEl.setAttribute('role', 'status');
-      cta.parentNode.insertBefore(noticeEl, cta.nextSibling);
+  function notice(cta, type, en, cs) {
+    let el = notes.get(cta);
+    if (!el) {
+      el = document.createElement('p');
+      el.setAttribute('role', 'status');
+      cta.parentNode.insertBefore(el, cta.nextSibling);
+      notes.set(cta, el);
     }
-    noticeEl.className = `checkout-note checkout-note--${type}`;
+    el.className = `checkout-note checkout-note--${type}`;
     // script.js reads [data-en]/[data-cs] when the language toggle fires, so
     // setting both keeps this message in step with the rest of the page.
-    noticeEl.setAttribute('data-en', en);
-    noticeEl.setAttribute('data-cs', cs);
-    noticeEl.textContent = isCzech() ? cs : en;
+    el.setAttribute('data-en', en);
+    el.setAttribute('data-cs', cs);
+    el.textContent = isCzech() ? cs : en;
   }
 
-  function setBusy(busy) {
+  function failed(cta) {
+    notice(
+      cta,
+      'error',
+      'Could not open checkout. Please try again in a moment.',
+      'Platbu se nepodařilo otevřít. Zkus to prosím za chvíli.',
+    );
+  }
+
+  function setBusy(cta, busy) {
     cta.classList.toggle('is-loading', busy);
     cta.setAttribute('aria-busy', busy ? 'true' : 'false');
   }
@@ -49,10 +65,10 @@ import { getCurrentUser, createCheckoutSession } from './supabase-client.js';
   // ---- start checkout -----------------------------------------------------
   let inFlight = false;
 
-  async function start(resumed) {
+  async function start(cta, resumed) {
     if (inFlight) return;
     inFlight = true;
-    setBusy(true);
+    setBusy(cta, true);
 
     try {
       const user = await getCurrentUser();
@@ -63,6 +79,7 @@ import { getCurrentUser, createCheckoutSession } from './supabase-client.js';
            forever. Stop and say so instead. */
         if (resumed) {
           notice(
+            cta,
             'info',
             'Please sign in again to continue.',
             'Pro pokračování se prosím přihlas znovu.',
@@ -79,36 +96,33 @@ import { getCurrentUser, createCheckoutSession } from './supabase-client.js';
 
       if (error || !url) {
         console.error('Checkout failed:', error);
-        notice(
-          'error',
-          'Could not open checkout. Please try again in a moment.',
-          'Platbu se nepodařilo otevřít. Zkus to prosím za chvíli.',
-        );
+        failed(cta);
         return;
       }
 
       window.location.href = url;
     } catch (err) {
       console.error('Checkout failed:', err);
-      notice(
-        'error',
-        'Could not open checkout. Please try again in a moment.',
-        'Platbu se nepodařilo otevřít. Zkus to prosím za chvíli.',
-      );
+      failed(cta);
     } finally {
       inFlight = false;
-      setBusy(false);
+      setBusy(cta, false);
     }
   }
 
-  cta.addEventListener('click', function (e) {
-    e.preventDefault();
-    start();
+  ctas.forEach(function (cta) {
+    cta.addEventListener('click', function (e) {
+      e.preventDefault();
+      start(cta, false);
+    });
   });
 
   // ---- returning visitors -------------------------------------------------
+  const first = ctas[0];
+
   if (params.get('checkout') === 'cancelled') {
     notice(
+      first,
       'info',
       'Checkout cancelled. Nothing was charged.',
       'Platba zrušena. Nic jsme ti nestrhli.',
@@ -116,5 +130,5 @@ import { getCurrentUser, createCheckoutSession } from './supabase-client.js';
   }
 
   // Sent back by the login page after signing in mid-purchase.
-  if (params.get('checkout') === 'start') start(true);
+  if (params.get('checkout') === 'start') start(first, true);
 })();
