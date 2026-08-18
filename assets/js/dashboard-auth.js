@@ -69,8 +69,14 @@ import {
      button asking them to buy what they already have. */
   const freeOnly = document.querySelectorAll('[data-free-only]');
 
+  /* The mirror image: billing management, which only means anything once there
+     is a Stripe customer to manage. Both sets are driven from the same answer,
+     so the row can never offer Subscribe and Manage billing at the same time. */
+  const proOnly = document.querySelectorAll('[data-pro-only]');
+
   function showUpgrade(show) {
     freeOnly.forEach(function (el) { el.hidden = !show; });
+    proOnly.forEach(function (el) { el.hidden = show; });
   }
 
   function isCzech() {

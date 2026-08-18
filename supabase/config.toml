@@ -18,3 +18,10 @@ verify_jwt = false
 # Authenticity comes from the stripe-signature header instead: an event whose
 # signature does not verify against STRIPE_WEBHOOK_SECRET is dropped.
 verify_jwt = false
+
+[functions.create-portal-session]
+# Same reasoning as create-checkout-session: called by a signed-in visitor
+# through supabase.functions.invoke(), which the gateway rejects under the
+# sb_publishable_ key format. The function verifies the caller itself with
+# auth.getUser() and reads the Stripe customer id from that user's own row.
+verify_jwt = false

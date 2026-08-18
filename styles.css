@@ -1941,3 +1941,219 @@ section[id] { scroll-margin-top: 96px; }
   }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ============================ legal documents ==========================
+   Terms and Privacy. They reuse the pricing page's shell wholesale — the same
+   .pricing padding, .pricing__panel surface and .pricing__head back button —
+   so nothing here invents a second page layout.
+
+   The one deliberate omission is the background video. .pricing-bg is
+   absolutely positioned to inset:0 of its main, so on a page this tall it
+   would stretch a 16:9 loop over several thousand pixels; object-fit: cover
+   then crops it to a smear. Long reading also wants a still background.
+   ==================================================================== */
+
+/* Prose is held to a measure rather than the panel's full width. Legal text is
+   read line by line, and 980px of it would be punishing. */
+.legal__doc {
+  max-width: 70ch;
+  margin-inline: auto;
+}
+
+.legal__meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--text-secondary);
+  margin-bottom: var(--s-6);
+}
+
+.legal__lede {
+  font-size: var(--fs-body);
+  color: var(--text-primary);
+  line-height: 1.6;
+  padding-bottom: var(--s-6);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--s-8);
+}
+
+/* Numbered contents. Long documents get linked to section by section — from a
+   support reply, from the other document — so every heading is addressable. */
+.legal__toc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-6);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  margin-bottom: var(--s-12);
+}
+.legal__toc-title {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--s-2);
+}
+.legal__toc a {
+  font-size: var(--fs-small);
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+.legal__toc a:hover { color: var(--brand-text); }
+
+.legal__section { margin-bottom: var(--s-12); }
+/* the fixed header would otherwise sit on top of a jumped-to heading */
+.legal__section { scroll-margin-top: calc(var(--header-h) + var(--s-6)); }
+
+.legal__h2 {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: var(--s-4);
+}
+.legal__h3 {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: var(--s-6);
+  margin-bottom: var(--s-2);
+}
+
+.legal__section p {
+  font-size: var(--fs-small);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--s-4);
+}
+.legal__section p:last-child { margin-bottom: 0; }
+.legal__section strong { color: var(--text-primary); font-weight: 600; }
+
+.legal__section ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+}
+.legal__section li {
+  position: relative;
+  padding-left: var(--s-6);
+  font-size: var(--fs-small);
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+/* brand-coloured marker instead of a list bullet, matching .plan__tick's role */
+.legal__section li::before {
+  content: "";
+  position: absolute;
+  left: var(--s-2);
+  top: 0.66em;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-pill);
+  background: var(--brand-text);
+}
+
+.legal__section a {
+  color: var(--brand-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Standing at the top of both legal documents: this is a practice build and
+   none of it binds anyone. Same tint and border as .auth-alert--info, so it
+   reads as the site's existing "pay attention" treatment rather than a new one. */
+.legal__notice {
+  padding: var(--s-4);
+  margin-bottom: var(--s-6);
+  background: var(--insight-tint);
+  border: 1px solid var(--insight);
+  border-radius: var(--r-card);
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+/* Replaces the company identity that a real document would carry. It is the
+   honest part of the section, so it takes the primary colour while the
+   surrounding prose stays secondary. */
+.legal__void {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* A definition-style pair list, used for the data tables and sub-processors. */
+.legal__pairs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  /* matches the paragraph rhythm, so prose following a list is not flush against it */
+  margin-bottom: var(--s-4);
+}
+.legal__pair {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: var(--s-4);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--border);
+}
+.legal__pair:last-child { border-bottom: 0; padding-bottom: 0; }
+.legal__pair dt {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.legal__pair dd {
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .legal__pair { grid-template-columns: 1fr; gap: var(--s-1); }
+}
+
+/* Consent line under the login form. It sits outside .login__foot because
+   login-auth.js rebuilds that element whenever the form changes mode, and
+   these links have to survive that. */
+.login__legal {
+  margin-top: var(--s-4);
+  text-align: center;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.login__legal a {
+  color: var(--brand-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Sits under the invented contact details, so nobody works out they are fake by
+   dialling the number. */
+.footer__fiction {
+  margin-top: var(--s-2);
+  padding-top: var(--s-2);
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Site-wide disclosure, above the footer's bottom bar. A visitor can land on
+   any page first, so this cannot live only on the legal pages. */
+.site-notice {
+  margin-top: var(--s-12);
+  padding: var(--s-4);
+  background: var(--insight-tint);
+  border: 1px solid var(--insight);
+  border-radius: var(--r-card);
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--text-primary);
+  text-align: center;
+}
+/* the bottom bar already spaces itself off the grid above; with the notice in
+   between, its own top margin would double the gap */
+.site-notice + .footer__bottom { margin-top: var(--s-8); }

@@ -174,3 +174,17 @@ export function displayName(user) {
   const meta = user.user_metadata || {};
   return meta.full_name || meta.name || user.email || '';
 }
+
+/**
+ * Vyžádá si od edge funkce odkaz do Stripe Billing Portalu, kde si zákazník
+ * mění kartu, stahuje faktury a ruší předplatné.
+ *
+ * Zákazníka si funkce dohledá sama podle přihlášeného uživatele — z prohlížeče
+ * se žádné `cus_` ID neposílá, jinak by si kdokoliv otevřel cizí fakturaci.
+ */
+export async function createPortalSession() {
+  const { data, error } = await supabase.functions.invoke('create-portal-session', {
+    method: 'POST',
+  });
+  return { url: data && data.url, error: error || (data && data.error) || null };
+}

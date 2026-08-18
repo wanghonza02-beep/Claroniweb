@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms of Service — Claroni</title>
+<meta name="description" content="The agreement between you and Claroni: accounts, plans, billing, cancellation and your rights as a consumer.">
+<link rel="icon" type="image/png" href="assets/claroni-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* Applied before first paint so the theme never flashes. Shared with index.html. */
+  try {
+    if (localStorage.getItem('claroni-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) { /* private mode */ }
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-cs="Přejít na obsah">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="shell nav">
+    <a class="nav__brand" href="index.html" aria-label="Claroni">
+      <img class="nav__mark nav__mark--light" src="assets/claroni-mark.png" alt="" width="224" height="244">
+      <img class="nav__mark nav__mark--dark" src="assets/claroni-mark-white.png" alt="" width="224" height="244">
+      <span class="nav__wordmark">Claroni</span>
+    </a>
+
+    <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" class="lang__btn is-active" data-lang="en" aria-pressed="true">EN</button>
+        <span class="lang__sep" aria-hidden="true">/</span>
+        <button type="button" class="lang__btn" data-lang="cs" aria-pressed="false">CS</button>
+      </div>
+
+      <div class="theme">
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </span>
+        <button type="button" class="switch" role="switch" aria-checked="false"
+                aria-label="Toggle dark mode" data-cs-label="Přepnout tmavý režim">
+          <span class="switch__knob" aria-hidden="true"></span>
+        </button>
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </span>
+      </div>
+
+      <a class="btn btn--ghost nav__login" href="login.html" data-cs="Přihlásit">Log in</a>
+
+      <!-- Hidden, not removed: it keeps occupying its exact width so every
+           other nav item lands on the same pixel as on the landing page. -->
+      <a class="btn btn--primary nav__reserved" href="pricing.html" data-hide-when-pro
+         data-cs="Začít" aria-hidden="true" tabindex="-1">Get started</a>
+
+      <!-- Subscribers only; takes over the reserved slot above. -->
+      <div class="nav__profile" hidden>
+        <button class="nav__profile-btn" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="nav__avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
+          <span class="nav__profile-name" data-profile-name></span>
+          <svg class="nav__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav__menu" hidden>
+          <p class="nav__menu-head" data-profile-name></p>
+          <a class="nav__menu-item" href="dashboard.html" data-cs="Přehled financí">Dashboard</a>
+          <button class="nav__menu-item" type="button" data-portal data-cs="Spravovat platby">Manage billing</button>
+          <button class="nav__menu-item" type="button" data-signout data-cs="Odhlásit se">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="pricing legal">
+
+  <div class="shell">
+    <div class="pricing__panel">
+      <div class="pricing__head">
+        <a class="back-btn" href="index.html" aria-label="Back to home" data-cs-label="Zpět na úvod">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        </a>
+        <h1 class="pricing__title" data-cs="Podmínky služby">Terms of Service</h1>
+      </div>
+
+      <div class="legal__doc">
+
+        <p class="legal__notice" role="note" data-cs="Tohle není skutečný právní dokument. Claroni je smyšlená firma a tenhle web je cvičná ukázka, na které se učíme. Nic tady nezakládá žádný závazek, žádná služba se neposkytuje a nemůžou přejít žádné peníze — platby běží v testovacím režimu Stripu, kde skutečné karty neprojdou. Nespoléhej se na nic z toho.">This is not a real legal document. Claroni is a fictional company and this site is a practice build, made to learn on. Nothing written here creates any obligation, no service is provided, and no money can change hands — the payment flow runs in Stripe test mode, where real cards are declined. Do not rely on any of it.</p>
+
+        <p class="legal__meta" data-cs="Poslední aktualizace: 18. srpna 2026">Last updated: 18 August 2026</p>
+
+        <p class="legal__lede" data-cs="Tyhle podmínky jsou dohoda mezi tebou a Claroni. Popisují, co od nás dostaneš, co za to platíš, jak můžeš kdykoliv odejít a co děláme, když se něco pokazí. Snažili jsme se je napsat tak, aby se daly přečíst — ne aby tě odradily.">These terms are the agreement between you and Claroni. They cover what you get, what you pay, how to leave whenever you want, and what happens when something goes wrong. We have tried to write them to be read, not to be endured.</p>
+
+        <nav class="legal__toc" aria-label="Contents">
+          <p class="legal__toc-title" data-cs="Obsah">Contents</p>
+          <a href="#who" data-cs="1. Kdo jsme">1. Who we are</a>
+          <a href="#agreement" data-cs="2. Přijetí podmínek">2. Accepting these terms</a>
+          <a href="#service" data-cs="3. Co Claroni dělá a co nedělá">3. What Claroni does — and does not do</a>
+          <a href="#account" data-cs="4. Tvůj účet">4. Your account</a>
+          <a href="#plans" data-cs="5. Tarify, ceny a účtování">5. Plans, prices and billing</a>
+          <a href="#renewal" data-cs="6. Automatická obnova a zrušení">6. Automatic renewal and cancellation</a>
+          <a href="#withdrawal" data-cs="7. Odstoupení do 14 dnů a vrácení peněz">7. 14-day withdrawal and refunds</a>
+          <a href="#use" data-cs="8. Pravidla používání">8. Acceptable use</a>
+          <a href="#data" data-cs="9. Tvoje data a bankovní připojení">9. Your data and bank connections</a>
+          <a href="#availability" data-cs="10. Dostupnost a změny služby">10. Availability and changes</a>
+          <a href="#ip" data-cs="11. Duševní vlastnictví">11. Intellectual property</a>
+          <a href="#liability" data-cs="12. Odpovědnost">12. Liability</a>
+          <a href="#ending" data-cs="13. Ukončení smlouvy">13. Ending the agreement</a>
+          <a href="#changes" data-cs="14. Změny podmínek">14. Changes to these terms</a>
+          <a href="#law" data-cs="15. Rozhodné právo a spory">15. Governing law and disputes</a>
+          <a href="#contact" data-cs="16. Kontakt">16. Contact</a>
+        </nav>
+
+        <section class="legal__section" id="who">
+          <h2 class="legal__h2" data-cs="1. Kdo jsme">1. Who we are</h2>
+          <p>
+            <span class="legal__void" data-cs="Za Claroni nikdo nestojí. Není tu žádná firma, žádné sídlo ani IČO, protože služba mimo tuhle cvičnou ukázku neexistuje. Tenhle článek by u skutečného provozovatele obsahoval jeho obchodní firmu, sídlo a identifikační číslo.">There is nobody behind Claroni. There is no company, no registered office and no company number, because the service does not exist outside this practice build. With a real operator, this section would carry their registered name, address and company number.</span>
+          </p>
+          <p data-cs="Všechno ostatní je psané tak, jako by služba existovala — jinak by se to nedalo číst jako smlouva. Nedá se toho tedy dovolávat: ani lhůt, ani slibů, ani kontaktů. Ustanovení sama o sobě jsou ale skutečná, psaná podle českého práva a podle toho, co kód opravdu dělá.">Everything that follows is written as though the service existed — otherwise it could not be read as an agreement at all. So none of it can be relied on: not the deadlines, not the promises, not the contacts. The provisions themselves are real, though, drafted under Czech law and from what the code actually does.</p>
+        </section>
+
+        <section class="legal__section" id="agreement">
+          <h2 class="legal__h2" data-cs="2. Přijetí podmínek">2. Accepting these terms</h2>
+          <p data-cs="Vytvořením účtu nebo používáním Claroni souhlasíš s těmito podmínkami. Pokud s nimi nesouhlasíš, službu prosím nepoužívej — je to jediný způsob, jak dohodu neuzavřít.">By creating an account or using Claroni you agree to these terms. If you do not agree with them, please do not use the service — that is the only way not to enter into this agreement.</p>
+          <p data-cs="Claroni je určená lidem starším 18 let. Pokud je ti méně, účet si prosím nezakládej.">Claroni is intended for people aged 18 or over. If you are younger, please do not create an account.</p>
+          <p data-cs="Součástí této dohody jsou i Zásady ochrany osobních údajů, které popisují, jak nakládáme s tvými daty. Odkaz na ně najdeš v patičce každé stránky.">Our Privacy Policy forms part of this agreement and describes how we handle your data. You will find a link to it in the footer of every page.</p>
+        </section>
+
+        <section class="legal__section" id="service">
+          <h2 class="legal__h2" data-cs="3. Co Claroni dělá a co nedělá">3. What Claroni does — and does not do</h2>
+          <p data-cs="Claroni je nástroj pro přehled o financích. Propojí se s tvou kartou nebo účtem, automaticky roztřídí transakce a ukáže ti jedno srozumitelné číslo místo tabulky, kterou nikdo nečte.">Claroni is a finance tracking tool. It connects to your card or account, sorts your transactions automatically, and shows you one understandable number instead of a spreadsheet nobody reads.</p>
+          <p data-cs="Claroni není finanční poradce, banka ani platební instituce. Nic, co ti aplikace ukáže, není investiční, daňové ani právní doporučení. Rozhodnutí o svých penězích děláš ty, podle vlastního úsudku nebo po poradě s odborníkem.">Claroni is not a financial adviser, a bank, or a payment institution. Nothing the app shows you is investment, tax, or legal advice. Decisions about your money are yours to make, on your own judgement or with a professional.</p>
+          <p data-cs="Čísla v aplikaci vycházejí z dat, která nám předá tvoje banka nebo poskytovatel karty. Snažíme se, aby byla přesná, ale nemůžeme ručit za to, že jsou vždy úplná a aktuální. Pro cokoliv závazného, jako je daňové přiznání nebo žádost o úvěr, se vždycky řiď výpisem od své banky.">The figures in the app come from data your bank or card provider gives us. We work to keep them accurate, but we cannot guarantee they are always complete or up to date. For anything binding — a tax return, a loan application — always rely on the statement from your bank.</p>
+        </section>
+
+        <section class="legal__section" id="account">
+          <h2 class="legal__h2" data-cs="4. Tvůj účet">4. Your account</h2>
+          <p data-cs="Účet si založíš e-mailem a heslem, nebo přes Google. Údaje, které při registraci uvedeš, musí být pravdivé, hlavně e-mail, protože přes něj řešíme obnovu hesla i všechno kolem plateb.">You create an account with an email address and password, or through Google. The details you give must be accurate — especially your email address, since that is how we handle password resets and everything to do with billing.</p>
+          <p data-cs="Za své heslo odpovídáš ty. Neposílej ho nikomu a nepoužívej stejné jako jinde. Pokud máš podezření, že se k tvému účtu dostal někdo cizí, dej nám vědět co nejdřív.">Your password is your responsibility. Do not share it, and do not reuse one from somewhere else. If you suspect someone else has reached your account, tell us as soon as you can.</p>
+          <p data-cs="Účet je osobní. Nesmíš ho sdílet ani prodat někomu dalšímu.">Your account is personal to you. You may not share or sell it to anyone else.</p>
+        </section>
+
+        <section class="legal__section" id="plans">
+          <h2 class="legal__h2" data-cs="5. Tarify, ceny a účtování">5. Plans, prices and billing</h2>
+          <p data-cs="Claroni nabízí tarif Starter zdarma a placený tarif Claroni Plus. Co přesně každý obsahuje, najdeš na stránce s ceníkem. Tarif zdarma je zdarma napořád a nepožadujeme za něj kartu.">Claroni offers a free Starter plan and a paid Claroni Plus plan. What each includes is set out on the pricing page. The free plan is free indefinitely and does not require a card.</p>
+          <p data-cs="Placený tarif stojí 9,99 USD měsíčně. Cena je uvedená včetně případné DPH tam, kde se uplatní. Platba probíhá předem na každé fakturační období.">The paid plan costs USD 9.99 per month. The price includes VAT where it applies. Payment is taken in advance for each billing period.</p>
+          <p data-cs="Platby zpracovává Stripe. Údaje o tvé kartě jdou přímo Stripu, my se k plnému číslu karty nikdy nedostaneme a neukládáme ho. Od Stripu dostáváme jen údaj o tom, že platba proběhla, a poslední čtyřčíslí.">Payments are processed by Stripe. Your card details go directly to Stripe — we never see or store your full card number. All we receive from Stripe is confirmation that a payment succeeded, and the last four digits.</p>
+          <p data-cs="Ceny můžeme do budoucna změnit. O změně ti dáme vědět e-mailem nejméně 30 dní předem a nová cena se uplatní až od dalšího fakturačního období. Když se ti nová cena nelíbí, můžeš do té doby zrušit předplatné bez jakéhokoliv postihu.">We may change our prices in future. We will tell you by email at least 30 days beforehand, and the new price will only apply from your next billing period. If you do not want to pay it, you can cancel before then at no penalty.</p>
+        </section>
+
+        <section class="legal__section" id="renewal">
+          <h2 class="legal__h2" data-cs="6. Automatická obnova a zrušení">6. Automatic renewal and cancellation</h2>
+          <p data-cs="Předplatné se automaticky obnovuje na konci každého fakturačního období, dokud ho nezrušíš. Je to proto, aby ti služba nepřestala fungovat ze dne na den.">Your subscription renews automatically at the end of each billing period until you cancel it. This is so the service does not stop working on you overnight.</p>
+          <p data-cs="Zrušit ho můžeš kdykoliv v sekci Spravovat platby, kterou najdeš na svém dashboardu i v menu účtu. Nemusíš nám psát ani volat a nemusíš uvádět důvod.">You can cancel at any time from Manage billing, which you will find on your dashboard and in your account menu. You do not need to write to us or call, and you do not need to give a reason.</p>
+          <p data-cs="Po zrušení ti placené funkce zůstanou do konce už zaplaceného období. Pak se účet vrátí na tarif zdarma. Nemažeme ti data jen proto, že jsi přestal platit.">When you cancel, your paid features stay active until the end of the period you have already paid for. After that your account returns to the free plan. We do not delete your data simply because you stopped paying.</p>
+        </section>
+
+        <section class="legal__section" id="withdrawal">
+          <h2 class="legal__h2" data-cs="7. Odstoupení do 14 dnů a vrácení peněz">7. 14-day withdrawal and refunds</h2>
+          <p data-cs="Jako spotřebitel máš ze zákona právo odstoupit od smlouvy do 14 dnů od jejího uzavření, a to bez udání důvodu. Stačí nám napsat na kontaktní adresu v článku 16.">As a consumer you have a statutory right to withdraw from this agreement within 14 days of entering into it, without giving a reason. Simply write to us at the contact address in section 16.</p>
+          <p data-cs="Protože jde o digitální službu, která ti začne fungovat okamžitě, žádáš nás při objednávce o zahájení plnění ještě před koncem té čtrnáctidenní lhůty. Pokud pak odstoupíš, zaplatíš poměrnou část za dobu, kterou jsi službu skutečně měl, a zbytek ti vrátíme.">Because this is a digital service that starts working immediately, when you order it you ask us to begin performance before the 14 days are up. If you then withdraw, you pay a proportionate amount for the period you actually had the service, and we refund the rest.</p>
+          <p data-cs="Peníze vracíme stejnou cestou, jakou přišly, nejpozději do 14 dnů od odstoupení.">We refund by the same route the money arrived, within 14 days of your withdrawal at the latest.</p>
+          <p data-cs="Mimo tuhle zákonnou lhůtu už za nevyužité části období peníze zpravidla nevracíme. Když se ale něco pokazí naší vinou, ozvi se. Řešíme to případ od případu a nesnažíme se z toho vykroutit.">Outside that statutory period we do not usually refund unused parts of a billing period — but if something has gone wrong on our side, get in touch. We handle those case by case and do not try to wriggle out of them.</p>
+        </section>
+
+        <section class="legal__section" id="use">
+          <h2 class="legal__h2" data-cs="8. Pravidla používání">8. Acceptable use</h2>
+          <p data-cs="Claroni používej k tomu, k čemu je. Konkrétně tě žádáme, abys nedělal tohle:">Use Claroni for what it is for. Specifically, we ask that you do not:</p>
+          <ul>
+            <li data-cs="nepokoušel se dostat k cizím účtům ani datům;">attempt to reach anyone else&rsquo;s account or data;</li>
+            <li data-cs="nepřetěžoval službu automatizovanými dotazy a nezkoušel ji obejít;">overload the service with automated requests or try to circumvent it;</li>
+            <li data-cs="neobcházel placené funkce ani omezení tarifu;">work around paid features or plan limits;</li>
+            <li data-cs="nepoužíval Claroni k ničemu protiprávnímu;">use Claroni for anything unlawful;</li>
+            <li data-cs="nekopíroval a nešířil části služby jako vlastní produkt.">copy or redistribute parts of the service as your own product.</li>
+          </ul>
+          <p data-cs="Pokud tahle pravidla vážně porušíš, můžeme ti účet omezit nebo zrušit. Než to uděláme, zkusíme se ti nejdřív ozvat, pokud to nebrání okamžité ochraně ostatních uživatelů.">If you seriously break these rules we may limit or close your account. Before we do, we will try to contact you first — unless doing so would prevent us protecting other users straight away.</p>
+        </section>
+
+        <section class="legal__section" id="data">
+          <h2 class="legal__h2" data-cs="9. Tvoje data a bankovní připojení">9. Your data and bank connections</h2>
+          <p data-cs="Tvoje finanční data zůstávají tvoje. Používáme je k tomu, abychom ti službu poskytli. Netrénujeme na nich nic, co bys nečekal, a neprodáváme je.">Your financial data stays yours. We use it to provide the service to you — we do not train anything unexpected on it, and we do not sell it.</p>
+          <p data-cs="Když propojíš banku nebo kartu, uděláme to přes ověřeného poskytovatele, kterému k tomu dáš souhlas. Přístup je určený jen ke čtení: Claroni z tvého účtu nikdy neodešle peníze a ani k tomu nemá oprávnění.">When you connect a bank or a card, we do it through a regulated provider that you authorise. The access is read-only: Claroni can never move money out of your account, and has no permission to.</p>
+          <p data-cs="Souhlas s propojením můžeš kdykoliv odvolat, buď u nás, nebo přímo ve své bance. Podrobně to popisují Zásady ochrany osobních údajů.">You can withdraw that authorisation at any time, either with us or directly with your bank. Our Privacy Policy explains this in detail.</p>
+        </section>
+
+        <section class="legal__section" id="availability">
+          <h2 class="legal__h2" data-cs="10. Dostupnost a změny služby">10. Availability and changes</h2>
+          <p data-cs="Snažíme se, aby Claroni fungovala pořád, ale nemůžeme slíbit nepřetržitý provoz. Občas potřebujeme udělat údržbu a občas vypadne něco, co neovlivníme, třeba banka nebo hosting.">We work to keep Claroni running, but we cannot promise uninterrupted service. Sometimes we need to do maintenance, and sometimes something outside our control fails — a bank, or our hosting.</p>
+          <p data-cs="Službu průběžně vyvíjíme, takže se funkce mění. Pokud bychom měli zrušit něco podstatného, co je součástí placeného tarifu, dáme ti vědět předem a budeš moci předplatné zrušit.">We develop the service continuously, so features change. If we were to remove something substantial that is part of the paid plan, we will tell you in advance and you will be able to cancel.</p>
+        </section>
+
+        <section class="legal__section" id="ip">
+          <h2 class="legal__h2" data-cs="11. Duševní vlastnictví">11. Intellectual property</h2>
+          <p data-cs="Claroni, tedy název, logo, design, texty i kód, patří nám. Tím, že službu používáš, získáváš právo ji používat, ne ji vlastnit.">Claroni — the name, the logo, the design, the text and the code — belongs to us. Using the service gives you the right to use it, not to own it.</p>
+          <p data-cs="Data, která do služby vložíš nebo která se do ní načtou z tvé banky, zůstávají tvoje. Dáváš nám jen takové oprávnění s nimi nakládat, jaké potřebujeme, abychom ti službu mohli poskytovat.">The data you put into the service, or that is loaded into it from your bank, remains yours. You grant us only the permission we need to handle it in order to provide the service to you.</p>
+        </section>
+
+        <section class="legal__section" id="liability">
+          <h2 class="legal__h2" data-cs="12. Odpovědnost">12. Liability</h2>
+          <p data-cs="Odpovídáme ti za škodu, kterou způsobíme porušením svých povinností. Neodpovídáme za rozhodnutí, která uděláš na základě údajů v aplikaci, ani za škodu způsobenou výpadkem na straně tvé banky nebo jiné třetí strany.">We are liable to you for damage we cause by breaching our obligations. We are not liable for decisions you make based on the figures in the app, nor for damage caused by a failure at your bank or another third party.</p>
+          <p data-cs="Nic v těchto podmínkách neomezuje naši odpovědnost za újmu na zdraví, za úmyslné jednání ani za hrubou nedbalost, a neomezuje ani tvoje zákonná práva spotřebitele. Kdyby některé ustanovení těchto podmínek bylo s těmi právy v rozporu, přednost mají tvoje práva.">Nothing in these terms limits our liability for personal injury, for intentional acts, or for gross negligence — nor does it limit your statutory rights as a consumer. If any provision of these terms conflicts with those rights, your rights prevail.</p>
+        </section>
+
+        <section class="legal__section" id="ending">
+          <h2 class="legal__h2" data-cs="13. Ukončení smlouvy">13. Ending the agreement</h2>
+          <p data-cs="Odejít můžeš kdykoliv: zruš předplatné a smaž si účet. Smazání účtu si můžeš vyžádat e-mailem a my ho provedeme.">You can leave whenever you like: cancel your subscription and delete your account. You can request account deletion by email and we will carry it out.</p>
+          <p data-cs="My můžeme smlouvu ukončit s měsíční výpovědní lhůtou, nebo okamžitě, pokud vážně porušíš tyto podmínky. Když ukončíme smlouvu my bez tvého zavinění, vrátíme ti poměrnou část předplatného za nevyužité období.">We may end the agreement with one month&rsquo;s notice, or immediately if you seriously break these terms. If we end it without fault on your part, we refund the proportionate part of your subscription for the unused period.</p>
+        </section>
+
+        <section class="legal__section" id="changes">
+          <h2 class="legal__h2" data-cs="14. Změny podmínek">14. Changes to these terms</h2>
+          <p data-cs="Podmínky občas potřebujeme upravit, kvůli novým funkcím nebo změnám v zákonech. O podstatné změně ti dáme vědět e-mailem nejméně 30 dní předem.">We occasionally need to change these terms — because of new features or changes in the law. We will tell you by email at least 30 days before any substantial change.</p>
+          <p data-cs="Když se změnou nesouhlasíš, můžeš do dne její účinnosti zrušit předplatné a smlouvu ukončit. Pokračováním v používání služby po tomto datu změnu přijímáš.">If you do not agree with a change, you can cancel your subscription and end the agreement before it takes effect. Continuing to use the service after that date means you accept it.</p>
+        </section>
+
+        <section class="legal__section" id="law">
+          <h2 class="legal__h2" data-cs="15. Rozhodné právo a spory">15. Governing law and disputes</h2>
+          <p data-cs="Tato smlouva se řídí právem České republiky. Jako spotřebitel přitom neztrácíš ochranu, kterou ti dávají kogentní předpisy státu, ve kterém máš bydliště.">This agreement is governed by the law of the Czech Republic. As a consumer you do not thereby lose the protection of the mandatory rules of the country where you live.</p>
+          <p data-cs="Kdyby mezi námi vznikl spor, nejdřív nám prosím napiš. Většinu věcí jde vyřešit e-mailem. Když se nedohodneme, máš jako spotřebitel právo obrátit se na mimosoudní řešení sporů, které vede Česká obchodní inspekce, Štěpánská 44, 110 00 Praha 1, adr.coi.cz.">If a dispute arises between us, please write to us first — most things can be settled by email. If we cannot agree, as a consumer you have the right to out-of-court dispute resolution through the Czech Trade Inspection Authority, Štěpánská 44, 110 00 Prague 1, adr.coi.cz.</p>
+          <p data-cs="Využít můžeš i evropskou platformu pro řešení sporů online na ec.europa.eu/consumers/odr.">You can also use the European online dispute resolution platform at ec.europa.eu/consumers/odr.</p>
+        </section>
+
+        <section class="legal__section" id="contact">
+          <h2 class="legal__h2" data-cs="16. Kontakt">16. Contact</h2>
+          <p>
+            <span class="legal__void" data-cs="Není kam psát. Adresa v patičce je vymyšlená a nikdo ji nečte. U skutečné služby by tady byl funkční kontakt a lhůta, do kdy se odpovídá.">There is nowhere to write. The address in the footer is invented and nobody reads it. A real service would give a working contact here, and the time it takes to reply.</span>
+          </p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+<!-- ============================== FOOTER ================================ -->
+<!-- Site-wide footer. Every page carries this same block, verbatim — if it
+     changes here it must change on every other page too. -->
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__grid">
+
+      <!-- Stay connected -->
+      <div class="footer__col footer__col--newsletter">
+        <span class="footer__blob" aria-hidden="true"></span>
+        <h2 class="footer__title" data-cs="Zůstaň v obraze">Stay Connected</h2>
+        <p class="footer__lede" data-cs="Přihlas se k newsletteru pro novinky a exkluzivní nabídky.">
+          Join our newsletter for the latest updates and exclusive offers.
+        </p>
+        <!-- TODO: wire up newsletter signup -->
+        <form class="subscribe" novalidate>
+          <label class="sr-only" for="subscribe-email" data-cs="E-mailová adresa">Email address</label>
+          <input class="subscribe__input" id="subscribe-email" name="email" type="email"
+                 placeholder="Enter your email" data-cs-placeholder="Zadej svůj e-mail" required>
+          <button class="subscribe__btn" type="submit" aria-label="Subscribe" data-cs-label="Přihlásit k odběru">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Quick links -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Rychlé odkazy">Quick Links</h3>
+        <!-- TODO: wire up remaining destinations. Home is live on every page. -->
+        <nav class="footer__nav">
+          <a href="index.html" data-cs="Domů">Home</a>
+          <a href="#" data-cs="O nás">About Us</a>
+          <a href="#" data-cs="Služby">Services</a>
+          <a href="#" data-cs="Produkty">Products</a>
+          <a href="#" data-cs="Kontakt">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Kontakt">Contact Us</h3>
+        <address class="footer__address">
+          <p data-cs="Šanghaj, Čína">Shanghai, China</p>
+          <p><a href="tel:+8600011199980">+86 00011199980</a></p>
+          <p><a href="mailto:claroni@help.center.cn">claroni@help.center.cn</a></p>
+          <!-- These are invented. Saying so here, next to them, rather than
+               leaving someone to find out by dialling. -->
+          <p class="footer__fiction" data-cs="Vymyšlené údaje. Adresa neexistuje, telefon nefunguje a na e-mail nikdo neodpovídá.">Invented details. The address does not exist, the number does not work, and nobody reads the inbox.</p>
+        </address>
+      </div>
+
+      <!-- Social -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Sleduj nás">Follow Us</h3>
+        <ul class="social">
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-fb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span class="sr-only">Facebook</span>
+            </a>
+            <span class="tooltip" id="tt-fb" role="tooltip" data-cs="Sleduj nás na Facebooku">Follow us on Facebook</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-x">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              <span class="sr-only">X</span>
+            </a>
+            <span class="tooltip" id="tt-x" role="tooltip" data-cs="Sleduj nás na X">Follow us on X</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-ig">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/></svg>
+              <span class="sr-only">Instagram</span>
+            </a>
+            <span class="tooltip" id="tt-ig" role="tooltip" data-cs="Sleduj nás na Instagramu">Follow us on Instagram</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-li">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <span class="sr-only">LinkedIn</span>
+            </a>
+            <span class="tooltip" id="tt-li" role="tooltip" data-cs="Spoj se s námi na LinkedInu">Connect with us on LinkedIn</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Site-wide, because a visitor can land on any page first and should not
+         have to open the legal pages to learn the whole thing is a mock-up. -->
+    <p class="site-notice" data-cs="Claroni je smyšlená firma a tenhle web je cvičná ukázka. Není to skutečná služba: nic se neposkytuje, nevybírají se žádné platby a všechny údaje o firmě, kontakty i loga jsou vymyšlené. Nespoléhej se na nic z toho.">Claroni is a fictional company and this site is a practice build. It is not a real service: nothing is provided, no payments are taken, and every company detail, contact and logo on it is invented. Do not rely on any of it.</p>
+
+    <div class="footer__bottom">
+      <p class="footer__copy" data-cs="© 2026 Claroni. Všechna práva vyhrazena.">&copy; 2026 Claroni. All rights reserved.</p>
+      <nav class="footer__legal">
+        <a href="privacy.html" data-cs="Zásady ochrany osobních údajů">Privacy Policy</a>
+        <a href="terms.html" data-cs="Podmínky služby">Terms of Service</a>
+        <a href="privacy.html#cookies" data-cs="Cookies">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<script src="script.js"></script>
+<script type="module" src="assets/js/newsletter.js"></script>
+<script type="module" src="assets/js/nav-auth.js"></script>
+<script type="module" src="assets/js/nav-profile.js"></script>
+<script type="module" src="assets/js/portal.js"></script>
+</body>
+</html>

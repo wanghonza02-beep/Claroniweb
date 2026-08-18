@@ -130,6 +130,12 @@
           <!-- TODO: wire up sign-up route -->
           <a class="login__link" href="#" data-cs="Vytvořit účet">Create Account</a>
         </p>
+
+        <!-- Deliberately outside .login__foot: login-auth.js rewrites that
+             block on every mode switch, which would wipe these links out. -->
+        <p class="login__legal">
+          <span data-cs="Pokračováním souhlasíš s ">By continuing you agree to our </span><a href="terms.html" data-cs="podmínkami služby">Terms of Service</a><span data-cs=" a se "> and </span><a href="privacy.html" data-cs="zásadami ochrany osobních údajů">Privacy Policy</a><span data-cs=".">.</span>
+        </p>
       </div>
     </section>
 
@@ -187,6 +193,9 @@
           <p data-cs="Šanghaj, Čína">Shanghai, China</p>
           <p><a href="tel:+8600011199980">+86 00011199980</a></p>
           <p><a href="mailto:claroni@help.center.cn">claroni@help.center.cn</a></p>
+          <!-- These are invented. Saying so here, next to them, rather than
+               leaving someone to find out by dialling. -->
+          <p class="footer__fiction" data-cs="Vymyšlené údaje. Adresa neexistuje, telefon nefunguje a na e-mail nikdo neodpovídá.">Invented details. The address does not exist, the number does not work, and nobody reads the inbox.</p>
         </address>
       </div>
 
@@ -227,13 +236,16 @@
 
     </div>
 
+    <!-- Site-wide, because a visitor can land on any page first and should not
+         have to open the legal pages to learn the whole thing is a mock-up. -->
+    <p class="site-notice" data-cs="Claroni je smyšlená firma a tenhle web je cvičná ukázka. Není to skutečná služba: nic se neposkytuje, nevybírají se žádné platby a všechny údaje o firmě, kontakty i loga jsou vymyšlené. Nespoléhej se na nic z toho.">Claroni is a fictional company and this site is a practice build. It is not a real service: nothing is provided, no payments are taken, and every company detail, contact and logo on it is invented. Do not rely on any of it.</p>
+
     <div class="footer__bottom">
       <p class="footer__copy" data-cs="© 2026 Claroni. Všechna práva vyhrazena.">&copy; 2026 Claroni. All rights reserved.</p>
-      <!-- TODO: wire up legal pages -->
       <nav class="footer__legal">
-        <a href="#" data-cs="Zásady ochrany osobních údajů">Privacy Policy</a>
-        <a href="#" data-cs="Podmínky služby">Terms of Service</a>
-        <a href="#" data-cs="Nastavení cookies">Cookie Settings</a>
+        <a href="privacy.html" data-cs="Zásady ochrany osobních údajů">Privacy Policy</a>
+        <a href="terms.html" data-cs="Podmínky služby">Terms of Service</a>
+        <a href="privacy.html#cookies" data-cs="Cookies">Cookies</a>
       </nav>
     </div>
   </div>

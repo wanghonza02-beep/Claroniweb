@@ -16,7 +16,9 @@ ve Stripe Dashboardu. V testu se nepohnou žádné skutečné peníze a klíče 
 | `stripe-setup.sql` | tabulka `subscriptions` + RLS |
 | `functions/create-checkout-session/` | založí platbu pro přihlášeného uživatele |
 | `functions/stripe-webhook/` | zapíše výsledek platby do databáze |
-| `assets/js/checkout.js` | tlačítko na pricing stránce |
+| `functions/create-portal-session/` | otevře zákaznický portál pro předplatitele |
+| `assets/js/checkout.js` | tlačítko na pricing stránce a na dashboardu |
+| `assets/js/portal.js` | tlačítka *Manage billing* |
 | `assets/js/dashboard-auth.js` | řádek „Plan:" na dashboardu |
 
 ---
@@ -69,20 +71,21 @@ Názvy musí sedět přesně, včetně velkých písmen — funkce si je hledá 
 
 ## 4. Nasazení funkcí
 
-**Funkce jsou dvě, takže tenhle bod uděláš dvakrát.** Každá dělá jinou půlku
-platby:
+**Funkce jsou tři, takže tenhle bod uděláš třikrát.** Každá pokrývá jiný kus
+životního cyklu předplatného:
 
 | Funkce | Kdy běží | Kdo ji volá |
 |---|---|---|
 | `create-checkout-session` | návštěvník klikne na *Continue to payment* | přihlášený uživatel |
 | `stripe-webhook` | Stripe potvrdí, že platba prošla | Stripe, sám od sebe |
+| `create-portal-session` | předplatitel klikne na *Manage billing* | přihlášený uživatel |
 
-První je cesta k pokladně, druhá účtenka zpátky. Sloučit nejdou: první musí
-vyžadovat přihlášení, druhá ho vyžadovat nesmí, protože Stripe žádný účet na
-tvém webu nemá. Jedna funkce má jedno nastavení — a jedna z těch dvou cest by
-tím pádem přestala fungovat.
+První je cesta k pokladně, druhá účtenka zpátky, třetí dveře zpět dovnitř —
+změna karty, faktury, zrušení. Sloučit je nejde: webhook nesmí vyžadovat
+přihlášení, protože Stripe žádný účet na tvém webu nemá, a jedna funkce má jen
+jedno nastavení.
 
-Obě jsou jednosouborové, takže je stačí vložit do editoru v dashboardu.
+Všechny tři jsou jednosouborové, takže je stačí vložit do editoru v dashboardu.
 
 Supabase → **Edge Functions** → **Deploy a new function** → **Via editor**.
 
@@ -100,21 +103,26 @@ Supabase → **Edge Functions** → **Deploy a new function** → **Via editor**
 Stejně, jen s obsahem [`functions/stripe-webhook/index.ts`](functions/stripe-webhook/index.ts)
 a jménem `stripe-webhook`.
 
-### 4c. Vypnout „Verify JWT" — u OBOU funkcí
+### 4c. create-portal-session
+
+Stejně, s obsahem [`functions/create-portal-session/index.ts`](functions/create-portal-session/index.ts)
+a jménem `create-portal-session`. Volá ji `assets/js/portal.js`.
+
+### 4d. Vypnout „Verify JWT" — u VŠECH TŘÍ funkcí
 
 **Kde:** Supabase → **Edge Functions** → klikni na název funkce → v nastavení
 funkce najdeš přepínač **Verify JWT with legacy secret**. Přepni na **vypnuto**.
-Pak totéž u druhé funkce.
+Pak totéž u zbylých dvou.
 
 > V některých verzích dashboardu se ten přepínač nabízí už při deploji v editoru,
 > pod polem s kódem. Pokud ho tam vidíš, můžeš to vyřešit rovnou.
 
-**Proč u obou, i u té, kterou volá přihlášený uživatel:** tenhle projekt používá
+**Proč u všech, i u těch, které volá přihlášený uživatel:** tenhle projekt používá
 nový formát klíče (`sb_publishable_...`). Brána Supabase u něj odmítá i požadavky
 od přihlášeného uživatele hláškou „JWT is invalid" a doporučení Supabase je
 kontrolu na bráně vypnout a ověřovat uvnitř funkce.
 
-**Přihlášení se tím neobchází.** Obě funkce si volajícího ověřují samy:
+**Přihlášení se tím neobchází.** Každá funkce si volajícího ověřuje sama:
 
 - `create-checkout-session` zavolá `auth.getUser()` na přiložený token a
   kohokoliv, koho nedokáže identifikovat, odmítne 401. Platbu tedy nelze založit
@@ -122,6 +130,9 @@ kontrolu na bráně vypnout a ověřovat uvnitř funkce.
 - `stripe-webhook` ověří podpis v hlavičce `stripe-signature` proti
   `STRIPE_WEBHOOK_SECRET`. Událost s neplatným podpisem zahodí, takže si nikdo
   nepošle „zaplaceno" sám.
+- `create-portal-session` si `cus_` ID nebere z požadavku, ale dohledá si ho
+  v databázi podle ověřeného uživatele. Jinak by si kdokoliv otevřel cizí
+  fakturaci prostě tím, že by cizí ID poslal.
 
 > **Pozor, tohle kousne.** Supabase má známou chybu: přepínač se sám zapne
 > zpátky pokaždé, když funkci znovu nasadíš. Po každé úpravě kódu ho zkontroluj,
@@ -156,7 +167,54 @@ Secrets se načítají za běhu, takže funkci není potřeba nasazovat znovu.
 
 ---
 
-## 6. Přesměrování zpátky na pricing
+## 6. Zákaznický portál
+
+Tohle je ta druhá půlka slibu „Cancel in two taps". Portál hostuje Stripe — je
+to hotová stránka, kde si zákazník změní kartu, stáhne faktury a zruší
+předplatné. My na něj jen pošleme odkaz.
+
+**Musíš ho ale nejdřív zapnout, jinak funkce spadne.** Stripe si bez konfigurace
+neví rady, co má na té stránce ukázat.
+
+Stripe (**Test mode!**) → **Settings → Billing → Customer portal** → **Activate**.
+
+Pak zapni aspoň tohle:
+
+- **Cancel subscriptions** — bez toho zákazník nemá jak odejít a pricing stránka
+  by lhala
+- **Update payment method** — když karta propadne, opraví si to sám
+- **Invoice history** — faktury ke stažení
+
+Do **Business information** doplň odkazy na podmínky a zásady:
+
+```
+https://claroniweb.vercel.app/terms.html
+https://claroniweb.vercel.app/privacy.html
+```
+
+> **Konfigurace se nesdílí mezi režimy.** Zapnutí portálu v testu neznamená, že
+> bude zapnutý i naostro — v ostrém režimu se nastavuje znovu.
+
+### Kde to na webu je
+
+| Kde | Komu |
+|---|---|
+| Dashboard, tlačítko *Manage billing* vedle plánu | jen předplatitelům |
+| Menu účtu v navigaci, položka *Manage billing* | jen předplatitelům |
+
+Uživatel na tarifu zdarma tlačítko nevidí — nemá co spravovat. Kdyby se funkce
+zavolala bez existujícího zákazníka ve Stripu, vrátí 404 a nic nerozbije.
+
+### Ověření
+
+Přihlas se jako předplatitel, klikni na **Manage billing**. Musí tě to pustit na
+`billing.stripe.com` s pruhem **TEST MODE**. Zkus tam zrušit předplatné a vrátit
+se — na dashboardu se do pár sekund musí objevit `Pro — ends …`, protože
+zrušení pošle webhook `customer.subscription.updated`.
+
+---
+
+## 7. Přesměrování zpátky na pricing
 
 Supabase → Authentication → URL Configuration → **Redirect URLs**. K těm čtyřem
 ze [`SETUP.md`](SETUP.md) přidej ještě:
@@ -172,7 +230,7 @@ návrat přes Google odmítne.
 
 ---
 
-## 7. Zkušební platba
+## 8. Zkušební platba
 
 1. Otevři `/pricing.html` a přihlas se.
 2. Klikni na **Continue to payment** u placeného plánu.
@@ -198,7 +256,7 @@ Další testovací karty (zamítnutí, nutné 3D Secure) najdeš na
 
 ---
 
-## 8. Když to nefunguje
+## 9. Když to nefunguje
 
 Nejdřív se podívej do logů — Supabase → Edge Functions → vyber funkci → **Logs**.
 Skoro každá chyba je tam pojmenovaná.
@@ -206,10 +264,10 @@ Skoro každá chyba je tam pojmenovaná.
 | Příznak | Příčina |
 |---|---|
 | Tlačítko hlásí „Could not open checkout" | chybí `STRIPE_SECRET_KEY` nebo `STRIPE_PRICE_ID`, případně nesedí Price ID |
-| V konzoli prohlížeče 401 „JWT is invalid" | u `create-checkout-session` se zapnul zpátky Verify JWT (bod 4c) |
+| V konzoli prohlížeče 401 „JWT is invalid" | u `create-checkout-session` se zapnul zpátky Verify JWT (bod 4d) |
 | Klik vede na login, i když jsi přihlášený | vypršela session — přihlas se znovu |
 | Platba prošla, ale dashboard ukazuje `Free` | webhook nedoběhl: Stripe → Webhooks → záložka **Attempts** ukáže odpověď |
-| Webhook vrací 401 | u funkce `stripe-webhook` se zapnulo zpátky Verify JWT (bod 4c) |
+| Webhook vrací 401 | u funkce `stripe-webhook` se zapnulo zpátky Verify JWT (bod 4d) |
 | Webhook vrací 400 „Invalid signature" | `STRIPE_WEBHOOK_SECRET` je z jiného endpointu, nebo z ostrého režimu místo testovacího |
 
 Pozor na tlačítko **Send test event** u webhooku ve Stripe. Pošle vymyšlenou
@@ -219,7 +277,7 @@ platbu na webu.
 
 ---
 
-## 9. Přechod do ostrého režimu
+## 10. Přechod do ostrého režimu
 
 **Zatím tudy nechoď.** Web je záměrně v testovacím režimu. Tahle sekce je pro
 den, kdy budeš chtít vybírat skutečné peníze — projdeme ji spolu.

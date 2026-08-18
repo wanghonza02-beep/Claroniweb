@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Claroni</title>
+<meta name="description" content="What data Claroni collects, why, who else sees it, how long we keep it, and your rights under the GDPR.">
+<link rel="icon" type="image/png" href="assets/claroni-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* Applied before first paint so the theme never flashes. Shared with index.html. */
+  try {
+    if (localStorage.getItem('claroni-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) { /* private mode */ }
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-cs="Přejít na obsah">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="shell nav">
+    <a class="nav__brand" href="index.html" aria-label="Claroni">
+      <img class="nav__mark nav__mark--light" src="assets/claroni-mark.png" alt="" width="224" height="244">
+      <img class="nav__mark nav__mark--dark" src="assets/claroni-mark-white.png" alt="" width="224" height="244">
+      <span class="nav__wordmark">Claroni</span>
+    </a>
+
+    <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" class="lang__btn is-active" data-lang="en" aria-pressed="true">EN</button>
+        <span class="lang__sep" aria-hidden="true">/</span>
+        <button type="button" class="lang__btn" data-lang="cs" aria-pressed="false">CS</button>
+      </div>
+
+      <div class="theme">
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </span>
+        <button type="button" class="switch" role="switch" aria-checked="false"
+                aria-label="Toggle dark mode" data-cs-label="Přepnout tmavý režim">
+          <span class="switch__knob" aria-hidden="true"></span>
+        </button>
+        <span class="theme__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </span>
+      </div>
+
+      <a class="btn btn--ghost nav__login" href="login.html" data-cs="Přihlásit">Log in</a>
+
+      <!-- Hidden, not removed: it keeps occupying its exact width so every
+           other nav item lands on the same pixel as on the landing page. -->
+      <a class="btn btn--primary nav__reserved" href="pricing.html" data-hide-when-pro
+         data-cs="Začít" aria-hidden="true" tabindex="-1">Get started</a>
+
+      <!-- Subscribers only; takes over the reserved slot above. -->
+      <div class="nav__profile" hidden>
+        <button class="nav__profile-btn" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="nav__avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
+          <span class="nav__profile-name" data-profile-name></span>
+          <svg class="nav__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav__menu" hidden>
+          <p class="nav__menu-head" data-profile-name></p>
+          <a class="nav__menu-item" href="dashboard.html" data-cs="Přehled financí">Dashboard</a>
+          <button class="nav__menu-item" type="button" data-portal data-cs="Spravovat platby">Manage billing</button>
+          <button class="nav__menu-item" type="button" data-signout data-cs="Odhlásit se">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="pricing legal">
+
+  <div class="shell">
+    <div class="pricing__panel">
+      <div class="pricing__head">
+        <a class="back-btn" href="index.html" aria-label="Back to home" data-cs-label="Zpět na úvod">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        </a>
+        <h1 class="pricing__title" data-cs="Ochrana osobních údajů">Privacy Policy</h1>
+      </div>
+
+      <div class="legal__doc">
+
+        <p class="legal__notice" role="note" data-cs="Tohle není skutečný právní dokument. Claroni je smyšlená firma a tenhle web je cvičná ukázka, na které se učíme. Nic tady nezakládá žádný závazek, žádná služba se neposkytuje a nemůžou přejít žádné peníze — platby běží v testovacím režimu Stripu, kde skutečné karty neprojdou. Nespoléhej se na nic z toho.">This is not a real legal document. Claroni is a fictional company and this site is a practice build, made to learn on. Nothing written here creates any obligation, no service is provided, and no money can change hands — the payment flow runs in Stripe test mode, where real cards are declined. Do not rely on any of it.</p>
+
+        <p class="legal__meta" data-cs="Poslední aktualizace: 18. srpna 2026">Last updated: 18 August 2026</p>
+
+        <p class="legal__lede" data-cs="Claroni vidí do tvých peněz, takže má smysl, abys věděl přesně, co s tvými daty děláme. Tenhle dokument to popisuje bez opisů: co sbíráme, proč, komu se to dostane do ruky, jak dlouho si to necháváme a co s tím můžeš udělat ty. Nemáme žádnou analytiku ani reklamní sledování.">Claroni sees into your money, so it is fair that you know exactly what we do with your data. This document says it plainly: what we collect, why, who else gets to see it, how long we keep it, and what you can do about it. We run no analytics and no advertising trackers.</p>
+
+        <nav class="legal__toc" aria-label="Contents">
+          <p class="legal__toc-title" data-cs="Obsah">Contents</p>
+          <a href="#controller" data-cs="1. Kdo je správce">1. Who is the controller</a>
+          <a href="#collect" data-cs="2. Jaké údaje zpracováváme">2. What data we process</a>
+          <a href="#why" data-cs="3. Proč je zpracováváme a z jakého titulu">3. Why, and on what legal basis</a>
+          <a href="#cookies" data-cs="4. Cookies a úložiště prohlížeče">4. Cookies and browser storage</a>
+          <a href="#payments" data-cs="5. Platby">5. Payments</a>
+          <a href="#sharing" data-cs="6. Komu údaje předáváme">6. Who we share data with</a>
+          <a href="#transfers" data-cs="7. Předávání mimo EU">7. Transfers outside the EU</a>
+          <a href="#retention" data-cs="8. Jak dlouho údaje uchováváme">8. How long we keep data</a>
+          <a href="#rights" data-cs="9. Tvoje práva">9. Your rights</a>
+          <a href="#security" data-cs="10. Zabezpečení">10. Security</a>
+          <a href="#children" data-cs="11. Děti">11. Children</a>
+          <a href="#changes" data-cs="12. Změny těchto zásad">12. Changes to this policy</a>
+          <a href="#contact" data-cs="13. Kontakt a stížnosti">13. Contact and complaints</a>
+        </nav>
+
+        <section class="legal__section" id="controller">
+          <h2 class="legal__h2" data-cs="1. Kdo je správce">1. Who is the controller</h2>
+          <p>
+            <span class="legal__void" data-cs="Žádný správce neexistuje. Claroni je smyšlená firma a tenhle web nikdo neprovozuje, takže se tu ve skutečnosti nezpracovávají ničí osobní údaje. Zbytek dokumentu popisuje, jak by to bylo, kdyby služba běžela — a je psaný podle toho, co kód opravdu dělá, ne podle šablony.">No controller exists. Claroni is a fictional company and nobody operates this site, so no personal data is in fact being processed here. The rest of this document describes how it would work if the service ran — and it is written from what the code actually does, not from a template.</span>
+          </p>
+          <p data-cs="Zpracování se řídí obecným nařízením o ochraně osobních údajů (GDPR) a českým zákonem o zpracování osobních údajů.">Processing is governed by the General Data Protection Regulation (GDPR) and the Czech Personal Data Processing Act.</p>
+        </section>
+
+        <section class="legal__section" id="collect">
+          <h2 class="legal__h2" data-cs="2. Jaké údaje zpracováváme">2. What data we process</h2>
+          <p data-cs="Sbíráme jen to, bez čeho by služba nefungovala. Tady je úplný výčet.">We collect only what the service cannot work without. This is the complete list.</p>
+
+          <dl class="legal__pairs">
+            <div class="legal__pair">
+              <dt data-cs="Účet">Account</dt>
+              <dd data-cs="E-mailová adresa a heslo (uložené jako nevratný otisk, nikdy v čitelné podobě). Když se přihlásíš přes Google, dostaneme navíc jméno, které máš u Googlu, a tvou profilovou adresu.">Your email address and password (stored as an irreversible hash, never in readable form). If you sign in with Google, we also receive the name on your Google account.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Předplatné">Subscription</dt>
+              <dd data-cs="Identifikátory od Stripu, stav předplatného, datum dalšího obnovení a informace, jestli je zrušené ke konci období. Údaje o kartě mezi nimi nejsou.">Identifiers from Stripe, the status of your subscription, your next renewal date, and whether it is set to cancel at the end of the period. No card details are among them.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Finanční data">Financial data</dt>
+              <dd data-cs="Transakce a zůstatky z účtů a karet, které si sám propojíš, plus kategorie, do kterých je aplikace roztřídí. Přístup je pouze ke čtení.">Transactions and balances from the accounts and cards you choose to connect, plus the categories the app sorts them into. The access is read-only.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Newsletter">Newsletter</dt>
+              <dd data-cs="Pokud se přihlásíš k odběru, uložíme si jen tvůj e-mail a datum přihlášení. Nic víc.">If you subscribe, we store only your email address and the date you signed up. Nothing else.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Technické údaje">Technical data</dt>
+              <dd data-cs="Naši poskytovatelé si vedou provozní logy, které obsahují IP adresu a typ prohlížeče. Používají se k provozu a bezpečnosti, ne k tvému sledování.">Our providers keep operational logs containing IP address and browser type. They are used to run and secure the service, not to track you.</dd>
+            </div>
+          </dl>
+
+          <p data-cs="Co nesbíráme: rodné číslo, číslo občanského průkazu, polohu, kontakty, ani nic z tvého zařízení nad rámec výše uvedeného. A jak je popsáno v článku 4, nemáme žádnou analytiku.">What we do not collect: national identification numbers, ID document numbers, your location, your contacts, or anything else from your device beyond the above. And as section 4 explains, we run no analytics.</p>
+        </section>
+
+        <section class="legal__section" id="why">
+          <h2 class="legal__h2" data-cs="3. Proč je zpracováváme a z jakého titulu">3. Why, and on what legal basis</h2>
+          <p data-cs="GDPR po nás chce, abychom u každého účelu uvedli právní titul. Tady jsou všechny.">The GDPR requires us to state a legal basis for each purpose. Here they all are.</p>
+
+          <dl class="legal__pairs">
+            <div class="legal__pair">
+              <dt data-cs="Poskytování služby">Providing the service</dt>
+              <dd data-cs="Vedení účtu, zobrazování tvých financí, správa předplatného. Titul: plnění smlouvy podle čl. 6 odst. 1 písm. b) GDPR.">Running your account, showing you your finances, managing your subscription. Basis: performance of a contract, Article 6(1)(b) GDPR.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Propojení banky">Bank connection</dt>
+              <dd data-cs="Načítání transakcí z účtů, které propojíš. Titul: tvůj výslovný souhlas podle čl. 6 odst. 1 písm. a) GDPR, který můžeš kdykoliv odvolat.">Reading transactions from the accounts you connect. Basis: your explicit consent, Article 6(1)(a) GDPR, which you can withdraw at any time.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Newsletter">Newsletter</dt>
+              <dd data-cs="Zasílání novinek. Titul: tvůj souhlas. V každém e-mailu je odhlašovací odkaz.">Sending updates. Basis: your consent. Every email has an unsubscribe link.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Účetnictví a daně">Accounting and tax</dt>
+              <dd data-cs="Uchovávání dokladů o platbách. Titul: plnění právní povinnosti podle čl. 6 odst. 1 písm. c) GDPR.">Keeping records of payments. Basis: compliance with a legal obligation, Article 6(1)(c) GDPR.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Bezpečnost">Security</dt>
+              <dd data-cs="Provozní logy, ochrana proti zneužití. Titul: náš oprávněný zájem podle čl. 6 odst. 1 písm. f) GDPR na tom, aby služba fungovala a nebyla zneužita.">Operational logs and abuse prevention. Basis: our legitimate interest, Article 6(1)(f) GDPR, in keeping the service working and unabused.</dd>
+            </div>
+          </dl>
+
+          <p data-cs="Neprodáváme tvoje údaje nikomu. Nepoužíváme je k reklamě ani k profilování, které by pro tebe mělo právní účinky. Neděláme na jejich základě žádné automatizované rozhodování.">We do not sell your data to anyone. We do not use it for advertising, or for profiling with legal effects for you. We make no automated decisions about you.</p>
+        </section>
+
+        <section class="legal__section" id="cookies">
+          <h2 class="legal__h2" data-cs="4. Cookies a úložiště prohlížeče">4. Cookies and browser storage</h2>
+          <p data-cs="Claroni nenastavuje žádné cookies. Nemáme Google Analytics, Meta pixel ani jiný analytický či reklamní nástroj. Proto na webu nenajdeš ani žádné okno se souhlasem s cookies — nebylo by k čemu ho dávat.">Claroni sets no cookies. We have no Google Analytics, no Meta pixel, and no other analytics or advertising tool. That is why you will not find a cookie consent banner on this site — there would be nothing to consent to.</p>
+          <p data-cs="Používáme ale úložiště prohlížeče (localStorage), a to na tyhle tři věci:">We do use browser storage (localStorage), for these three things:</p>
+          <ul>
+            <li data-cs="claroni-theme — jestli máš zapnutý světlý nebo tmavý režim;">claroni-theme — whether you have light or dark mode on;</li>
+            <li data-cs="volba jazyka — jestli čteš web v angličtině, nebo česky;">your language choice — whether you read the site in English or Czech;</li>
+            <li data-cs="přihlašovací token od Supabase — díky němu zůstáváš přihlášený a nemusíš zadávat heslo při každém načtení stránky. Pokud ses přihlásil přes Google, je tam uložený i token od Googlu.">a sign-in token from Supabase — this is what keeps you logged in instead of asking for your password on every page. If you signed in with Google, a Google token is stored alongside it.</li>
+          </ul>
+          <p data-cs="Všechno tohle je nezbytné k fungování webu a k tvému přihlášení, takže to podle zákona souhlas nevyžaduje. Vymazat si to můžeš kdykoliv sám: stačí smazat data webu v nastavení prohlížeče, případně se odhlásit.">All of this is strictly necessary to run the site and keep you signed in, so it does not require consent under the law. You can clear it yourself at any time by deleting site data in your browser settings, or by signing out.</p>
+          <p data-cs="Ještě jedna věc, kterou je fér přiznat: stránky načítají písma z Google Fonts a část kódu z knihovny esm.sh. Při každém načtení se těmto službám odešle tvoje IP adresa. Nesledují tě kvůli nám a nic jim o tobě neposíláme, ale technicky se to děje a měl bys o tom vědět.">One more thing it is only fair to state: our pages load fonts from Google Fonts and part of our code from the esm.sh library. Each page load sends your IP address to those services. They are not tracking you on our behalf and we send them nothing about you, but technically it happens and you should know.</p>
+        </section>
+
+        <section class="legal__section" id="payments">
+          <h2 class="legal__h2" data-cs="5. Platby">5. Payments</h2>
+          <p data-cs="Platby za předplatné zpracovává společnost Stripe. Když platíš, zadáváš údaje o kartě přímo do formuláře Stripu — neprocházejí přes naše servery a my se k číslu tvé karty nikdy nedostaneme.">Subscription payments are processed by Stripe. When you pay, you enter your card details directly into Stripe&rsquo;s form — they do not pass through our servers and we never see your card number.</p>
+          <p data-cs="Od Stripu si ukládáme jen identifikátor zákazníka a předplatného, stav platby a datum obnovení. To je všechno, co potřebujeme, abychom věděli, jaký máš tarif.">From Stripe we store only a customer and subscription identifier, the payment status, and the renewal date. That is all we need in order to know which plan you are on.</p>
+          <p data-cs="Ve Správě plateb, kterou najdeš na dashboardu, si můžeš kdykoliv změnit kartu, stáhnout faktury nebo předplatné zrušit. Tuhle stránku provozuje přímo Stripe.">In Manage billing, which you will find on your dashboard, you can change your card, download invoices, or cancel at any time. That page is operated by Stripe directly.</p>
+          <p data-cs="Stripe je samostatný správce údajů, které zpracovává pro účely platebních služeb a prevence podvodů. Jeho vlastní zásady najdeš na stripe.com/privacy.">Stripe is an independent controller of the data it processes for payment services and fraud prevention. Its own policy is at stripe.com/privacy.</p>
+        </section>
+
+        <section class="legal__section" id="sharing">
+          <h2 class="legal__h2" data-cs="6. Komu údaje předáváme">6. Who we share data with</h2>
+          <p data-cs="Nikomu je neprodáváme. Předáváme je jen dodavatelům, bez kterých by služba nefungovala, a to jen v nutném rozsahu. Tady je úplný seznam.">We sell your data to nobody. We pass it only to the suppliers the service cannot run without, and only as far as necessary. This is the complete list.</p>
+
+          <dl class="legal__pairs">
+            <div class="legal__pair">
+              <dt>Supabase</dt>
+              <dd data-cs="Databáze a přihlašování. Uloženy jsou tady tvoje účty, předplatná a odběry newsletteru.">Database and authentication. Your accounts, subscriptions and newsletter signups are stored here.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt>Stripe</dt>
+              <dd data-cs="Zpracování plateb, fakturace a zákaznický portál.">Payment processing, invoicing and the customer portal.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt>Vercel</dt>
+              <dd data-cs="Hosting webu. Vede provozní logy s IP adresami návštěvníků.">Website hosting. Keeps operational logs containing visitors&rsquo; IP addresses.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Google (přihlášení a písma)">Google (sign-in and fonts)</dt>
+              <dd data-cs="Přihlášení přes Google, pokud ho použiješ. Nezávisle na tom se z Google Fonts načítají písma, čímž se odešle tvoje IP adresa.">Google sign-in, if you use it. Separately, fonts are loaded from Google Fonts, which sends your IP address.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt>esm.sh</dt>
+              <dd data-cs="Knihovna, ze které se načítá část našeho kódu v prohlížeči. Dostane tvoji IP adresu, nic dalšího.">A library service from which part of our browser code is loaded. It receives your IP address and nothing else.</dd>
+            </div>
+          </dl>
+
+          <p data-cs="Údaje můžeme dále předat, jen pokud nám to uloží zákon nebo o to požádá orgán veřejné moci na základě platného právního titulu.">We may otherwise disclose data only where the law requires it, or where a public authority requests it on a valid legal basis.</p>
+        </section>
+
+        <section class="legal__section" id="transfers">
+          <h2 class="legal__h2" data-cs="7. Předávání mimo EU">7. Transfers outside the EU</h2>
+          <p data-cs="Někteří z výše uvedených dodavatelů sídlí ve Spojených státech, takže se tvoje údaje mohou dostat mimo Evropský hospodářský prostor.">Some of the suppliers above are based in the United States, so your data may leave the European Economic Area.</p>
+          <p data-cs="V takovém případě se předání opírá o standardní smluvní doložky schválené Evropskou komisí, případně o rozhodnutí o odpovídající ochraně tam, kde se uplatní rámec EU-US Data Privacy Framework. Kopii doložek ti na požádání poskytneme.">Where that happens, the transfer relies on Standard Contractual Clauses approved by the European Commission, or on an adequacy decision where the EU-US Data Privacy Framework applies. We will provide a copy of the clauses on request.</p>
+        </section>
+
+        <section class="legal__section" id="retention">
+          <h2 class="legal__h2" data-cs="8. Jak dlouho údaje uchováváme">8. How long we keep data</h2>
+          <dl class="legal__pairs">
+            <div class="legal__pair">
+              <dt data-cs="Údaje o účtu">Account data</dt>
+              <dd data-cs="Po dobu, kdy máš u nás účet. Po jeho smazání je odstraníme do 30 dnů.">For as long as you have an account with us. After you delete it, we remove them within 30 days.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Finanční data">Financial data</dt>
+              <dd data-cs="Do odpojení účtu nebo smazání profilu. Pak je mažeme do 30 dnů.">Until you disconnect the account or delete your profile. We then delete them within 30 days.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Doklady o platbách">Payment records</dt>
+              <dd data-cs="10 let od konce zdaňovacího období, jak ukládá zákon o účetnictví. Tuhle lhůtu nemůžeme zkrátit ani na tvou žádost.">Ten years from the end of the tax period, as accounting law requires. We cannot shorten this even at your request.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Newsletter">Newsletter</dt>
+              <dd data-cs="Do odhlášení z odběru.">Until you unsubscribe.</dd>
+            </div>
+            <div class="legal__pair">
+              <dt data-cs="Provozní logy">Operational logs</dt>
+              <dd data-cs="Zpravidla do 30 dnů, podle nastavení jednotlivých dodavatelů.">Typically up to 30 days, depending on each supplier&rsquo;s settings.</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="legal__section" id="rights">
+          <h2 class="legal__h2" data-cs="9. Tvoje práva">9. Your rights</h2>
+          <p data-cs="Podle GDPR máš vůči nám tahle práva. Uplatnit je můžeš zdarma a stačí nám napsat na kontakt v článku 13.">Under the GDPR you have the following rights against us. Exercising them is free — just write to the contact in section 13.</p>
+          <ul>
+            <li data-cs="Právo na přístup: můžeš chtít vědět, jaké údaje o tobě máme, a dostat jejich kopii.">Access: you can ask what data we hold about you and receive a copy of it.</li>
+            <li data-cs="Právo na opravu: nesprávné údaje musíme opravit.">Rectification: we must correct anything inaccurate.</li>
+            <li data-cs="Právo na výmaz: můžeš chtít, abychom tvoje údaje smazali, s výjimkou těch, které musíme ze zákona uchovat.">Erasure: you can ask us to delete your data, except what we are legally required to keep.</li>
+            <li data-cs="Právo na omezení zpracování: můžeš chtít, abychom s údaji dočasně přestali pracovat, dokud se něco nevyjasní.">Restriction: you can ask us to pause processing while something is being resolved.</li>
+            <li data-cs="Právo na přenositelnost: údaje, které jsi nám dal, ti vydáme ve strojově čitelném formátu.">Portability: we will hand over the data you gave us in a machine-readable format.</li>
+            <li data-cs="Právo vznést námitku: proti zpracování z titulu oprávněného zájmu můžeš kdykoliv namítat.">Objection: you can object at any time to processing based on legitimate interest.</li>
+            <li data-cs="Právo odvolat souhlas: kdekoliv zpracováváme na základě souhlasu, můžeš ho kdykoliv vzít zpět. Zpracování do té doby zůstává v pořádku.">Withdraw consent: wherever we rely on consent, you can withdraw it at any time. Processing up to that point remains lawful.</li>
+          </ul>
+          <p data-cs="Odpovídáme do jednoho měsíce. Pokud by to mělo trvat déle, dáme ti vědět proč.">We reply within one month. If it will take longer, we will tell you why.</p>
+        </section>
+
+        <section class="legal__section" id="security">
+          <h2 class="legal__h2" data-cs="10. Zabezpečení">10. Security</h2>
+          <p data-cs="Veškerá komunikace mezi tvým prohlížečem a našimi servery je šifrovaná. Hesla ukládáme jako nevratný otisk, takže je neznáme ani my. Přístup k databázi je omezený pravidly na úrovni jednotlivých řádků, takže se ke svým datům dostaneš jen ty.">All traffic between your browser and our servers is encrypted. Passwords are stored as an irreversible hash, so not even we know them. Database access is restricted by row-level rules, so only you can reach your own data.</p>
+          <p data-cs="Žádné zabezpečení není absolutní. Kdyby došlo k porušení zabezpečení, které by pro tebe znamenalo vysoké riziko, dáme ti vědět bez zbytečného odkladu a nahlásíme to Úřadu pro ochranu osobních údajů do 72 hodin, jak ukládá GDPR.">No security is absolute. If a breach occurred that posed a high risk to you, we will tell you without undue delay and report it to the Czech Data Protection Authority within 72 hours, as the GDPR requires.</p>
+        </section>
+
+        <section class="legal__section" id="children">
+          <h2 class="legal__h2" data-cs="11. Děti">11. Children</h2>
+          <p data-cs="Claroni je určená lidem od 18 let a vědomě nezpracováváme údaje dětí. Pokud zjistíš, že nám je dítě poskytlo, napiš nám a my je smažeme.">Claroni is intended for people aged 18 and over, and we do not knowingly process children&rsquo;s data. If you find that a child has given us data, write to us and we will delete it.</p>
+        </section>
+
+        <section class="legal__section" id="changes">
+          <h2 class="legal__h2" data-cs="12. Změny těchto zásad">12. Changes to this policy</h2>
+          <p data-cs="Zásady se mohou změnit, když přidáme funkci nebo vyměníme dodavatele. Datum poslední aktualizace je vždycky nahoře. O podstatné změně, hlavně o novém účelu zpracování, ti dáme vědět e-mailem předem.">This policy may change when we add a feature or swap a supplier. The last-updated date is always at the top. We will email you in advance about any substantial change, particularly a new purpose of processing.</p>
+        </section>
+
+        <section class="legal__section" id="contact">
+          <h2 class="legal__h2" data-cs="13. Kontakt a stížnosti">13. Contact and complaints</h2>
+          <p>
+            <span class="legal__void" data-cs="Není kam psát a není komu. E-mail v patičce je vymyšlený. U skutečné služby by tady byl funkční kontakt, případně pověřenec pro ochranu osobních údajů, pokud by ho zákon vyžadoval.">There is nowhere to write, and nobody to write to. The email in the footer is invented. A real service would give a working contact here, and a data protection officer if the law required one.</span>
+          </p>
+          <p data-cs="Pokud si myslíš, že s tvými údaji zacházíme špatně, řekni to nejdřív nám — většinou to jde rychle napravit. Máš ale i právo podat stížnost dozorovému úřadu: Úřad pro ochranu osobních údajů, Pplk. Sochora 27, 170 00 Praha 7, uoou.gov.cz.">If you think we are handling your data badly, tell us first — most things can be put right quickly. You also have the right to complain to the supervisory authority: Úřad pro ochranu osobních údajů, Pplk. Sochora 27, 170 00 Prague 7, uoou.gov.cz.</p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+<!-- ============================== FOOTER ================================ -->
+<!-- Site-wide footer. Every page carries this same block, verbatim — if it
+     changes here it must change on every other page too. -->
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__grid">
+
+      <!-- Stay connected -->
+      <div class="footer__col footer__col--newsletter">
+        <span class="footer__blob" aria-hidden="true"></span>
+        <h2 class="footer__title" data-cs="Zůstaň v obraze">Stay Connected</h2>
+        <p class="footer__lede" data-cs="Přihlas se k newsletteru pro novinky a exkluzivní nabídky.">
+          Join our newsletter for the latest updates and exclusive offers.
+        </p>
+        <!-- TODO: wire up newsletter signup -->
+        <form class="subscribe" novalidate>
+          <label class="sr-only" for="subscribe-email" data-cs="E-mailová adresa">Email address</label>
+          <input class="subscribe__input" id="subscribe-email" name="email" type="email"
+                 placeholder="Enter your email" data-cs-placeholder="Zadej svůj e-mail" required>
+          <button class="subscribe__btn" type="submit" aria-label="Subscribe" data-cs-label="Přihlásit k odběru">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Quick links -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Rychlé odkazy">Quick Links</h3>
+        <!-- TODO: wire up remaining destinations. Home is live on every page. -->
+        <nav class="footer__nav">
+          <a href="index.html" data-cs="Domů">Home</a>
+          <a href="#" data-cs="O nás">About Us</a>
+          <a href="#" data-cs="Služby">Services</a>
+          <a href="#" data-cs="Produkty">Products</a>
+          <a href="#" data-cs="Kontakt">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Kontakt">Contact Us</h3>
+        <address class="footer__address">
+          <p data-cs="Šanghaj, Čína">Shanghai, China</p>
+          <p><a href="tel:+8600011199980">+86 00011199980</a></p>
+          <p><a href="mailto:claroni@help.center.cn">claroni@help.center.cn</a></p>
+          <!-- These are invented. Saying so here, next to them, rather than
+               leaving someone to find out by dialling. -->
+          <p class="footer__fiction" data-cs="Vymyšlené údaje. Adresa neexistuje, telefon nefunguje a na e-mail nikdo neodpovídá.">Invented details. The address does not exist, the number does not work, and nobody reads the inbox.</p>
+        </address>
+      </div>
+
+      <!-- Social -->
+      <div class="footer__col">
+        <h3 class="footer__heading" data-cs="Sleduj nás">Follow Us</h3>
+        <ul class="social">
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-fb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span class="sr-only">Facebook</span>
+            </a>
+            <span class="tooltip" id="tt-fb" role="tooltip" data-cs="Sleduj nás na Facebooku">Follow us on Facebook</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-x">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              <span class="sr-only">X</span>
+            </a>
+            <span class="tooltip" id="tt-x" role="tooltip" data-cs="Sleduj nás na X">Follow us on X</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-ig">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/></svg>
+              <span class="sr-only">Instagram</span>
+            </a>
+            <span class="tooltip" id="tt-ig" role="tooltip" data-cs="Sleduj nás na Instagramu">Follow us on Instagram</span>
+          </li>
+          <li class="social__item">
+            <a class="social__btn" href="#" aria-describedby="tt-li">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <span class="sr-only">LinkedIn</span>
+            </a>
+            <span class="tooltip" id="tt-li" role="tooltip" data-cs="Spoj se s námi na LinkedInu">Connect with us on LinkedIn</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Site-wide, because a visitor can land on any page first and should not
+         have to open the legal pages to learn the whole thing is a mock-up. -->
+    <p class="site-notice" data-cs="Claroni je smyšlená firma a tenhle web je cvičná ukázka. Není to skutečná služba: nic se neposkytuje, nevybírají se žádné platby a všechny údaje o firmě, kontakty i loga jsou vymyšlené. Nespoléhej se na nic z toho.">Claroni is a fictional company and this site is a practice build. It is not a real service: nothing is provided, no payments are taken, and every company detail, contact and logo on it is invented. Do not rely on any of it.</p>
+
+    <div class="footer__bottom">
+      <p class="footer__copy" data-cs="© 2026 Claroni. Všechna práva vyhrazena.">&copy; 2026 Claroni. All rights reserved.</p>
+      <nav class="footer__legal">
+        <a href="privacy.html" data-cs="Zásady ochrany osobních údajů">Privacy Policy</a>
+        <a href="terms.html" data-cs="Podmínky služby">Terms of Service</a>
+        <a href="privacy.html#cookies" data-cs="Cookies">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<script src="script.js"></script>
+<script type="module" src="assets/js/newsletter.js"></script>
+<script type="module" src="assets/js/nav-auth.js"></script>
+<script type="module" src="assets/js/nav-profile.js"></script>
+<script type="module" src="assets/js/portal.js"></script>
+</body>
+</html>
