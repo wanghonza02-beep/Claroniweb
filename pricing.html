@@ -232,10 +232,10 @@
         <!-- TODO: wire up remaining destinations. Home is live on every page. -->
         <nav class="footer__nav">
           <a href="index.html" data-cs="Domů">Home</a>
-          <a href="#" data-cs="O nás">About Us</a>
-          <a href="#" data-cs="Služby">Services</a>
-          <a href="#" data-cs="Produkty">Products</a>
-          <a href="#" data-cs="Kontakt">Contact</a>
+          <a href="about.html" data-cs="O nás">About Us</a>
+          <a href="services.html" data-cs="Služby">Services</a>
+          <a href="products.html" data-cs="Produkty">Products</a>
+          <a href="contact.html" data-cs="Kontakt">Contact</a>
         </nav>
       </div>
 
@@ -255,34 +255,15 @@
       <!-- Social -->
       <div class="footer__col">
         <h3 class="footer__heading" data-cs="Sleduj nás">Follow Us</h3>
+        <!-- One account, and a real one. The other three were invented links
+             to profiles that do not exist. -->
         <ul class="social">
           <li class="social__item">
-            <a class="social__btn" href="#" aria-describedby="tt-fb">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-              <span class="sr-only">Facebook</span>
-            </a>
-            <span class="tooltip" id="tt-fb" role="tooltip" data-cs="Sleduj nás na Facebooku">Follow us on Facebook</span>
-          </li>
-          <li class="social__item">
-            <a class="social__btn" href="#" aria-describedby="tt-x">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-              <span class="sr-only">X</span>
-            </a>
-            <span class="tooltip" id="tt-x" role="tooltip" data-cs="Sleduj nás na X">Follow us on X</span>
-          </li>
-          <li class="social__item">
-            <a class="social__btn" href="#" aria-describedby="tt-ig">
+            <a class="social__btn" href="#" aria-describedby="tt-ig" data-instagram>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/></svg>
               <span class="sr-only">Instagram</span>
             </a>
             <span class="tooltip" id="tt-ig" role="tooltip" data-cs="Sleduj nás na Instagramu">Follow us on Instagram</span>
-          </li>
-          <li class="social__item">
-            <a class="social__btn" href="#" aria-describedby="tt-li">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-              <span class="sr-only">LinkedIn</span>
-            </a>
-            <span class="tooltip" id="tt-li" role="tooltip" data-cs="Spoj se s námi na LinkedInu">Connect with us on LinkedIn</span>
           </li>
         </ul>
       </div>
@@ -291,7 +272,7 @@
 
     <!-- Site-wide, because a visitor can land on any page first and should not
          have to open the legal pages to learn the whole thing is a mock-up. -->
-    <p class="site-notice" data-cs="Claroni je smyšlená firma a tenhle web je cvičná ukázka. Není to skutečná služba: nic se neposkytuje, nevybírají se žádné platby a všechny údaje o firmě, kontakty i loga jsou vymyšlené. Nespoléhej se na nic z toho.">Claroni is a fictional company and this site is a practice build. It is not a real service: nothing is provided, no payments are taken, and every company detail, contact and logo on it is invented. Do not rely on any of it.</p>
+    <p class="site-notice" data-cs="Claroni je smyšlená firma a tenhle web je cvičná ukázka. Není to skutečná služba: nic se neposkytuje, nevybírají se žádné platby a adresa, telefon i e-mail jsou vymyšlené. Jediná skutečná věc tady je odkaz na Instagram — ten vede na opravdový osobní účet. Nic jiného na tomhle webu skutečné není.">Claroni is a fictional company and this site is a practice build. It is not a real service: nothing is provided, no payments are taken, and the address, phone number and email are invented. The one real thing here is the Instagram link, which goes to a genuine personal account. Nothing else on this site is.</p>
 
     <div class="footer__bottom">
       <p class="footer__copy" data-cs="© 2026 Claroni. Všechna práva vyhrazena.">&copy; 2026 Claroni. All rights reserved.</p>

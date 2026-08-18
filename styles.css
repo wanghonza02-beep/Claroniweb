@@ -1942,8 +1942,10 @@ section[id] { scroll-margin-top: 96px; }
   .reveal { opacity: 1; transform: none; }
 }
 
-/* ============================ legal documents ==========================
-   Terms and Privacy. They reuse the pricing page's shell wholesale — the same
+/* ======================= long-form document pages =====================
+   Terms, Privacy, About, Services, Products and Contact all share this one
+   prose pattern. The class prefix says "legal" because those two came first;
+   the rules themselves are generic. They reuse the pricing page's shell wholesale — the same
    .pricing padding, .pricing__panel surface and .pricing__head back button —
    so nothing here invents a second page layout.
 

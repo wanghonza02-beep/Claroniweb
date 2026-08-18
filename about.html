@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<!-- Always dark, and stated in the markup rather than applied by script, so the
-     page is dark even before JS runs or with JS disabled. data-theme-locked
-     tells script.js to keep writing the user's preference to localStorage
-     without letting the toggle repaint this page. -->
-<html lang="en" class="dark" data-theme-locked="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sign in — Claroni</title>
-<meta name="description" content="Sign in to Claroni.">
-<meta name="robots" content="noindex">
+<title>About Us — Claroni</title>
+<meta name="description" content="Why Claroni exists, what we believe, and who it is for.">
 <link rel="icon" type="image/png" href="assets/claroni-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<!-- No theme-restoring script here on purpose: this page is dark unconditionally,
-     so there is nothing to read back and nothing to flash. -->
+<script>
+  /* Applied before first paint so the theme never flashes. Shared with index.html. */
+  try {
+    if (localStorage.getItem('claroni-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) { /* private mode */ }
+</script>
 </head>
 <body>
 
@@ -50,104 +51,83 @@
         </span>
       </div>
 
-      <!-- Hidden rather than removed. They keep occupying their exact width, so
-           the language and theme controls land on the same pixel as they do on
-           the landing page. visibility:hidden also drops them from the tab
-           order, and data-cs keeps the reserved width correct in Czech too. -->
-      <a class="btn btn--ghost nav__login nav__reserved" href="login.html"
-         data-cs="Přihlásit" aria-hidden="true" tabindex="-1">Log in</a>
-      <a class="btn btn--primary nav__reserved" href="pricing.html"
+      <a class="btn btn--ghost nav__login" href="login.html" data-cs="Přihlásit">Log in</a>
+
+      <!-- Hidden, not removed: it keeps occupying its exact width so every
+           other nav item lands on the same pixel as on the landing page. -->
+      <a class="btn btn--primary nav__reserved" href="pricing.html" data-hide-when-pro
          data-cs="Začít" aria-hidden="true" tabindex="-1">Get started</a>
+
+      <!-- Subscribers only; takes over the reserved slot above. -->
+      <div class="nav__profile" hidden>
+        <button class="nav__profile-btn" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="nav__avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
+          <span class="nav__profile-name" data-profile-name></span>
+          <svg class="nav__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav__menu" hidden>
+          <p class="nav__menu-head" data-profile-name></p>
+          <a class="nav__menu-item" href="dashboard.html" data-cs="Přehled financí">Dashboard</a>
+          <button class="nav__menu-item" type="button" data-portal data-cs="Spravovat platby">Manage billing</button>
+          <button class="nav__menu-item" type="button" data-signout data-cs="Odhlásit se">Sign Out</button>
+        </div>
+      </div>
     </div>
   </div>
 </header>
 
-<main id="main" class="login">
-  <div class="login__inner">
+<main id="main" class="pricing legal">
 
-    <!-- ------------------------- left: the form ------------------------- -->
-    <section class="login__panel">
-      <div class="login__col">
+  <div class="shell">
+    <div class="pricing__panel">
+      <div class="pricing__head">
         <a class="back-btn" href="index.html" aria-label="Back to home" data-cs-label="Zpět na úvod">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
         </a>
-
-        <h1 class="login__title" data-cs="Vítej">Welcome</h1>
-        <p class="login__sub" data-cs="Přihlas se a uvidíš, na čem jsi.">Sign in to see where you stand.</p>
-
-        <div id="authAlert" class="auth-alert" style="display:none;" role="alert"></div>
-
-        <form class="login__form">
-          <div class="field" id="emailField">
-            <label class="field__label" for="email" data-cs="E-mailová adresa">Email address</label>
-            <input class="field__input" id="email" name="email" type="email"
-                   autocomplete="email" placeholder="you@example.com" required>
-          </div>
-
-          <div class="field" id="passwordField">
-            <label class="field__label" for="password" data-cs="Heslo">Password</label>
-            <input class="field__input" id="password" name="password" type="password"
-                   autocomplete="current-password" placeholder="••••••••" required>
-          </div>
-
-          <div class="login__row">
-            <label class="check">
-              <input class="check__input" type="checkbox" name="remember">
-              <span class="check__box" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
-              </span>
-              <span class="check__label" data-cs="Zůstat přihlášen">Keep me signed in</span>
-            </label>
-            <a class="login__link" href="#" id="resetPasswordLink" data-cs="Zapomenuté heslo">Reset password</a>
-          </div>
-
-          <button class="btn btn--primary login__submit" type="submit" data-cs="Přihlásit se">Sign In</button>
-        </form>
-
-        <div class="login__divider">
-          <span data-cs="Nebo pokračuj přes">Or continue with</span>
-        </div>
-
-        <!-- TODO: wire up Google OAuth -->
-        <button class="btn btn--secondary login__oauth" type="button">
-          <!-- Official Google "G". These four brand colours are the one
-               sanctioned exception to the design system's palette — Google's
-               branding guidelines require the exact mark on a Sign in with
-               Google button, and a recoloured version can fail their review. -->
-          <span class="login__oauth-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M23.06 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h6.19a5.29 5.29 0 0 1-2.29 3.47v2.88h3.7c2.17-2 3.42-4.94 3.42-8.36z"/>
-              <path fill="#34A853" d="M12 24c3.1 0 5.7-1.03 7.6-2.79l-3.7-2.88c-1.03.69-2.35 1.1-3.9 1.1-3 0-5.54-2.02-6.45-4.74H1.72v2.98A11.99 11.99 0 0 0 12 24z"/>
-              <path fill="#FBBC05" d="M5.55 14.69A7.2 7.2 0 0 1 5.17 12c0-.93.16-1.84.38-2.69V6.33H1.72A12 12 0 0 0 .44 12c0 1.94.46 3.77 1.28 5.67l3.83-2.98z"/>
-              <path fill="#EA4335" d="M12 4.77c1.69 0 3.2.58 4.4 1.72l3.28-3.28C17.7 1.2 15.1 0 12 0 7.4 0 3.42 2.64 1.72 6.33l3.83 2.98C6.46 6.79 9 4.77 12 4.77z"/>
-            </svg>
-          </span>
-          <span data-cs="Pokračovat přes Google">Continue with Google</span>
-        </button>
-
-        <p class="login__foot">
-          <span data-cs="Jsi tu poprvé?">New to our platform?</span>
-          <!-- TODO: wire up sign-up route -->
-          <a class="login__link" href="#" data-cs="Vytvořit účet">Create Account</a>
-        </p>
-
-        <!-- Deliberately outside .login__foot: login-auth.js rewrites that
-             block on every mode switch, which would wipe these links out. -->
-        <p class="login__legal">
-          <span data-cs="Pokračováním souhlasíš s ">By continuing you agree to our </span><a href="terms.html" data-cs="podmínkami služby">Terms of Service</a><span data-cs=" a se "> and </span><a href="privacy.html" data-cs="zásadami ochrany osobních údajů">Privacy Policy</a><span data-cs=".">.</span>
-        </p>
+        <h1 class="pricing__title" data-cs="O nás">About Us</h1>
       </div>
-    </section>
 
-    <!-- ------------------------ right: the video ------------------------ -->
-    <aside class="login__media" aria-hidden="true">
-      <video class="login__video" src="videos/loginvideo.mp4"
-             autoplay loop muted playsinline preload="auto" disablepictureinpicture></video>
-    </aside>
+      <div class="legal__doc">
 
+        <p class="legal__notice" role="note" data-cs="Firma neexistuje. Claroni je smyšlená a tenhle web je cvičná ukázka. Nikdo ho neprovozuje, žádný tým za ním nestojí a nic z toho, co je níž, se doopravdy neděje. Text je psaný tak, jak by ho psala skutečná firma.">The company does not exist. Claroni is fictional and this site is a practice build. Nobody operates it, there is no team behind it, and nothing described below is actually happening. The text is written the way a real company would write it.</p>
+
+        <p class="legal__lede" data-cs="Claroni vzniklo z jedné konkrétní nespokojenosti: finanční aplikace jsou stavěné pro lidi s výplatou. Pro studenta nebo někoho, kdo právě rozjíždí firmu, jsou skoro k ničemu.">Claroni came out of one specific frustration: finance apps are built for people with a salary. For a student, or for someone in the first months of a company, they are close to useless.</p>
+
+        <section class="legal__section" id="why">
+          <h2 class="legal__h2" data-cs="Proč to vzniklo">Why it exists</h2>
+          <p data-cs="Když ti chodí peníze nepravidelně, klasický rozpočet nefunguje. Nedá se rozpočítat měsíc, který ještě nevíš, jak dopadne. Aplikace ti přesto nabídne koláčový graf, dvanáct kategorií a upozornění, že jsi přečerpal položku „zábava“ — a ty pořád nevíš to jediné, co tě zajímá: kolik můžeš dneska utratit, aby to bylo v pohodě.">When money arrives irregularly, a conventional budget does not work. You cannot divide up a month you do not yet know the shape of. The app still offers you a pie chart, twelve categories and an alert that you have overspent on “entertainment” — and you still do not know the one thing you wanted: how much you can spend today without it hurting.</p>
+          <p data-cs="Claroni odpovídá na tuhle jednu otázku. Všechno ostatní je až za ní.">Claroni answers that one question. Everything else comes after it.</p>
+        </section>
+
+        <section class="legal__section" id="belief">
+          <h2 class="legal__h2" data-cs="Čemu věříme">What we believe</h2>
+          <p data-cs="Míň dat, víc jasno. Většina finančních aplikací soutěží v tom, kolik toho ukáže. My si myslíme, že přehled nevzniká přidáváním, ale ubíráním — a že dobře odvedená práce je ta, po které se na obrazovku nemusíš dívat.">Less data, more clarity. Most finance apps compete on how much they can show you. We think clarity comes from taking away rather than adding — and that the work is done well when you no longer need to look at the screen.</p>
+          <p data-cs="Sledování financí by taky nemělo být úkol. Nechceme, abys něco zadával, štítkoval nebo si každý týden sedal nad tabulkou. Propojíš kartu a dál to jede samo.">Tracking your money should not be a chore either. We do not want you entering things, tagging them, or sitting down with a spreadsheet every week. You connect a card and it runs itself.</p>
+          <p data-cs="A poslední věc: peníze jsou citlivé téma. Aplikace, která tě za útratu plísní, se přestane používat. Claroni ti říká, na čem jsi, ne co jsi udělal špatně.">And one more thing: money is a sensitive subject. An app that tells you off for spending gets abandoned. Claroni tells you where you stand, not what you did wrong.</p>
+        </section>
+
+        <section class="legal__section" id="how">
+          <h2 class="legal__h2" data-cs="Jak to děláme">How we work</h2>
+          <ul>
+            <li data-cs="Jeden tarif, jedna cena. Žádné úrovně, žádné doplňky, žádné vyjednávání.">One paid plan, one price. No tiers, no add-ons, no negotiating.</li>
+            <li data-cs="Žádná reklama. Nikomu neprodáváme tvoje data a nikdy nebudeme — u finanční aplikace by to bylo obzvlášť mizerné.">No advertising. We do not sell your data to anyone and never will — in a finance app that would be especially shabby.</li>
+            <li data-cs="Přístup jen ke čtení. Claroni z tvého účtu nemůže poslat peníze, protože k tomu nemá oprávnění.">Read-only access. Claroni cannot move money out of your account, because it has no permission to.</li>
+            <li data-cs="Zrušení dvěma klepnutími. Bez telefonátu, bez důvodu, bez zdržování.">Cancel in two taps. No phone call, no reason, no delaying tactics.</li>
+          </ul>
+        </section>
+
+        <section class="legal__section" id="who">
+          <h2 class="legal__h2" data-cs="Pro koho to je">Who it is for</h2>
+          <p data-cs="Pro studenty, začínající zakladatele a všechny, jejichž příjem nemá tvar. Pokud máš stabilní výplatu a hypotéku, existují aplikace, které to zvládnou lépe než my — a je fér to říct rovnou.">For students, early founders, and anyone whose income has no shape to it. If you have a steady salary and a mortgage, there are apps that will serve you better than we will — and it is fair to say so up front.</p>
+        </section>
+
+      </div>
+    </div>
   </div>
-</main>
 
+</main>
 <!-- ============================== FOOTER ================================ -->
 <!-- Site-wide footer. Every page carries this same block, verbatim — if it
      changes here it must change on every other page too. -->
@@ -231,9 +211,10 @@
     </div>
   </div>
 </footer>
-
 <script src="script.js"></script>
 <script type="module" src="assets/js/newsletter.js"></script>
-<script type="module" src="assets/js/login-auth.js"></script>
+<script type="module" src="assets/js/nav-auth.js"></script>
+<script type="module" src="assets/js/nav-profile.js"></script>
+<script type="module" src="assets/js/portal.js"></script>
 </body>
 </html>
